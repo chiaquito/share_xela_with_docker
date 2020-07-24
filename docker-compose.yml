@@ -1,0 +1,56 @@
+#version: '3.7'
+version: '3.3'
+services:
+    # サービス名は自由に設定
+    web:
+        container_name: WebApplicationServer
+        # appディレクトリの中から`Dockerfile`を探す
+        #build: ./app
+
+        build:
+            context: ./app
+            dockerfile: Dockerfile
+
+        # サービス起動後に入力されるコマンドを設定
+        command: python3 manage.py runserver 0.0.0.0:8000
+        # データを永続化させる場合の設定。`host:container`でパスを記載
+        volumes:
+            - ./app/:/usr/src/app/
+        # 開放するポートを指定。`host:container`でポートを記載
+        ports:
+            - 8000:8000
+        # 環境変数を指定
+        environment:
+            - DJANGO_SETTINGS_MODULE=config.settings.dev_settings
+            - LAUNCH_ENV=DOCKER
+
+        env_file: ./app/.env
+        
+        depends_on:
+            - db
+
+    db:
+        container_name: DatabaseServer
+        
+        build: 
+            context: ./postgres
+            dockerfile: Dockerfile
+        ports:
+            - 5433:5432
+        
+        # データの永続化
+        volumes:
+            - postgis_data:/var/lib/postgresql/data
+            - ./postgres/sql:/docker-entrypoint-initdb.d
+        # su権限を持つ、指定されたユーザーと同じ名前のデータベースを作成
+        # valueはdjangoサービスで指定したものと同じ様に記載する
+        #environment:
+        #    - POSTGRES_USER=django_db_user
+        #   - POSTGRES_PASSWORD=password1234
+        #    - POSTGRES_DB=django_db
+        #    - DATABASE=postgres
+        env_file: ./postgres/.env_db
+
+# トップレベルに書く「名前付きvolumes」は複数サービスから参照できる
+volumes:
+    postgis_data:
