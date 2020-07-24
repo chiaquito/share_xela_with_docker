@@ -4,7 +4,7 @@ django-rest-auth==0.9.5 # https://github.com/pennersr/django-allauth
 django-sendgrid-v5==0.8.1
 django-user-agents==0.4.0
 django-cors-headers==3.4.0
-psycopg2==2.8.5        # https://pypi.org/project/psycopg2/
+#psycopg2==2.8.5        # https://pypi.org/project/psycopg2/
 psycopg2-binary==2.8.5 # https://pypi.org/project/psycopg2-binary/
 gunicorn==20.0.4
 selenium==3.141.0
