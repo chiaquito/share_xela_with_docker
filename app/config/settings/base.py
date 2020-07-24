@@ -11,16 +11,12 @@ https://docs.djangoproject.com/en/2.1/ref/settings/
 """
 
 import os
-import environ # , platform
-
-
+import environ 
 
 
 
 env_dir  = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 env_file = os.path.join(env_dir, ".env")
-#print("ENVFILE", envFile)
-
 env = environ.Env()
 env.read_env(env_file)
 
@@ -40,18 +36,7 @@ SECRET_KEY = os.environ.get('SECRET_KEY')
 
 
 
-"""
-非共通事項
-# SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
-"""
-"""
-非共通事項
-ALLOWED_HOSTS = []
-"""
-
 # Application definition
-
 INSTALLED_APPS = [
     'django.contrib.admin',
     'django.contrib.sites',
@@ -70,7 +55,6 @@ INSTALLED_APPS = [
     'rest_framework.authtoken',
     'rest_auth',
     'corsheaders',    
-    #'leaflet',
     'django.contrib.gis',
     'djgeojson',
     'phonenumber_field',
@@ -162,7 +146,6 @@ DATABASES = {
         'HOST': os.environ.get('DATABASE_HOST', default='localhost'),
         'PASSWORD': os.environ.get("DATABASE_PASSWORD"),
         'TEST':{"NAME" : "test_postgis_db"},
-
     }
 }
 
@@ -189,18 +172,6 @@ AUTH_PASSWORD_VALIDATORS = [
 ]
 
 
-
-
-
-#########################
-###  leaflet          ###
-#########################
-
-#LEAFLET_CONFIG = {
-#    # conf here
-#    'DEFAULT_CENTER': (15.62278, -90.53139),
-#    'DEFAULT_ZOOM': 7,
-#}
 
 
 
