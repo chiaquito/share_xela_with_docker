@@ -1,4 +1,4 @@
-django==2.2.3
+
 django-allauth==0.40.0
 django-rest-auth==0.9.5 # https://github.com/pennersr/django-allauth
 django-sendgrid-v5==0.8.1
@@ -33,3 +33,61 @@ django-model-utils==3.1.2  # https://github.com/jazzband/django-model-utils
 django-crispy-forms==1.7.2  # https://github.com/django-crispy-forms/django-crispy-forms
 django-redis==4.10.0  # https://github.com/niwinz/django-redis
 coreapi==2.3.3  # https://github.com/core-api/python-client
+
+
+Babel==2.7.0
+CacheControl==0.12.6
+cachetools==4.0.0
+certifi==2019.11.28
+chardet==3.0.4
+defusedxml==0.6.0
+Django==2.2.7
+#django-allauth==0.40.0
+#django-environ==0.4.5
+django-filter==2.2.0
+django-geojson==2.12.0
+#django-leaflet==0.25.0
+django-phonenumber-field==3.0.1
+django-rest-auth==0.9.5
+django-tempus-dominus==5.1.2.9
+django-user-agents==0.4.0
+djangorestframework==3.11.0
+firebase-admin==4.0.1
+google-api-core==1.16.0
+google-api-python-client==1.8.0
+google-auth==1.13.1
+google-auth-httplib2==0.0.3
+google-cloud-core==1.3.0
+google-cloud-firestore==1.6.2
+google-cloud-storage==1.27.0
+google-resumable-media==0.5.0
+googleapis-common-protos==1.51.0
+grpcio==1.28.1
+gunicorn==20.0.4
+httplib2==0.17.1
+idna==2.8
+#leaflet==0.0.3
+Markdown==3.1.1
+msgpack==1.0.0
+oauthlib==3.1.0
+phonenumbers==8.11.0
+Pillow==6.2.1
+protobuf==3.11.3
+psycopg2-binary==2.8.4
+pyasn1==0.4.8
+pyasn1-modules==0.2.8
+python-http-client==3.2.7
+python-memcached==1.59
+python3-openid==3.1.0
+pytz==2019.3
+requests==2.22.0
+requests-oauthlib==1.3.0
+rsa==4.0
+sendgrid==3.6.5
+sendgrid-django==4.2.0
+six==1.13.0
+sqlparse==0.3.0
+ua-parser==0.8.0
+uritemplate==3.0.1
+urllib3==1.25.7
+user-agents==2.0
