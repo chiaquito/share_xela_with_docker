@@ -21,6 +21,7 @@ services:
         environment:
             - DJANGO_SETTINGS_MODULE=config.settings.prod_settings
             - LAUNCH_ENV=DOCKER
+            - DATABASE_HOST=db
         #environmentからenv_fileディレクティブに変更
         env_file: ./app/.env
         depends_on:
@@ -49,7 +50,6 @@ services:
             dockerfile: Dockerfile
         volumes: 
             - static_volume:/usr/src/app/static_root
-            #- static_volume:/usr/share/nginx/html/static
             - media_volume:/usr/src/app/media_root
         ports:    
             - 80:80

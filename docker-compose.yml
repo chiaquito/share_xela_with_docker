@@ -23,6 +23,7 @@ services:
         environment:
             - DJANGO_SETTINGS_MODULE=config.settings.dev_settings
             - LAUNCH_ENV=DOCKER
+            - DATABASE_HOST=db
 
         env_file: ./app/.env
         
