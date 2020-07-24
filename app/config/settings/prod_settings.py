@@ -5,21 +5,17 @@ DEBUG = True
 
 ALLOWED_HOSTS = ['sharexela.ga','153.126.194.171','144.202.23.188', '127.0.0.1']
 
-"""
+
 DATABASES = {
-    'default': {
-        #'ENGINE': 'django.db.backends.sqlite3',
+    'default': {        
         'ENGINE': 'django.contrib.gis.db.backends.postgis',
-        #'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
-        #'NAME': 'test_geodjango',
         'NAME': 'postgis_test',
         'PORT': '5432',
         'USER': 'geodjango_user',
         'PASSWORD': 'geodjango1990',
-
     }
 }
-"""
+
 
 
 
