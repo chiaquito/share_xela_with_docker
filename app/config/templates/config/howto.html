@@ -1,0 +1,185 @@
+{% extends 'config/base.html' %}
+{% load user_agents %}
+{% load static %}
+
+
+
+{% block head %}
+    
+    <link rel="stylesheet" href="{% static 'css/footer_settings.css' %}"> 
+    
+{% endblock %}
+
+
+{% block content %}
+
+{% if request|is_pc %}
+
+
+<div class="container">
+	<div class="row">
+		<div class="col-8">
+		<!--h2>使い方</h2-->
+			<p class="mb-0" ><font size="6">Como usar</font></p>
+			<hr class="mt-0" />
+		</div>
+		<div class="col-4">
+			<p class="mt-0"><br /><a href="{% url 'account_signup' %}">registrarse</a></p>
+		</div>
+		<div class="col-12">
+		<p>Es posible que no necesites pagar lo que tu quieres porque la cosa seria lo que alguien quiere tirar o dar .<br />
+		Aqui es el lugar donde podemos buscar la gente local.</p><br />
+		</div> 
+
+		<div class="col-12">
+		<!--p class="h5">欲しい物を探す時</p-->
+		<p class="h5 p-2 bg-light">Buscar lo que necesitas</p>
+		<!--p>上部ナブバーのArticulosを選択する。<br />
+		dar,venderをクリックする。<br />
+		表示される記事はすべて誰かに譲りたいアイテムです。<br />
+		Tu departamentoから探すとあなたの住んでいる地域の記事のみが表示されます。</p-->
+		<p>Seleccione Articulos en la barra de superior.<br />
+		Haga clic en "<a href="{% url 'items:itemdar_list' %}"><img style="width: 1rem;" src="{% static 'libro_icon.jpeg' %}">&nbsp;Donar o vender</a>".<br />
+		Cada artículo que aparece es un artículo que quiere darle a alguien.<br />
+		Si busca desde Tu departamento, solo se mostrarán los artículos en su área.
+		</p>
+		<br />
+		</div>
+		<br /><br />
+
+		<div class="col-12">
+		<!--p class="h5">欲しい人、助けて欲しい人を探す時</p-->
+		<p class="h5 p-2 bg-light">Al buscar personas que quieren o quieren ayuda</p>
+		<!--p>上部ナブバーのArticulosを選択する。<br />
+		quererをクリックする。<br />
+		表示される記事はすべて必要としている物事です。<br />
+		Tu departamentoから探すとあなたの住んでいる地域の記事のみが表示されます。</p-->
+		<p>Seleccione Articulos en la barra de superior.<br />
+		Haga clic en "<a href="{% url 'items:itemquerer_list' %}"><img style="width: 1rem;" src="{% static 'corazon_icon1.jpeg' %}">&nbsp;Buscar ayuda</a>".<br />
+		Cada artículo que ves es algo que alguien necesita.<br />
+		Si busca desde Tu departamento, solo se mostrarán los artículos en su área.</p>
+		<br />
+		</div>
+		<br /><br />
+
+		<div class="col-12">
+		<!--p class="h5">趣味の仲間を探したり、お店を宣伝を探す時</p-->
+		<p class="h5 p-2 bg-light">Al buscar amigos aficionados o al buscar anuncios para tiendas</p>
+		<!--p>上部ナブバーのArticulosを選択する。<br />
+		anuncioを選択する。<br />
+		表示される記事はすべてanuncioです。<br />
+		Tu departamentoから探すとあなたの住んでいる地域の記事のみが表示されます。</p-->
+		<p>Seleccione Articulos en la barra de superior.<br />
+		Selecciona "<a href="{% url 'items:itemanuncio_list' %}"><img style="width: 1rem;" src="{% static 'pin_icon.jpeg' %}"/>&nbsp;Anunciate</a>".<br />
+		Todos los artículos mostrados son anuncio.<br />
+		Si busca desde Tu departamento, solo se mostrarán los artículos en su área.</p>
+		<br />
+		</div>
+		<br /><br />
+		
+
+		<div class="col-12">
+		<!--p class="h5">記事を投稿する</p-->
+		<p class="h5 p-2 bg-light">Presentación del artículo</p>
+		<!--p>dar,vender、querer、anuncioの記事を作りたい人は、記事を投稿してください。<br />
+		My pageからHacer Articulosを選択します。<br />
+		もしプロフィールを作成していない場合にはプロフィール作成ページに移動してから記事を作成します。
+		ものを譲りたいときはdar,querer、何かを必要としている場合にはquererを、例えば登山の仲間を探したり、自分のお店を紹介したいときはanuncioを選択します。</p-->
+		<p>Si desea hacer un artículo sobre Donar o vender, Buscar ayuda, Anunciate, publique un artículo.<br />
+		Seleccione <a href="{% url 'items:item_create2' %}">"Crear articulo"</a> de "Mi pagina".<br />
+		Seleccione "Donar o vender" cuando quiera donar o vender algo, "Buscar ayuda" cuando necesite algo, "Anunciate" cuando quiera anunciar.
+		</p>
+		</div>
+
+
+	</div>
+</div>
+
+ 
+
+
+
+{% endif %}
+
+{% if request|is_mobile %}
+<div class="container">
+	<div class="row">
+		<div class="col-8">
+		<!--h2>使い方</h2-->
+		<p class="mb-0"><big><big>Como usar</big></big></p>
+		<hr class="mt-0" />
+		</div>
+
+		<div class="col-4">
+			<p><a href="{% url 'account_signup' %}">registrarse</a></p>
+		</div> 
+		<div class="col-12">
+		<p>Es posible que no necesite pagar lo que tu quieres porque la cosa seria lo que alguien quiere tirar o dar .<br />
+		Aqui es el lugar donde podemos buscar la gente local.</p><br />
+		</div>
+
+		<div class="col-12 mb-2">
+			<div class="card">
+			<h5 class="card-header">Buscar lo que necesitas</h5>
+			<div class="card-body">
+			<!--h5 class="card-title">Special title treatment</h5-->
+			<p class="card-text">Seleccione Articulos en la barra de superior.<br />
+		Haga clic en "<a href="{% url 'items:itemdar_list' %}"><img style="width: 1rem;" src="{% static 'libro_icon.jpeg' %}">&nbsp;Donar o vender</a>".<br />
+		Cada artículo que aparece es un artículo que quiere darle a alguien.<br />
+		Si busca desde Tu departamento, solo se mostrarán los artículos en su área.</p>
+			<!--a href="#" class="btn btn-primary">Go somewhere</a-->
+			</div>
+			</div>
+		</div>
+
+
+
+		<div class="col-12 my-2">
+			<div class="card">
+			<h5 class="card-header">Al buscar personas que quieren o quieren ayuda</h5>
+			<div class="card-body">
+			<!--h5 class="card-title">Special title treatment</h5-->
+			<p class="card-text">Seleccione Articulos en la barra de superior.<br />
+				Haga clic en "<a href="{% url 'items:itemquerer_list' %}"><img style="width: 1rem;" src="{% static 'corazon_icon1.jpeg' %}">&nbsp;Buscar ayuda</a>".<br />
+				Cada artículo que ves es algo que alguien necesita.<br />
+			Si busca desde Tu departamento, solo se mostrarán los artículos en su área.</p>
+			<!--a href="#" class="btn btn-primary">Go somewhere</a-->
+			</div>
+			</div>
+		</div>
+
+
+		<div class="col-12 my-2">
+			<div class="card">
+			<h5 class="card-header">Al buscar amigos aficionados o al buscar anuncios para tiendas</h5>
+			<div class="card-body">
+			<!--h5 class="card-title">Special title treatment</h5-->
+			<p class="card-text">Seleccione Articulos en la barra de superior.<br />
+			Selecciona "<a href="{% url 'items:itemanuncio_list' %}"><img style="width: 1rem;" src="{% static 'pin_icon.jpeg' %}"/>&nbsp;Anunciate</a>".<br />
+			Todos los artículos mostrados son anuncio.<br />
+			Si busca desde Tu departamento, solo se mostrarán los artículos en su área.</p>
+			<!--a href="#" class="btn btn-primary">Go somewhere</a-->
+			</div>
+			</div>
+		</div>
+
+
+		<div class="col-12 my-2">
+			<div class="card">
+			<h5 class="card-header">Presentación del artículo</h5>
+			<div class="card-body">
+			<!--h5 class="card-title">Special title treatment</h5-->
+			<p class="card-text">Si desea hacer un artículo sobre Donar o vender, Buscar ayuda, Anunciate, publique un artículo.<br />
+			Seleccione <a href="{% url 'items:item_create2' %}">"Crear articulo"</a> de "Mi pagina".<br />
+			Seleccione "Donar o vender" cuando quiera donar o vender algo, "Buscar ayuda" cuando necesite algo, "Anunciate" cuando quiera anunciar.</p>
+			<!--a href="#" class="btn btn-primary">Go somewhere</a-->
+			</div>
+			</div>
+		</div>
+
+	</div>
+</div>
+
+{% endif %}
+
+{% endblock %}

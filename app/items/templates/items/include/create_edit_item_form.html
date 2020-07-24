@@ -1,0 +1,86 @@
+
+
+
+<div class="form-row">
+        <div class="form-group col-md-4">
+        <label>Categoría</label>    
+        <!--label>{{ form.category.label }}</label-->
+        {{ form.category }}
+        </div>
+        <div class="form-group col-md-6">
+        <label>Titulo</label>
+        <!--label>{{ form.title.label }}</label-->
+        {{ form.title }}
+        </div>
+
+        <div class="form-group col-md-2">
+        <label>Precio(Q)</label>
+        <!--label>{{ form.title.label }}</label-->
+        {{ form.price }}
+        </div>
+
+        
+        
+
+        <div class="form-group col-md-4">
+        <!--label>{{ form.adm0.label }}</label-->
+        <label>Pais</label>
+        {{ form.adm0 }}
+        </div>
+
+
+        {% comment %}
+        <div class="form-group col-md-4">
+        <!--label>{{ form.adm1.label }}</label-->
+        <label>Departamento</label>
+        {{ form.adm1 }}
+        </div>
+        {% endcomment %}
+        {% include "items/include/create_edit/select_departamento.html" %}
+
+        {% comment %}
+        <div class="form-group col-md-4">
+        <!--label>{{ form.adm2.label }}</label-->
+        <label>Municipio</label>
+        {{ form.adm2 }}<br />
+        </div>
+        {% endcomment %}
+        {% include "items/include/create_edit/select_municipio.html" %}
+
+    </div>
+    <div class="form-row">
+        {# mapのタグを設置 #}
+        {% include "items/include/create_edit/leaflet_map.html" %}
+    </div>
+
+    <div class="form-row">
+        <div class=" form-group col-md-6">
+        <!--label>{{ form.description.label }}</label-->
+        <label>Detalles</label>
+        {{ form.description }}
+        </div>
+        <div class="form-group col-md-6">
+        <label>Imagen1</label>
+        <!--label>{{ form.image1.label }}</label-->
+        {{ form.image1 }}
+        
+        <label>Imagen2</label>
+        <!--label>{{ form.image2.label }}</label-->
+        {{ form.image2 }}
+
+        <label>Imagen3</label>
+        <!--label>{{ form.image3.label }}</label-->
+        {{ form.image3 }}
+        </div>
+
+
+
+
+    </div>
+
+    <!--button type="submit" class="btn btn-primary">送信</button-->
+    <button type="submit" class="btn btn-primary btn-block mt-4" size="7">Enviar</button>
+
+
+
+

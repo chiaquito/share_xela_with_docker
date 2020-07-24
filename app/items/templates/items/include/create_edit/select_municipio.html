@@ -1,0 +1,10 @@
+<div class="form-group col-md-4">
+<!--label>{{ form.adm2.label }}</label-->
+<label>Municipio</label>
+<div id="select_municipio" >
+    <select v-model="selected" class="col-12 form-control" name="adm2">
+        <option  v-for="ele in mList" v-bind:value="ele.name" >**ele.name**</option>
+    </select>
+    {# <br><span>Selected: ** selected **</span> #}
+</div>
+</div>

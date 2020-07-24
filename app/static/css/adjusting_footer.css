@@ -1,0 +1,18 @@
+//STYLES - essential for sticky footer
+html {
+  min-height: 100%;
+  position: relative;
+}
+ 
+body {
+  margin-bottom: 10em;
+}
+ 
+
+
+
+footer {
+  bottom: 0;
+  height: 7em;
+  position: absolute;
+}

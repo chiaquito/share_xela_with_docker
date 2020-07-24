@@ -1,0 +1,114 @@
+{% extends 'config/base.html' %}
+{% load user_agents %}
+{% load static %}
+
+
+{% block head %}
+    {% if request|is_pc %}
+    <!-- adjusting footer -->
+    {# <link rel="stylesheet" href="{% static 'css/adjusting_footer.css' %}"> #}
+    <link rel="stylesheet" href="{% static 'css/footer_settings.css' %}">
+    {% elif request|is_mobile %}
+    {% endif %}
+{% endblock %}
+
+
+
+
+
+
+
+{% block content %}
+
+{% if messages %}
+<div class="container">
+	<div class="row">
+		<div class="col">
+
+    {% for message in messages %}
+    <div id="alert" class="alert alert-info" role="alert"><p>{{ message }}<button id="alert-btn" type="button" class="btn btn-link"><i class="far fa-times-circle"></i></button></p></div>
+    {% endfor %}
+		</div>
+	</div>
+</div>
+{% endif %}
+
+
+<div class="container">
+  <div class="row justify-content-md-center">
+    <div class="col-6">
+      {# <p class="h2">申請者リスト</p> #}      
+         <p class="h2">Lista de solicitantes</p>
+
+    </div>
+  </div>
+</div>
+
+<div class="container mt-3 mb-3">
+  <div class="row justify-content-md-center">
+    <div class="col-6">
+
+
+              <div class="card mb-5">
+              <h5 class="card-header">{{ item_obj.title }}</h5>
+              <div class="card-body">
+                <div class="container">
+                  <div class="row p-0">
+                    <div class="col-6 p-0 m-0">
+                      <img style="width:13rem;" class="p-4" src="{{ item_obj.image1.url }}">
+                    </div>
+                    <div class="col-6">
+                      <h5 class="card-title mb-1">Descripsion</h5>
+                      <hr class="mt-0" />
+                      <p class="card-text">{{ item_obj.description }}</p>
+                    </div>
+                  </div>
+                </div>  
+              </div>
+              </div>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="col">
+
+
+
+
+<table class="table">
+  <thead>
+    <tr>
+      <th scope="col">#</th>
+      <th scope="col">Solicitud</th>
+      <th scope="col">Usario</th>
+      <th scope="col">Mensaje</th>
+      <th scope="col"></th>
+    </tr>
+  </thead>
+  <tbody>
+  {% for obj in solicitudes_objects %}	
+    <tr>
+      <th scope="row">1</th>
+      <!--td><a href="{% url 'solicitudes:solicitud_decision' obj.id %}">{{ obj }}</a></td-->
+      <td>{{ obj }}</td>
+      <td>{{ obj.applicant }}</td>
+      <td>{{ obj.message }}</td>
+      <td>
+      	<form method="POST" action="{% url 'solicitudes:solicitud_decision' obj.id %}">{% csrf_token %}
+      	<input type="hidden" name="id" value="{{ obj.id }}">
+      	<button type="submit" class="btn btn-primary" >Decide un socio de negocios</button>
+        {% comment %} この人と取引する {% endcomment %}
+        </form>
+      </td>
+    </tr>
+   {% endfor %}
+
+  </tbody>
+</table>
+
+<script>
+	$("#alert-btn").on("click", function(){
+		$("#alert").remove();
+	});
+</script>	
+{% endblock %}

@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<string-array name="departamentoList">
+  <item>Alta Verapaz</item>
+  <item>Baja Verapaz</item>
+  <item>Chimaltenango</item>
+  <item>Chiquimula</item>
+  <item>El Progreso</item>
+  <item>Escuintla</item>
+  <item>Guatemala</item>
+  <item>Huehuetenango</item>
+  <item>Izabal</item>
+  <item>Jalapa</item>
+  <item>Jutiapa</item>
+  <item>Petén</item>
+  <item>Quetzaltenango</item>
+  <item>Quiché</item>
+  <item>Retalhuleu</item>
+  <item>Sacatepéquez</item>
+  <item>San Marcos</item>
+  <item>Santa Rosa</item>
+  <item>Sololá</item>
+  <item>Suchitepéquez</item>
+  <item>Totonicapán</item>
+  <item>Zacapa</item>
+</string-array>

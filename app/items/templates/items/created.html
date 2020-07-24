@@ -1,0 +1,29 @@
+{% extends 'config/base.html' %}
+{% load user_agents %}
+{% load static %}
+
+{% block head %}
+    {% if request|is_pc %}
+    <!-- adjusting footer -->
+    {# <link rel="stylesheet" href="{% static 'css/adjusting_footer.css' %}"> #}
+    <link rel="stylesheet" href="{% static 'css/footer_settings.css' %}">
+    {% elif request|is_mobile %}
+    <link rel="stylesheet" href="{% static 'css/footer_settings.css' %}">
+    {% endif %}
+{% endblock %}
+
+
+{% block content %}
+<div class="container">
+	<div class="row">
+		<div class="col">
+<p class="mt-4 h4">Artículo publicado</p>
+<br />
+<a class="btn btn-primary " href="{% url 'items:item_detail' item_obj.id %}">Revisar artículo </a>
+
+		</div>
+	</div>
+</div>
+
+
+{% endblock %}

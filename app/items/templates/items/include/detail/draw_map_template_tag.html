@@ -1,0 +1,25 @@
+{% comment %}
+これを使うとmapをincludeしたところに差し込むことができる。
+*単一で使うことができず必ずこのファイルとともにdraw_map_js.htmlもincludeも利用すること。
+
+右を利用する  {% include "items/include/detail/draw_map_js.html" %}
+{% endcomment %}
+
+
+{% load leaflet_tags %}
+{% leaflet_css %}
+{% leaflet_js %}
+
+
+<div class="container">
+    <div class="row">
+        <div class="col-12">
+            
+            {% if item_obj.point %}
+            {% leaflet_map "main" callback="map_init_basic" %}
+            {% else %}
+            {% endif %}
+            
+        </div>
+    </div>
+</div>

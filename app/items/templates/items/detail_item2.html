@@ -1,0 +1,400 @@
+{% extends 'config/base.html' %}
+{% load user_agents %}
+{% load static %}
+
+
+{% block head %}
+
+    {% if request|is_pc %}
+    <link rel="stylesheet" href="{% static 'css/footer_settings.css' %}"> 
+    {% elif request|is_mobile %}
+    <link rel="stylesheet" href="{% static 'css/footer_settings.css' %}">
+    {% endif %}
+
+    {% include 'items/include/detail/meta_ogp.html' %}
+
+        <!-- FontAwesome CSS CDN -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" />
+
+    <!-- Bootstrap-social CSS CDN -->
+    <link rel="stylesheet" href="{% static 'css/bootstrap-social.css' %}" />
+{% endblock %}
+
+
+
+{% block content %}
+
+{% comment %}                pc                 {% endcomment %}        
+
+{% if request|is_pc %}
+
+
+		
+<!-- メッセージフレームワーク -->			
+{% include "config/include/message_and_delete.html" %}
+<!-- メッセージフレームワーク終わり -->	
+
+
+
+<div class="container">
+	<div class="row">
+		<div class="col-7">
+
+
+			{# title情報の挿入 #}
+			{% include "items/include/detail/item_title.html" %}
+			{# title情報の挿入終わり #}
+
+
+	
+		
+			<div class="container-fluid">
+				<div class="row">
+					<div class="col-12">
+			{% if item_obj.image1 %}
+			<img src="{{ item_obj.image1.url }}" style="width: 13rem;" class="border" />
+			{% endif %}
+			
+			{% if item_obj.image2 %}
+			<img src="{{ item_obj.image2.url }}" style="width: 13rem;" class="border" />
+			{% endif %}
+			{% if item_obj.image3 %}
+			<img src="{{ item_obj.image3.url }}" style="width: 13rem;" class="border" />
+			{% endif %}
+			{% if item_obj.image4 %}
+			<img src="{{ item_obj.image4.url }}" style="width: 13rem;" class="border" />
+			{% endif %}
+			{% if item_obj.image5 %}
+			<img src="{{ item_obj.image5.url }}" style="width: 13rem;" class="border" />
+			{% endif %}
+			{% if item_obj.image6 %}
+			<img src="{{ item_obj.image6.url }}" style="width: 13rem;" class="border" />
+			{% endif %}
+
+					</div>
+				</div>
+			</div>
+
+
+			{% include "config/include/general/basic_margin.html" %}
+			{% include "config/include/general/basic_margin.html" %}
+			{% include "config/include/general/basic_margin.html" %}
+			{% include "config/include/general/basic_margin.html" %}
+
+			{#         'ボタンチョイス挿入'           #}
+			{% include 'config/include/detail_item/btn_choice.html' %}		
+			{#         'ボタンチョイス挿入終わり'      #}
+
+			{% include "config/include/general/basic_margin.html" %}
+
+
+			{# description情報の挿入 #}
+			{% include "items/include/detail/item_description.html" %}
+			{# description情報の挿入終わり #}
+
+			{# price情報の挿入 #}
+			{% include "items/include/detail/item_price.html" %}
+			{# price情報の挿入終わり #}
+
+
+
+
+
+
+			{#          "item_contacts挿入"         #}
+			{% include 'config/include/detail_item/item_contacts.html' %}
+			{#        "item_contacts挿入終わり"      #}
+
+
+			{% include "config/include/general/basic_margin.html" %}
+			{% include "config/include/general/basic_margin.html" %}
+			{% include "config/include/general/basic_margin.html" %}
+			{% include "config/include/general/basic_margin.html" %}
+
+
+
+			{#          "質問フォーム挿入"         #}
+			{% include 'items/include/detail/item_ask_form.html' %}
+			{#        "質問フォーム挿入終わり"      #}
+
+
+		</div>
+
+
+		<div class="col-5">
+
+			
+
+			{% include "config/include/general/basic_margin.html" %}
+			{% include "config/include/general/basic_margin.html" %}
+			{% include "config/include/general/basic_margin.html" %}
+
+
+
+			<!-- 出品者なら編集、削除ボタンを表示する -->
+			{% include "items/include/detail/item_edit_delete_button.html" %}
+			<!-- 出品者なら編集、削除ボタンを表示する 終わり-->
+			
+
+			{# 記事作成者ptofile情報の挿入 #}
+			{% include "items/include/detail/item_user_profile.html" %}
+			{# 記事作成者ptofile情報の挿入終わり #}
+
+
+			{# SNSシェアボタンの挿入 #}
+			{% include 'config/include/detail_item/social_share_btn.html' %}
+			{# SNSシェアボタンの挿入 終わり #}
+
+			
+			{# Favボタンの表示 #}
+			{# {% include 'items/include/detail/fav_btn.html' %} #}
+			{# Favボタンの表示 終わり #}
+
+			{# Favボタンの表示 #}
+			{% include 'items/include/detail/fav_btn_with_vue.html' %}
+			{# Favボタンの表示 終わり #}
+
+
+			{% include "config/include/general/basic_margin.html" %}
+			{% include "config/include/general/basic_margin.html" %}
+
+
+
+
+
+
+			{# 取引エリア情報の挿入 #}
+			{% include "items/include/detail/item_area.html" %}
+			{# 取引エリア情報の挿入終わり #}
+
+
+			{# mapのコンポーネントを挿入 #}
+			{% include "items/include/detail/draw_map_template_tag.html" %}
+			{# mapのコンポーネント終了 #}
+
+
+		</div>
+	</div>
+</div>
+
+
+
+
+<!-- メッセージフレームワークによるメッセージの削除 -->
+{% include 'config/include/message_and_delete_jquery.html' %}
+<!-- メッセージフレームワークによるメッセージの削除  終わり-->
+{% endif %}
+
+
+{% comment %}                pc    終わり              {% endcomment %}        
+
+
+{% comment %}                mobile               {% endcomment %}        
+
+
+{% if request|is_mobile %}
+
+
+
+
+<!-- メッセージフレームワーク -->			
+{% include "config/include/message_and_delete.html" %}
+<!-- メッセージフレームワーク終わり -->
+
+
+{# title情報の挿入 #}
+{% include "items/include/detail/item_title.html" %}
+{# title情報の挿入終わり #}
+
+
+{# 出品者なら編集、削除ボタンを表示する #} 
+{% include "items/include/detail/item_edit_delete_button.html" %}
+{# 出品者なら編集、削除ボタンを表示する 終わり #}
+
+
+
+<div class="container">
+	<div class="row">
+		<div class="col-12">
+			
+			<div id="carouselExampleIndicators" class="carousel slide" data-ride="carousel">
+			<ol class="carousel-indicators">
+			<li data-target="#carouselExampleIndicators" data-slide-to="0" class="active bg-primary"></li>
+			{% if item_obj.image2 %}
+			<li data-target="#carouselExampleIndicators" data-slide-to="1" class="bg-primary"></li>
+			{% endif %}
+			{% if item_obj.image3 %}
+			<li data-target="#carouselExampleIndicators" data-slide-to="2" class="bg-primary"></li>
+			{% endif %}
+			{% if item_obj.image4 %}
+			<li data-target="#carouselExampleIndicators" data-slide-to="3" class="bg-primary"></li>
+			{% endif %}
+			{% if item_obj.image5 %}
+			<li data-target="#carouselExampleIndicators" data-slide-to="4" class="bg-primary"></li>
+			{% endif %}
+			{% if item_obj.image6 %}
+			<li data-target="#carouselExampleIndicators" data-slide-to="5" class="bg-primary"></li>
+			{% endif %}
+			</ol>
+			<div class="carousel-inner">
+			<div class="carousel-item active">
+			<img src="{{ item_obj.image1.url }}" class="d-block w-100" style="width: 13rem;" alt="...">
+			</div>
+			{% if item_obj.image2 %}
+			<div class="carousel-item">
+			<img src="{{ item_obj.image2.url }}" class="d-block w-100" alt="...">
+			</div>
+			{% endif %}
+			
+			{% if item_obj.image3 %}
+			<div class="carousel-item">
+			<img src="{{ item_obj.image3.url }}" class="d-block w-100" alt="...">
+			</div>
+			{% endif %}
+			
+			{% if item_obj.image4 %}
+			<div class="carousel-item">
+			<img src="{{ item_obj.image4.url }}" class="d-block w-100" alt="...">
+			</div>
+			{% endif %}
+			
+			{% if item_obj.image5 %}
+			<div class="carousel-item">
+			<img src="{{ item_obj.image5.url }}" class="d-block w-100" alt="...">
+			</div>
+			{% endif %}
+			
+			{% if item_obj.image6 %}
+			<div class="carousel-item">
+			<img src="{{ item_obj.image6.url }}" class="d-block w-100" alt="...">
+			</div>
+			{% endif %}
+			</div>
+			<a class="carousel-control-prev" href="#carouselExampleIndicators" role="button" data-slide="prev">
+			<span class="carousel-control-prev-icon" aria-hidden="true"></span>
+			<span class="sr-only text-primary">Previous</span>
+			</a>
+			<a class="carousel-control-next" href="#carouselExampleIndicators" role="button" data-slide="next">
+			<span class="carousel-control-next-icon" aria-hidden="true"></span>
+			<span class="sr-only">Next</span>
+			</a>
+			</div>
+		
+		</div>
+	</div>
+</div>
+
+{% include "config/include/general/basic_margin.html" %}
+{% include "config/include/general/basic_margin.html" %}
+
+
+{# description情報の挿入 #}
+{% include "items/include/detail/item_description.html" %}
+{# description情報の挿入終わり #}
+
+{# price情報の挿入 #}
+{% include "items/include/detail/item_price.html" %}
+{# price情報の挿入終わり #}
+
+
+
+
+
+
+{#         'ボタンチョイスの挿入'          #}
+{% include 'config/include/detail_item/btn_choice.html' %}
+
+
+{# SNSシェアボタンの挿入 #}
+{% include 'config/include/detail_item/social_share_btn.html' %}
+
+
+{# Favボタンの表示 #}
+{% include 'items/include/detail/fav_btn.html' %}
+{# Favボタンの表示 終わり #}
+
+
+{% include "config/include/general/basic_margin.html" %}
+{% include "config/include/general/basic_margin.html" %}
+
+
+
+
+
+
+
+{# 取引エリア情報の挿入 #}
+{% include "items/include/detail/item_area.html" %}
+{# 取引エリア情報の挿入終わり #}
+
+{# mapのコンポーネントを挿入 #}
+{% include "items/include/detail/draw_map_template_tag.html" %}
+{# mapのコンポーネント終了 #}
+
+
+
+{% include "config/include/general/basic_margin.html" %}
+{% include "config/include/general/basic_margin.html" %}
+
+
+{# 記事作成者ptofile情報の挿入 #}
+{% include "items/include/detail/item_user_profile.html" %}
+{# 記事作成者ptofile情報の挿入終わり #}
+
+
+
+
+
+{#          "コメントの挿入"            #}
+{% include 'config/include/detail_item/item_contacts_mobile.html' %}
+{#          "コメントの挿入 終わり"            #}
+
+
+
+{% include "config/include/general/basic_margin.html" %}
+{% include "config/include/general/basic_margin.html" %}
+
+
+{#          "質問フォーム挿入"         #}
+{% include 'items/include/detail/item_ask_form.html' %}
+{#        "質問フォーム挿入終わり"      #}
+
+
+
+
+{#    メッセージフレームワークによるメッセージの削除    #}
+{% include 'config/include/message_and_delete_jquery.html' %}
+{#    メッセージフレームワークによるメッセージの削除  終わり  #}
+
+
+
+
+
+
+
+
+
+
+
+<script>
+$(function () {
+//const iconColor = "#000";
+const iconColor = "#1e90ff";
+
+$('.carousel-control-prev-icon').css("background-image", `url("data:image/svg+xml;charset=utf8,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='${encodeURIComponent(iconColor)}' viewBox='0 0 8 8'%3E%3Cpath d='M5.25 0l-4 4 4 4 1.5-1.5-2.5-2.5 2.5-2.5-1.5-1.5z'/%3E%3C/svg%3E")`);
+$(".carousel-control-next-icon").css("background-image", `url("data:image/svg+xml;charset=utf8,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='${encodeURIComponent(iconColor)}' viewBox='0 0 8 8'%3E%3Cpath d='M2.75 0l-1.5 1.5 2.5 2.5-2.5 2.5 1.5 1.5 4-4-4-4z'/%3E%3C/svg%3E")`);
+});
+</script>
+{% endif %}
+{% comment %}                mobile   終わり              {% endcomment %} 
+
+
+{# vue.js cdn 本番用 #}
+{% include "config/include/general/vue_js_script.html" %}
+{# axios cdn #}
+<script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+
+{# osmの表示に関するjavascript #}
+{% include "items/include/detail/draw_map_js.html" %}
+
+{% endblock %}

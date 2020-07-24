@@ -1,0 +1,95 @@
+{% load static %}
+
+
+
+
+<div class="container-fluid" id="fav">
+    <div class="row">
+        <div class="col-12">
+
+            <form method="post" action="{% url 'items:item_favorite' item_obj.id %}">{% csrf_token %}
+            <input type="hidden" name="item_obj_id" value="{{ item_obj.id }}">
+            <img src='{% static "heart_pnk.png" %}' style="display:none;" width="32px" v-on:click="changeFavStatus" v-show="isRedShow" v-cloak />
+            <img src='{% static "heart_blue_line.png" %}' style="display:none;" width="36px" v-on:click="changeFavStatus" v-show="isBlankShow" v-cloak />
+
+            </form>
+        </div>
+    </div>
+</div>
+
+
+
+
+
+
+
+
+{# vue.js cdn 本番用#}
+{% include "config/include/general/vue_js_script.html" %}
+{# axios cdn #}
+<script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+
+
+<script type="text/javascript">
+    
+    new Vue({
+        el: "#fav",
+        data: {
+            isBlankShow: false,
+            isRedShow: false,
+            url: "",
+            result: "",
+        },
+        created: function(){
+            if ("{{ btn_fav }}" == "RED_HEART"){
+                this.isRedShow = true;
+            }
+            else if ("{{ btn_fav }}" == "WHITE_HEART"){
+                this.isBlankShow = true;
+            }
+            if ("{{ request.get_host }}" == "localhost:8000"){
+                this.url = "http://localhost:8000/items/item/{{ item_obj.id }}/favorite/"
+            }
+            else if ("{{ request.get_host }}" == "127.0.0.1:8000"){
+                this.url = "http://127.0.0.1:8000/items/item/{{ item_obj.id }}/favorite/";
+            }           
+            else if ("{{ request.get_host }}" != "localhost:8000"){
+                this.url = "https://sharexela.ga/items/item/{{ item_obj.id }}/favorite/";
+            }
+             
+
+        },
+        methods:{
+            changeFavStatus: function(){
+                {# console.log("ボタンが押される") #}
+                {# console.log(this.url) #}
+                //axiosでデータ送信
+                //axios.post()
+                axios.defaults.xsrfCookieName = 'csrftoken';
+                axios.defaults.xsrfHeaderName = 'X-CSRFToken';
+                axios.post(this.url).then(function(response){
+                    //console.log(response)
+                    //console.log(response.data)
+                    this.result = response.data["result"]
+                    //console.log(this.result)
+                }.bind(this))
+            }
+        },
+        watch:{
+            result:function(){
+                {# //console.log("waatch") #}
+                if (this.result == "added"){
+                    this.isRedShow = true;
+                    this.isBlankShow = false;
+                }else if (this.result == "removed"){
+                    this.isRedShow = false;
+                    this.isBlankShow = true;
+                }
+            }
+        }
+
+    });
+
+
+
+</script>

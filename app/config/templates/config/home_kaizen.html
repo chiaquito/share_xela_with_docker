@@ -1,0 +1,455 @@
+{% extends 'config/base.html' %}
+{% load static %}
+{% load user_agents %}
+
+
+{% block head %}
+
+
+  {# vuetify cdn #}
+  <link href="https://fonts.googleapis.com/css?family=Roboto:100,300,400,500,700,900" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/@mdi/font@5.x/css/materialdesignicons.min.css" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/vuetify@2.x/dist/vuetify.min.css" rel="stylesheet">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, minimal-ui">
+
+
+
+
+  <link rel="stylesheet" href="{% static 'css/footer_settings.css' %}"> 
+
+  {# vuetify #}
+  {% comment %}
+  <!--link href="https://fonts.googleapis.com/css?family=Roboto:100,300,400,500,700,900" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/@mdi/font@5.x/css/materialdesignicons.min.css" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/vuetify@2.x/dist/vuetify.min.css" rel="stylesheet"-->
+    <link href="https://fonts.googleapis.com/css?family=Roboto:100,300,400,500,700,900" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/@mdi/font@5.x/css/materialdesignicons.min.css" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/vuetify@2.x/dist/vuetify.min.css" rel="stylesheet">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, minimal-ui">
+  {% endcomment %}
+
+{% endblock %}
+
+
+
+
+
+{% block content %}
+
+
+
+
+{# pc/mobile共通 メッセージフレームワーク #}          
+{% include "config/include/message_and_delete.html" %}
+{# メッセージフレームワーク終わり #}
+
+
+
+{% comment %}               pc                  {% endcomment %}
+
+{% if request|is_pc %}
+
+
+<img src="{% static 'Xela_.jpg' %}" />
+
+{# vuetify cdn #}
+
+<div id="app">
+        <v-app>            
+            <main>
+              
+              <gallery-sec/>
+                
+            </main>
+            {% include "config/include/home/pc/categories.html" %}
+            
+        </v-app>
+</div>
+
+
+
+  <!--script src="https://cdn.jsdelivr.net/npm/vue@2.x/dist/vue.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/vuetify@2.x/dist/vuetify.js"></script-->
+  {% include 'config/include/general/vue_js_script.html' %}
+
+
+  
+<script type="text/x-template" id="gallery-sec">
+  
+
+  <v-container fluid>
+    <v-row>
+      
+      <h2 class=" my-0 ml-8">LAS COSAS </h2>
+      
+      
+      <p class="h6 ml-4 pb-0 mb-0">
+        <a class="h5 pb-0 mb-0" href="#category">&nbsp;&nbsp;buscar mas... </a>
+        <a href="#">quiere donar o vender</a>,
+        <a href="#">busca donante</a>, 
+        <a href="#">quiere avisar</a> 
+      </p>
+      
+    </v-row>
+    <v-row>  
+        <v-card cols=3 class="mt-4 mb-4 ml-8 pa-3" v-for="(item,i) in items_cosas" :key="i" >
+          <a v-bind:href="item.href" >
+          <v-layout justify-center>
+              <v-flex  >
+                  
+                      <v-card-text >
+                      <img v-bind:src="item.src" width="60%"   alt=""/>
+                      
+                      <p v-text="item.title"></p>
+                      <p v-text="item.created_at" ></p>
+                      </v-card-text>
+  
+                  
+              </v-flex>
+          </v-layout>
+          </a>
+    </v-card>
+    </v-row>
+
+
+    <v-row class="mt-8">
+      <h2 class=" my-0 ml-8">HABITACION</h2> 
+      <p class="h6 ml-4 pb-0 mb-0">
+      <a class="h5 pb-0 mb-0" href="#category">&nbsp;&nbsp;buscar mas...</a>
+      <a href="#">busca una habitación</a>, 
+      <a href="#">alquila una habitación</a>, 
+      <a href="#">busca pensionado</a>, 
+      <a href="#">busca pensionista</a>
+    </p>
+    </v-row>  
+    <v-row>
+
+      <v-card cols=3 class="mt-4 mb-4 ml-8 pa-3" v-for="(item,i) in items_habitaciones" :key="i" >
+        <a v-bind:href="item.href" >
+        <v-layout justify-center>
+            <v-flex  >
+                
+                    <v-card-text >
+                    <img v-bind:src="item.src" width="60%"   alt=""/>
+                    
+                    <p v-text="item.title"></p>
+                    <p v-text="item.created_at" ></p>
+                    </v-card-text>
+
+                
+            </v-flex>
+        </v-layout>
+        </a>
+  </v-card>
+  </v-row>    
+
+
+
+
+
+
+  <v-row class="mt-8">
+    <h2 class="h2 my-0 ml-8">Trabajo</h2>
+
+    <p class="h6 ml-4 pb-0 mb-0">
+       <a class="h5 pb-0 mb-0" href="#category">&nbsp;&nbsp;buscar mas...</a>
+       <a href="#">busca empleado</a>, 
+       <a href="#">busca trabajador</a>
+    </p>
+  </v-row>  
+  <v-row>
+
+    <v-card cols=3 class="mt-4 mb-4 ml-8 pa-3" v-for="(item,i) in items_habitaciones" :key="i" >
+      <a v-bind:href="item.href" >
+      <v-layout justify-center>
+          <v-flex  >
+              
+                  <v-card-text >
+                  <img v-bind:src="item.src" width="60%"   alt=""/>
+                  
+                  <p v-text="item.title"></p>
+                  <p v-text="item.created_at" ></p>
+                  </v-card-text>
+
+              
+          </v-flex>
+      </v-layout>
+      </a>
+</v-card>
+</v-row>   
+
+
+
+
+<v-row class="mt-8">
+  <h2 class="h2 my-0 ml-8">Enpresas</h2>
+  <p class="h6 ml-4 pb-0 mb-0"> 
+  <a class="h5 pb-0 mb-0" href="#category">&nbsp;&nbsp;buscar mas...</a>
+  <a href="#">publicidad de Enpresas y Servicios</a>
+  </p>
+</v-row>  
+<v-row>
+
+  <v-card cols=3 class="mt-4 mb-4 ml-8 pa-3" v-for="(item,i) in items_habitaciones" :key="i" >
+    <a v-bind:href="item.href" >
+    <v-layout justify-center>
+        <v-flex  >
+            
+                <v-card-text >
+                <img v-bind:src="item.src" width="60%"   alt=""/>
+                
+                <p v-text="item.title"></p>
+                <p v-text="item.created_at" ></p>
+                </v-card-text>
+
+            
+        </v-flex>
+    </v-layout>
+    </a>
+</v-card>
+</v-row>   
+
+
+  </v-container>
+</script>
+
+
+
+
+<script>
+
+
+Vue.component('gallery-sec', {
+  template: '#gallery-sec',
+  data: function(){
+    console.log("とおるのcosas??")
+    var items_cosas = new Array()
+    {% for obj in ITEM_OBJECTS_COSAS %}
+      console.log("test111")
+      items_cosas.push({
+        src: "{{ obj.image1.url }}",
+        title: "{{ obj.title|truncatechars:38 }}",
+        href: '{% url "items:item_detail" obj.id %}', 
+        created_at: '{{ obj.created_at }}'
+      })
+    {% endfor %}
+    var items_habitaciones = new Array()
+    {% for obj in ITEM_OBJECTS_HABITACION %}
+      console.log("test")
+      console.log("{{ obj.title }}")
+      items_habitaciones.push({
+        src: "{{ obj.image1.url }}",
+        title: "{{ obj.title|truncatechars:38 }}",
+        href: '{% url "items:item_detail" obj.id %}', 
+        created_at: '{{ obj.created_at }}'
+      })
+    {% endfor %}
+    var items_trabajo = new Array()
+    {% for obj in ITEM_OBJECTS_TRABAJO %}
+      console.log("test")
+      console.log("{{ obj.title }}")
+      items_trabajo.push({
+        src: "{{ obj.image1.url }}",
+        title: "{{ obj.title|truncatechars:38 }}",
+        href: '{% url "items:item_detail" obj.id %}', 
+        created_at: '{{ obj.created_at }}'
+      })
+    {% endfor %}    
+
+
+    return {
+        items_cosas: items_cosas,
+        items_habitaciones: items_habitaciones,
+        items_trabajo: items_trabajo,
+    }
+  }
+});
+
+
+
+
+
+
+new Vue({
+      el: '#app',
+      vuetify: new Vuetify(),
+    });
+    
+</script>
+
+
+
+
+{% include "config/include/general/basic_margin.html" %}
+
+{% endif %}
+
+{#                          pc終わり                                #}     
+
+{#                          mobile                                 #} 
+
+{% comment %}
+改善したい内容: まずホームでアイテムが表示されないと魅力的じゃないので表示させる。
+あとはカテゴリーを表示させるのは良いけどケータイだと表示が崩れる問題があるのでカテゴリーは片方だけしか表現しないようにする。
+ケータイだけとりあえず変更する。ボタン式でカテゴリーを変更する。 
+Vueｊｓを利用する。
+{% endcomment %}
+
+
+
+
+{% if request|is_mobile %}
+
+{% comment %}
+<!-- CDNの読み込み 始まり -->
+<script src="https://cdn.jsdelivr.net/npm/vue"></script>
+<script src="https://cdn.jsdelivr.net/npm/vue-carousel@0.18.0/dist/vue-carousel.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/vuetify@2.x/dist/vuetify.js"></script>
+<!-- CDNの読み込み 終わり -->
+{% endcomment %}
+
+
+
+
+
+
+<img src="{% static 'Xela_.jpg' %}" height="200px" />
+
+
+<div class="container">
+  <div class="row">
+    <div class="col-12 my-0">
+      <p class="h2 my-0">LAS COSAS <a class="h5" href="#category">&nbsp;&nbsp;buscar mas...</a></p>
+    </div>  
+
+    <div class="col-12">
+    <div class="card-columns">
+    {% for obj in ITEM_OBJECTS_COSAS %}
+     {% include 'config/include/home/mobile/card.html' %}        
+    {% endfor %}
+    </div>
+  </div>
+</div>
+</div>
+
+
+
+
+<div class="container">
+  <div class="row">
+    <div class="col-12 my-0">
+      <p class="h2 my-0">HABITACION <a class="h5" href="#category">&nbsp;&nbsp;buscar mas...</a></p>
+    </div>      
+
+    <div class="col-12">
+    <div class="card-columns">
+    {% for obj in ITEM_OBJECTS_HABITACION %}
+     {% include 'config/include/home/mobile/card.html' %}
+    {% endfor %}
+    </div>    
+    </div>
+  </div>
+</div>
+
+
+
+<div class="container">
+  <div class="row">
+    <div class="col-12 my-0">
+      <p class="h2 my-0">TRABAJO <a class="h5" href="#category">&nbsp;&nbsp;buscar mas...</a></p>
+    </div>    
+
+
+    <div class="col-12">
+    <div class="card-columns">
+    {% for obj in ITEM_OBJECTS_TRABAJO %}
+     {% include 'config/include/home/mobile/card.html' %}
+    {% endfor %}
+    </div>    
+    </div>
+  </div>  
+</div>
+
+
+<div class="container">
+  <div class="row">
+    <div class="col-12 my-0">
+      <p class="h2 my-0">EMPRESA Y SERVICIO <a class="h5" href="#category">&nbsp;&nbsp;buscar mas...</a></p>
+    </div>
+
+    <div class="col-12">
+    <div class="card-columns">     
+    {% for obj in ITEM_OBJECTS_TIENDA %}
+     {% include 'config/include/home/mobile/card.html' %}
+    {% endfor %}
+    </div>    
+    </div>
+  </div>  
+</div>
+
+
+
+
+
+
+<div class="container-fluid mx-0" id="category">
+    <div class="row ">
+        <div class="col-6 px-1">
+
+            <div class="card" >
+            <div class="card-header pr-0 pl-2">
+            <img style="width: 2rem;" src="{% static 'guatemala_icon.png' %}">
+            Todos de Guatemala
+            </div>
+            <ul class="list-group list-group-flush">
+            <li class="list-group-item pr-0"><a class="h5" href="{% url 'items:ItemCategoryListView' 1 %}"><img style="width: 1rem;" src="{% static 'libro_icon.jpeg' %}">&nbsp;quiere donar o vender</a></li>
+            <li class="list-group-item"><a class="h5" href="{% url 'items:ItemCategoryListView' 2 %}"><img style="width: 1rem;" src="{% static 'corazon_icon1.jpeg' %}">&nbsp;busca donante</a></li>
+            <li class="list-group-item"><a class="h5" href="{% url 'items:ItemCategoryListView' 3 %}"><img style="width: 1rem;" src="{% static 'pin_icon.jpeg' %}"/>&nbsp;quiere avisar</a></li>
+            <li class="list-group-item"><a class="h5" href="{% url 'items:ItemCategoryListView' 4 %}"><img style="width: 1rem;" src="{% static 'pin_icon.jpeg' %}"/>&nbsp;busca una habitación</a></li>
+            <li class="list-group-item"><a class="h5" href="{% url 'items:ItemCategoryListView' 5 %}"><img style="width: 1rem;" src="{% static 'pin_icon.jpeg' %}"/>&nbsp;alquila una habitación</a></li>
+            <li class="list-group-item"><a class="h5" href="{% url 'items:ItemCategoryListView' 6 %}"><img style="width: 1rem;" src="{% static 'pin_icon.jpeg' %}"/>&nbsp;busca pensionado</a></li>
+            <li class="list-group-item"><a class="h5" href="{% url 'items:ItemCategoryListView' 7 %}"><img style="width: 1rem;" src="{% static 'pin_icon.jpeg' %}"/>&nbsp;busca pensionista</a></li>
+            <li class="list-group-item"><a class="h5" href="{% url 'items:ItemCategoryListView' 8 %}"><img style="width: 1rem;" src="{% static 'pin_icon.jpeg' %}"/>&nbsp;busca empleado</a></li>
+            <li class="list-group-item"><a class="h5" href="{% url 'items:ItemCategoryListView' 9 %}"><img style="width: 1rem;" src="{% static 'pin_icon.jpeg' %}"/>&nbsp;busca trabajador</a></li>
+            <li class="list-group-item"><a class="h5" href="{% url 'items:ItemCategoryListView' 10 %}"><img style="width: 1rem;" src="{% static 'pin_icon.jpeg' %}"/>&nbsp;publicidad de Enpresas y Servicios</a></li>
+            </ul>
+            </div>
+        </div>
+
+        <div class="col-6 px-1">
+
+            <div class="card" >
+            <div class="card-header pl-2">
+            <img style="width: 1rem;" src="{% static 'gps_icon.png' %}"/>
+            Tu departamento
+            </div>
+            <ul class="list-group list-group-flush">
+            <li class="list-group-item pr-0"><a class="h5 " href="{% url 'items:ItemCategoryLocalListView' 1 %}"><img style="width: 1rem;" src="{% static 'libro_icon.jpeg' %}">&nbsp;quiere donar o vender</a></li>
+            <li class="list-group-item"><a class="h5" href="{% url 'items:ItemCategoryLocalListView' 2 %}"><img style="width: 1rem;" src="{% static 'corazon_icon1.jpeg' %}">&nbsp;busca donante</a></li>
+            <li class="list-group-item"><a class="h5" href="{% url 'items:ItemCategoryLocalListView' 3 %}"><img style="width: 1rem;" src="{% static 'pin_icon.jpeg' %}"/>&nbsp;quiere avisar</a></li>
+            <li class="list-group-item"><a class="h5" href="{% url 'items:ItemCategoryLocalListView' 4 %}"><img style="width: 1rem;" src="{% static 'pin_icon.jpeg' %}"/>&nbsp;busca una habitación</a></li>
+            <li class="list-group-item"><a class="h5" href="{% url 'items:ItemCategoryLocalListView' 5 %}"><img style="width: 1rem;" src="{% static 'pin_icon.jpeg' %}"/>&nbsp;alquila una habitación</a></li>
+            <li class="list-group-item"><a class="h5" href="{% url 'items:ItemCategoryLocalListView' 6 %}"><img style="width: 1rem;" src="{% static 'pin_icon.jpeg' %}"/>&nbsp;busca pensionado</a></li>
+            <li class="list-group-item"><a class="h5" href="{% url 'items:ItemCategoryLocalListView' 7 %}"><img style="width: 1rem;" src="{% static 'pin_icon.jpeg' %}"/>&nbsp;busca pensionista</a></li>
+            <li class="list-group-item"><a class="h5" href="{% url 'items:ItemCategoryLocalListView' 8 %}"><img style="width: 1rem;" src="{% static 'pin_icon.jpeg' %}"/>&nbsp;busca empleado</a></li>
+            <li class="list-group-item"><a class="h5" href="{% url 'items:ItemCategoryLocalListView' 9 %}"><img style="width: 1rem;" src="{% static 'pin_icon.jpeg' %}"/>&nbsp;busca trabajador</a></li>
+            <li class="list-group-item"><a class="h5" href="{% url 'items:ItemCategoryLocalListView' 10 %}"><img style="width: 1rem;" src="{% static 'pin_icon.jpeg' %}"/>&nbsp;publicidad de Enpresas y Servicios</a></li>
+            </ul>
+            </div>
+        </div>
+    </div>
+</div>
+<p><br/></p>
+
+
+
+
+
+{% endif %}
+{% comment %}               mobile終わり                  {% endcomment %}
+
+
+
+
+{% include 'config/include/message_and_delete_jquery.html' %}
+{% endblock %}

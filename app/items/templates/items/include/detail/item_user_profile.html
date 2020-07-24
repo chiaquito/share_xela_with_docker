@@ -1,0 +1,22 @@
+
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-12">
+            <p class="h4 p-2 bg-light">Usario Info</p>
+                <div class="container">
+                    <div class="row">
+                        <div class="col-4">
+                            <img class="img-thumbnail" src="{{ profile_obj.image.url }}" style="width: 5rem;"/>
+                        </div>
+                        <div class="col-8">
+                            <p><a href="{% url 'items:itemuser_list' %}">{{ profile_obj.user }}</a><br/>
+                            {# retroalimentación: {{ feedback_sum }}　promedio: {{ feedback_ave }}<br /> #}
+                            
+                            {# &emsp;<a href="{% url 'items:itemuser_list' %}">他の出品</a> #}
+                            <a href="{% url 'items:itemuser_list' %}">su articulos otros</a></p>
+                        </div>
+                    </div>
+                </div>
+        </div>
+    </div>
+</div>

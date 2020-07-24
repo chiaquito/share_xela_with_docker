@@ -1,0 +1,156 @@
+{# leafletのCDN #}
+<script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.6.0/leaflet.js"></script>
+<link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.6.0/leaflet.css">
+
+
+
+<script type="text/javascript">
+
+const sleep = (waitSeconds, someFunction) => {
+    return new Promise(resolve => {
+        setTimeout(() => {
+            resolve(someFunction())
+        }, waitSeconds * 1000)
+    })  
+}
+
+
+
+var map = new Vue({
+    el: "#map",
+    data: {
+        isShowMap: false,
+        geo_object: null,
+        radius: null,
+        width: "100%",
+        height:"300px",
+
+    },
+    watch:{
+        isShowMap:function(newData, oldData){
+            if (newData === false ){ return }
+
+            //this.height = "300px";
+            console.log("map_showの値が変更される")  
+            var map = L.map('map', { center: [14.843755528223957, -91.51963233947755],zoom: 14})
+                        .addLayer(L.tileLayer('http://{s}.tile.osm.org/{z}/{x}/{y}.png'));
+
+
+            map.on('click', function(event) { 
+
+                if (this.geo_object != null){
+                    map.removeLayer(this.geo_object);
+                }
+                //map.removeLayer(map)
+                
+                if (map_value.radius == null || map_value.radius <= 0){
+                    var location = event.latlng; 
+                    var x = L.marker(location, {draggable:true}).addTo(map);
+                    this.geo_object = x;
+                    var lng = location["lng"].toString(10);
+                    var lat = location["lat"].toString(10);
+                    var wkt_point = `SRID=4326;POINT (${lng} ${lat})`
+                    //this.wkt_point = wkt_point;
+                    map_value.wkt_point = wkt_point;
+                    console.log(wkt_point);
+                }else if(map_value.radius != null){
+                    //circlemarkerを描画する
+                    var location = event.latlng;
+                    var radius = map_value.radius;
+                    var x = L.circle(location, {radius:radius}).addTo(map) 
+                    //var x = L.marker(location, {draggable:true}).addTo(map);
+                    this.geo_object = x;
+                    var lng = location["lng"].toString(10);
+                    var lat = location["lat"].toString(10);
+                    var wkt_point = `SRID=4326;POINT (${lng} ${lat})`
+                    map_value.wkt_point = wkt_point;
+                    console.log(wkt_point);
+                }
+                
+
+            });
+
+            map.addEventListener('mousemove', function(ev) {
+            //lat = ev.latlng.lat;
+            //lng = ev.latlng.lng;
+            //console.log(lat)
+            });
+        },
+
+
+        
+    },
+    methods:{ }
+
+});
+
+var map_value = new Vue({
+    el:"#mapValue",
+    data:{
+        wkt_point:null,
+        radius:null,
+        isShowForm:false,
+        width: "100%",
+        height:"30px",
+    },
+    methods:{
+        updateArea:function(){
+        // Guatemalaの地域ではない場合nullが返ってしまうのでその時はアラートでユーザーに返答する
+            if (this.wkt_point == null){ 
+                console.log("wkt_pointがnullなので何もしない")
+                return
+                 }
+            console.log("エリアをajaxで変更する。")
+            //axiosでadm1, adm2値を更新する処理を実装する
+            //endpoint: api/util/region/ で wkt_point値に属するDepartamento, Prefcturaを返す
+            axios.post('http://localhost:8000/api/util/region/',{wkt_point: this.wkt_point})
+            .then(function (response){
+                console.log(response);
+                //データを解析してadm1, adm2を取得する。
+                var adm1 = response.data.adm1;
+                var adm2 = response.data.adm2;
+                console.log(adm1, adm2);
+                //取得したadm1,adm2を地域情報を扱うvueインスタンスに渡す
+
+                setTimeout( function() {
+                //console.log('aaa');
+                muni.selected = adm2
+                }, 1000 );
+                //console.log('ccc');
+                app.selected = adm1
+                //sleep(5)
+                //muni.selected = adm2
+            })
+        }
+    },
+    delimiters: ["**","**"]
+})
+
+
+
+var map_btn = new Vue({
+    el: "#map_btn",
+    data: {
+        isShowBtn:true,
+        
+    },
+    methods:{
+        showMap: function(){
+            console.log("ボタンが押される")
+            this.isShowBtn = false;
+            map.isShowMap = true;
+            map_value.isShowForm = true;
+        }
+    },
+    watch:{
+        radius:function(newData, oldData){
+            if (newData <= 0){
+                this.radius = 0
+            }
+        }
+    }
+
+});
+
+
+</script>

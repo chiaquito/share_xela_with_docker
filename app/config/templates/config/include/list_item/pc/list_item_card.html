@@ -1,0 +1,25 @@
+
+
+
+
+<div class="row no-gutters">
+<div class="col-md-4 ml-0">
+<a href="{% url 'items:item_detail' obj.id %}" class="my-5"><img src="{{ obj.image1.url }}"  class="card-img border my-4 py-2" style="height: 150px;" alt="..."></a>
+{% if obj.deadline == True %}<div class="card-img-overlay">
+    <br />
+    <br />
+    <h5>Cerrado</h5>
+    {# <img src="{% static 'guatemala_icon.png' %}" style="max-width:90px;"/> #}
+</div>
+{% endif %}
+</div>
+<div class="col-md-8">
+<div class="card-body">
+<a class="card-title" href="{% url 'items:item_detail' obj.id %}">{{ obj.title|title }}</a>
+<p class="card-text">{{ obj.description|truncatechars:100 }}</p>
+<p class="card-text"><small class="text-muted">{{ obj.category.get_number_display }}<br />
+{{ obj.created_at }}</small></p>
+<!--p class="card-text"><small class="text-muted">{{ obj.category }}</small></p>
+<p class="card-text"><small class="text-muted">{{ obj.created_at }}</small></p-->
+</div>
+</div>

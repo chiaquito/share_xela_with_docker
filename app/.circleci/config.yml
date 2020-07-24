@@ -1,0 +1,75 @@
+version: 2
+jobs:
+  build-job:
+    docker:
+      - image: circleci/python:3.8.0
+        environment:
+          DJANGO_SETTINGS_MODULE: config.settings.dev_settings
+          SECRET_KEY: aaq1sjddijfv*d5j%$ssyji+@!2bqur_hynpls_fwozwbs9rkj
+          DATABASE_ENGINE: django.contrib.gis.db.backends.postgis
+          DATABASE_DB: circle_test
+          DATABASE_USER: postgres
+          DATABASE_PASSWORD: geodjango1990
+          DATABASE_PORT: 5432
+          DATABASE_HOST: localhost
+          #DATABASE_URL: postgis://postgres:@localhost/circle_test
+          LAUNCH_ENV: NO_DOCKER
+
+      - image: circleci/postgres:10.5-postgis
+        environment:
+          POSTGRES_USER: postgres
+          POSTGRES_PASSWORD: geodjango1990
+          
+      - image: geodata/gdal
+
+    working_directory: ~/app
+    steps:
+      - checkout
+      - restore_cache:
+          key: pip-{{ checksum "requirements.txt" }}
+
+      - run:
+          name: postgisの依存関係のインストールとpipによるインストール
+          command: |
+            pwd
+            ls
+            python3 -m venv venv
+            . venv/bin/activate
+            sudo apt-get update -y
+            sudo apt-get upgrade -y
+            sudo apt-get install -y libgeos-dev binutils libproj-dev gdal-bin libgdal-dev
+            sudo apt-get install -y python3-gdal
+            pip install --upgrade pip
+            pip install -r requirements.txt
+
+      - save_cache:
+          key: pip-{{ checksum "requirements.txt" }}
+          paths:
+            - 'venv'
+      - run:
+          name: テストの実行
+          command: |
+            . venv/bin/activate            
+            python3 manage.py test
+
+  deploy-job:
+    docker:
+      - image: circleci/python:3.8.0
+    working_directory: ~/app
+    steps:
+      - checkout
+      - run:
+          name: Fabricを使ってデプロイを実行する
+          # https://pypi.org/project/Fabric3/
+          command: |
+            pip install fabric3
+            fab -f .circleci/my_fabric.py -i ~/.ssh/circleci
+
+workflows:
+  version: 2
+  build-deploy:
+    jobs:
+      - build-job
+#     - deploy-job:
+#         requires:
+#            - build-job

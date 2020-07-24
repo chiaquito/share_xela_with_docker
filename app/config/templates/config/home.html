@@ -1,0 +1,184 @@
+{% extends 'config/base.html' %}
+{% load static %}
+{% load user_agents %}
+
+
+{% block head %}
+{% if request|is_pc %}
+    <!-- adjusting footer -->
+    {# <link rel="stylesheet" href="{% static 'css/adjusting_footer.css' %}"> #}
+    <link rel="stylesheet" href="{% static 'css/footer_settings.css' %}">
+{% elif request|is_mobile %}
+
+	<!-- adjusting footer -->
+	<link rel="stylesheet" href="{% static 'css/footer_settings.css' %}">
+	{% comment 'cssは使用しない' %}{% endcomment %}
+
+{% endif %}
+{% endblock %}
+
+
+{% block content %}
+
+{% comment %}               pc                  {% endcomment %}
+
+{% if request|is_pc %}
+<div class="container " >
+	<div class="row">
+		<div class="col">
+			<p><br/></p>
+			<p class="h3">Hay una aplicación para Android. Es útil para la información geográfica y las cámaras!!</p>
+			<a href="https://play.google.com/store/apps/details?id=ga.sharexela.sharexela">https://play.google.com/store/apps/details?id=ga.sharexela.sharexela</a>
+			<p></p>
+		</div>
+	</div>
+</div>
+
+<div class="container " >
+	<div class="row">
+		<div class="col">
+			<br />
+		{# メッセージフレームワーク #}			
+		{% include "config/include/message_and_delete.html" %}
+
+		{# メッセージフレームワーク終わり #}
+		</div>
+		
+	</div>
+</div>
+<div class="container">
+	<div class="row">
+		<div class="col-6">
+
+			<div  class="card">
+			<h5 id="title_guatemala" class="card-header"><img style="width: 4rem;" src="{% static 'guatemala_icon.png' %}">&nbsp;&nbsp;Gente de Guatemala&nbsp;<br /></h5>
+			<div id="menu_guatemala" class="card-body">
+			<h5 class="card-title"><a class="h3" href="{% url 'items:ItemCategoryListView' 1 %}"><img style="width: 2rem;" src="{% static 'libro_icon.jpeg' %}">&nbsp;quiere donar o vender</a></h5>
+			<h5 class="card-title"><a class="h3" href="{% url 'items:ItemCategoryListView' 2 %}"><img style="width: 2rem;" src="{% static 'corazon_icon1.jpeg' %}">&nbsp;busca donante</a></h5>
+			<h5 class="card-title"><a class="h3" href="{% url 'items:ItemCategoryListView' 3 %}"><img style="width: 2rem;" src="{% static 'pin_icon.jpeg' %}"/>&nbsp;quiere avisar</a></h5>
+			<h5 class="card-title"><a class="h3" href="{% url 'items:ItemCategoryListView' 4 %}"><img style="width: 2rem;" src="{% static 'pin_icon.jpeg' %}"/>&nbsp;busca una habitación</a></h5>
+			<h5 class="card-title"><a class="h3" href="{% url 'items:ItemCategoryListView' 5 %}"><img style="width: 2rem;" src="{% static 'pin_icon.jpeg' %}"/>&nbsp;alquila una habitación</a></h5>
+			<h5 class="card-title"><a class="h3" href="{% url 'items:ItemCategoryListView' 6 %}"><img style="width: 2rem;" src="{% static 'pin_icon.jpeg' %}"/>&nbsp;busca pensionado</a></h5>
+			<h5 class="card-title"><a class="h3" href="{% url 'items:ItemCategoryListView' 7 %}"><img style="width: 2rem;" src="{% static 'pin_icon.jpeg' %}"/>&nbsp;busca pensionista</a></h5>
+			<h5 class="card-title"><a class="h3" href="{% url 'items:ItemCategoryListView' 8 %}"><img style="width: 2rem;" src="{% static 'pin_icon.jpeg' %}"/>&nbsp;busca empleado</a></h5>
+			<h5 class="card-title"><a class="h3" href="{% url 'items:ItemCategoryListView' 9 %}"><img style="width: 2rem;" src="{% static 'pin_icon.jpeg' %}"/>&nbsp;busca trabajador</a></h5>
+			<h5 class="card-title"><a class="h3" href="{% url 'items:ItemCategoryListView' 10 %}"><img style="width: 2rem;" src="{% static 'pin_icon.jpeg' %}"/>&nbsp;publicidad de Enpresas y Servicios</a></h5>
+			
+			</div>
+			</div>
+
+		</div>
+
+
+		<div class="col-6">
+
+			<div class="card">
+			<h5 id="title_local" class="card-header"><img style="width: 3rem;" src="{% static 'gps_icon.png' %}"/>&nbsp;&nbsp;Gente de Tu departamento</h5>
+			<div id="menu_local" class="card-body">
+			<h5 class="card-title"><a id="donarVender" class="h3" href="{% url 'items:ItemCategoryLocalListView' 1 %}"><img style="width: 2rem;" src="{% static 'libro_icon.jpeg' %}">&nbsp;quiere donar o vender</a></h5>
+			<h5 class="card-title"><a class="h3" href="{% url 'items:ItemCategoryLocalListView' 2 %}"><img style="width: 2rem;" src="{% static 'corazon_icon1.jpeg' %}">&nbsp;busca donante</a></h5>
+			<h5 class="card-title"><a class="h3" href="{% url 'items:ItemCategoryLocalListView' 3 %}"><img style="width: 2rem;" src="{% static 'pin_icon.jpeg' %}"/>&nbsp;quiere avisar</a></h5>	
+			<h5 class="card-title"><a class="h3" href="{% url 'items:ItemCategoryLocalListView' 4 %}"><img style="width: 2rem;" src="{% static 'pin_icon.jpeg' %}"/>&nbsp;busca una habitación</a></h5>
+			<h5 class="card-title"><a class="h3" href="{% url 'items:ItemCategoryLocalListView' 5 %}"><img style="width: 2rem;" src="{% static 'pin_icon.jpeg' %}"/>&nbsp;alquila una habitación</a></h5>
+			<h5 class="card-title"><a class="h3" href="{% url 'items:ItemCategoryLocalListView' 6 %}"><img style="width: 2rem;" src="{% static 'pin_icon.jpeg' %}"/>&nbsp;busca pensionado</a></h5>
+			<h5 class="card-title"><a class="h3" href="{% url 'items:ItemCategoryLocalListView' 7 %}"><img style="width: 2rem;" src="{% static 'pin_icon.jpeg' %}"/>&nbsp;busca pensionista</a></h5>
+			<h5 class="card-title"><a class="h3" href="{% url 'items:ItemCategoryLocalListView' 8 %}"><img style="width: 2rem;" src="{% static 'pin_icon.jpeg' %}"/>&nbsp;busca empleado</a></h5>
+			<h5 class="card-title"><a class="h3" href="{% url 'items:ItemCategoryLocalListView' 9 %}"><img style="width: 2rem;" src="{% static 'pin_icon.jpeg' %}"/>&nbsp;busca trabajador</a></h5>
+			<h5 class="card-title"><a class="h3" href="{% url 'items:ItemCategoryLocalListView' 10 %}"><img style="width: 2rem;" src="{% static 'pin_icon.jpeg' %}"/>&nbsp;publicidad de Enpresas y Servicios</a></h5>
+
+			</div>
+			</div>			
+		</div>
+		
+	</div>
+</div>
+
+<p><br/><br/></p>
+{% endif %}
+
+{% comment %}               pc終わり                  {% endcomment %}
+
+
+{% comment %}               mobile                  {% endcomment %}
+{% if request|is_mobile %}
+
+<div class="container " >
+	<div class="row">
+		<div class="col">
+			<p><br/></p>
+			<p class="h3">Hay una aplicación para Android. Es útil para la información geográfica y las cámaras!!</p>
+			<a href="https://play.google.com/store/apps/details?id=ga.sharexela.sharexela">https://play.google.com/store/apps/details?id=ga.sharexela.sharexela</a>
+			<p></p>
+		</div>
+	</div>
+</div>
+
+<div class="container">
+	<div class="row">
+		<div class="col">
+			<br />
+		{# メッセージフレームワーク #}			
+		{% include "config/include/message_and_delete.html" %}
+
+		{# メッセージフレームワーク終わり #}
+		</div>
+	</div>
+</div>
+
+
+<div class="container-fluid mx-0">
+	<div class="row ">
+		<div class="col-6 px-1">
+
+			<div class="card" >
+			<div class="card-header pr-0 pl-2">
+			<img style="width: 2rem;" src="{% static 'guatemala_icon.png' %}">
+			Todos de Guatemala
+			</div>
+			<ul class="list-group list-group-flush">
+			<li class="list-group-item pr-0"><a class="h5" href="{% url 'items:ItemCategoryListView' 1 %}"><img style="width: 1rem;" src="{% static 'libro_icon.jpeg' %}">&nbsp;quiere donar o vender</a></li>
+			<li class="list-group-item"><a class="h5" href="{% url 'items:ItemCategoryListView' 2 %}"><img style="width: 1rem;" src="{% static 'corazon_icon1.jpeg' %}">&nbsp;busca donante</a></li>
+			<li class="list-group-item"><a class="h5" href="{% url 'items:ItemCategoryListView' 3 %}"><img style="width: 1rem;" src="{% static 'pin_icon.jpeg' %}"/>&nbsp;quiere avisar</a></li>
+			<li class="list-group-item"><a class="h5" href="{% url 'items:ItemCategoryListView' 4 %}"><img style="width: 1rem;" src="{% static 'pin_icon.jpeg' %}"/>&nbsp;busca una habitación</a></li>
+			<li class="list-group-item"><a class="h5" href="{% url 'items:ItemCategoryListView' 5 %}"><img style="width: 1rem;" src="{% static 'pin_icon.jpeg' %}"/>&nbsp;alquila una habitación</a></li>
+			<li class="list-group-item"><a class="h5" href="{% url 'items:ItemCategoryListView' 6 %}"><img style="width: 1rem;" src="{% static 'pin_icon.jpeg' %}"/>&nbsp;busca pensionado</a></li>
+			<li class="list-group-item"><a class="h5" href="{% url 'items:ItemCategoryListView' 7 %}"><img style="width: 1rem;" src="{% static 'pin_icon.jpeg' %}"/>&nbsp;busca pensionista</a></li>
+			<li class="list-group-item"><a class="h5" href="{% url 'items:ItemCategoryListView' 8 %}"><img style="width: 1rem;" src="{% static 'pin_icon.jpeg' %}"/>&nbsp;busca empleado</a></li>
+			<li class="list-group-item"><a class="h5" href="{% url 'items:ItemCategoryListView' 9 %}"><img style="width: 1rem;" src="{% static 'pin_icon.jpeg' %}"/>&nbsp;busca trabajador</a></li>
+			<li class="list-group-item"><a class="h5" href="{% url 'items:ItemCategoryListView' 10 %}"><img style="width: 1rem;" src="{% static 'pin_icon.jpeg' %}"/>&nbsp;publicidad de Enpresas y Servicios</a></li>
+			</ul>
+			</div>
+		</div>
+
+		<div class="col-6 px-1">
+
+			<div class="card" >
+			<div class="card-header pl-2">
+			<img style="width: 1rem;" src="{% static 'gps_icon.png' %}"/>
+			Tu departamento
+			</div>
+			<ul class="list-group list-group-flush">
+			<li class="list-group-item pr-0"><a class="h5 " href="{% url 'items:ItemCategoryLocalListView' 1 %}"><img style="width: 1rem;" src="{% static 'libro_icon.jpeg' %}">&nbsp;quiere donar o vender</a></li>
+			<li class="list-group-item"><a class="h5" href="{% url 'items:ItemCategoryLocalListView' 2 %}"><img style="width: 1rem;" src="{% static 'corazon_icon1.jpeg' %}">&nbsp;busca donante</a></li>
+			<li class="list-group-item"><a class="h5" href="{% url 'items:ItemCategoryLocalListView' 3 %}"><img style="width: 1rem;" src="{% static 'pin_icon.jpeg' %}"/>&nbsp;quiere avisar</a></li>
+			<li class="list-group-item"><a class="h5" href="{% url 'items:ItemCategoryLocalListView' 4 %}"><img style="width: 1rem;" src="{% static 'pin_icon.jpeg' %}"/>&nbsp;busca una habitación</a></li>
+			<li class="list-group-item"><a class="h5" href="{% url 'items:ItemCategoryLocalListView' 5 %}"><img style="width: 1rem;" src="{% static 'pin_icon.jpeg' %}"/>&nbsp;alquila una habitación</a></li>
+			<li class="list-group-item"><a class="h5" href="{% url 'items:ItemCategoryLocalListView' 6 %}"><img style="width: 1rem;" src="{% static 'pin_icon.jpeg' %}"/>&nbsp;busca pensionado</a></li>
+			<li class="list-group-item"><a class="h5" href="{% url 'items:ItemCategoryLocalListView' 7 %}"><img style="width: 1rem;" src="{% static 'pin_icon.jpeg' %}"/>&nbsp;busca pensionista</a></li>
+			<li class="list-group-item"><a class="h5" href="{% url 'items:ItemCategoryLocalListView' 8 %}"><img style="width: 1rem;" src="{% static 'pin_icon.jpeg' %}"/>&nbsp;busca empleado</a></li>
+			<li class="list-group-item"><a class="h5" href="{% url 'items:ItemCategoryLocalListView' 9 %}"><img style="width: 1rem;" src="{% static 'pin_icon.jpeg' %}"/>&nbsp;busca trabajador</a></li>
+			<li class="list-group-item"><a class="h5" href="{% url 'items:ItemCategoryLocalListView' 10 %}"><img style="width: 1rem;" src="{% static 'pin_icon.jpeg' %}"/>&nbsp;publicidad de Enpresas y Servicios</a></li>
+			</ul>
+			</div>
+		</div>
+	</div>
+</div>
+<p><br/></p>
+
+
+
+{% endif %}
+{% comment %}               mobile終わり                  {% endcomment %}
+
+{% include 'config/include/message_and_delete_jquery.html' %}
+{% endblock %}

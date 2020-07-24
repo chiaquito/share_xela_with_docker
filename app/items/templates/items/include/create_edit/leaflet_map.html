@@ -1,0 +1,23 @@
+<div  class="container">
+    <div class="row">
+        <div class="col-8"  id="map_btn" v-show="isShowBtn">
+        {# 開発中 ボタンを押すと地図が開く, 地図をクリックして座標を取りつつダイアログでここで良いか聞く #}
+        <a class="btn btn-primary"  v-on:click="showMap">
+        Opciones Buscar una dirección en un mapa</a>
+        </div>
+        <div class="col-9 container" id="map" v-bind:style="{width: width, height: height}"></div>
+        <div class="col-3 container" id="mapDataForm" style="width: 100%; height: 10px" v-show="isShowForm">
+            <div class="row">
+                <div class="col-12" id="mapValue">
+                    
+                    <input type="hidden" v-bind:value="wkt_point" name="point"  v-show="isShowForm">
+                    <input type="number" v-model="radius" name="radius" min="0" v-show="isShowForm" class="form-control w-100" placeholder="Alcance (m)">
+                    {# <span v-show="isShowForm" type="hidden">** radius **</span> #}
+                    <p class="w-100"><a  class="btn btn-outline-primary w-100"  v-show="isShowForm" v-on:click="updateArea">Refleja la dirección</a></p>
+                    {% include "config/include/general/basic_margin.html" %}
+                    {% include "config/include/general/basic_margin.html" %}
+                </div>
+            </div>
+        </div>        
+    </div>
+</div>

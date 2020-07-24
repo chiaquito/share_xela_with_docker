@@ -1,0 +1,127 @@
+{% extends 'config/base.html' %}
+{% load user_agents %}
+{% load static %}
+{% load leaflet_tags %}
+
+
+
+
+
+{% block head %}
+
+
+{% leaflet_css %}
+{% leaflet_js %}
+
+
+    {% if request|is_pc %}
+
+
+     <link rel="stylesheet" href="{% static 'css/footer_settings.css' %}"> 
+    {% elif request|is_mobile %}
+    {% endif %}
+{% endblock %}
+
+
+
+
+
+{%  block content %}
+
+<div class="container">
+	<div class="row">
+		<div class="col">
+			<!-- メッセージフレームワーク -->			
+			{% include "config/include/message_and_delete.html" %}
+			<!-- メッセージフレームワーク終わり -->
+            <p ><font size="6">Crear Articulo</font></p>
+
+
+
+            <form method="post" enctype="multipart/form-data" action="{% url 'items:item_create' %}">{% csrf_token %} 
+            	{% include "items/include/create_edit_item_form.html" %}
+            </form>
+
+
+            {% include "config/include/general/basic_margin.html" %}
+            {% include "config/include/general/basic_margin.html" %}
+
+            {# 開発中 ボタンを押すと地図が開く, 地図をクリックして座標を取りつつダイアログでここで良いか聞く #}
+            <button id="btn-open-map" class="btn btn-primary">Opciones Buscar una dirección en un mapa</button>
+
+
+            {% include "config/include/general/basic_margin.html" %}
+            {% include "config/include/general/basic_margin.html" %}
+            {% include "config/include/general/basic_margin.html" %}
+            {% include "config/include/general/basic_margin.html" %}
+
+
+            {# mapの挿入 #}
+            {#% leaflet_map "main" callback="map_init_basic" %#}
+            
+            {#% include "items/include/detail/draw_map_template_tag.html" %#}
+            {# mapの挿入 終わり #}
+            <div id="map"></div>
+
+
+        </div>
+    </div>
+</div>
+
+
+
+<script type="text/javascript">
+	$("#alert-btn").on("click", function(){
+		$("#alert").remove();
+	});
+
+
+
+function map_init_basic(map) {//map_init_basic(map, options) {
+        //var lon = "{{ item_obj.point.x }}";
+        //var lat = "{{ item_obj.point.y }}";
+
+        map.setView([13, -153], 12);
+        L.marker([13, -153]).addTo(map);
+        
+    }   
+
+
+
+
+    $("#btn-open-map").on("click", function(){
+
+        console.log("ボタンは押されている")
+        var map = L.map('map', {
+            center: [51.505, -0.09],
+            zoom: 13
+                });
+
+        //L.marker([13, -153]).addTo(map);
+
+    // create the tile layer with correct attribution
+    //var osmUrl='http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png';
+    //var osmAttrib='Map data © <a href="http://openstreetmap.org">OpenStreetMap</a> contributors';
+    //var osm = new L.TileLayer(osmUrl, {minZoom: 8, maxZoom: 12, attribution: osmAttrib});
+
+    // start the map in South-East England
+    //map.setView(new L.LatLng(51.3, 0.7),9);
+    //map.addLayer(osm);
+        //map_init_basic(map, options)
+        //map_init_basic(map)
+        //var lon = "{{ item_obj.point.x }}";
+        //var lat = "{{ item_obj.point.y }}";
+
+        //map.setView([lat, lon], 12);
+        //L.marker([lat, lon]).addTo(map);
+        
+        
+    });
+
+
+
+
+
+</script>
+
+{% endblock %}

@@ -1,0 +1,249 @@
+
+<script type="text/javascript">
+//AltaVerapazList
+MUNICIPIOS1 = ['Cahabón','Chahal','Chisec','Cobán', 'Fray Bartolomé de Las Casas','Lanquín', 'Panzós', 'Raxruhá', 'San Cristóbal Verapaz', 'San Juan Chamelco', 'San Pedro Carchá', 'Santa Catalina La Tinta','Santa Cruz Verapaz', 'Senahú', 'Tactic', 'Tamahú', 'Tucurú' ]
+//BajaVerapazList
+MUNICIPIOS2 = ['Cubulco','El Chol','Granados','Purulhá','Rabinal','Salamá','San Jerónimo','San Miguel Chicaj']
+
+//ChimaltenangoList
+MUNICIPIOS3 = ['Acatenango','Chimaltenango', 'Comalapa', 'El Tejar', 'Santa Apolonia', 'Parramos', 'Patzicía', 'Patzún', 'Pochuta', 'San Andrés Itzapa', 'San José Poaquil','San Martín Jilotepeque', 'Santa Cruz Balanyá', 'Tecpán Guatemala', 'Yepocapa', 'Zaragoza']
+
+//Chiquimula
+MUNICIPIOS4 = ['Camotán', 'Chiquimula', 'Concepción Las Minas', 'Esquipulas', 'Ipala', 'Jocotán', 'San Jacinto', 'Olopa', 'Quezaltepeque', 'San José La Arada', 'San Juan Ermita']
+
+//ElProgresoList
+MUNICIPIOS5 = ['El Jícaro', 'Guastatoya', 'Morazán', 'San Agustín Acasaguastlán', 'San Antonio La Paz', 'San Cristóbal Acasaguastlán', 'Sanarate', 'Sansare']
+
+//EscuintlaList
+MUNICIPIOS6 = ['Iztapa', 'Escuintla', 'Guanagazapa', 'La Democracia', 'La Gomera', 'Masagua', 'Nueva Concepción', 'Palín', 'San José', 'San Vicente Pacaya', 'Santa Lucía Cotzumalguapa', 'Sipacate', 'Siquinalá', 'Tiquisate']
+
+//GuatemalaList
+MUNICIPIOS7 = ['Amatitlán', 'Chinautla', 'Chuarrancho', 'Fraijanes', 'Guatemala', 'Lago De Amatitlan', 'Mixco', 'Palencia', 'Petapa', 'San José del Golfo', 'San José Pinula', 'San Juan Sacatepéquez', 'San Pedro Ayampuc', 'San Pedro Sacatepéquez', 'San Raimundo', 'Santa Catarina Pinula', 'Villa Canales', 'Villa Nueva']
+
+//HuehuetenangoList
+MUNICIPIOS8 = ['Aguacatán', 'Barillas', 'Chiantla', 'Colotenango', 'Concepción Huista', 'San Gaspar Ixchil', 'Cuilco', 'Ixtahuacán', 'Huehuetenango', 'Jacaltenango', 'La Libertad', 'La Democracia', 'Malacatancito', 'San Sebastián Huehuetenango', 'Nentón', 'Petatán', 'San Antonio Huista', 'San Juan Atitán', 'San Juan Ixcoy', 'San Mateo Ixtatán', 'San Miguel Acatán', 'San Pedro Necta', 'San Rafael La Independencia', 'San Rafael Petzal', 'San Sebastián Coatán', 'Santa Ana Huista', 'Santa Bárbara', 'Santa Eulalia', 'Santiago Chimaltenango', 'Soloma', 'Tectitán', 'Todos Santos Cuchumatán', 'Unión Cantinil']
+
+//IzabalList
+MUNICIPIOS9 = ['El Estor', 'Lívingston', 'Los Amates', 'Morales', 'Puerto Barrios']
+
+//JalapaList
+MUNICIPIOS10 = ['Jalapa', 'Mataquescuintla', 'Monjas', 'San Carlos Alzatate', 'San Luis Jilotepeque', 'San Manuel Chaparrón', 'San Pedro Pinula']
+
+//JutiapaList
+MUNICIPIOS11 = ['Agua Blanca', 'Asunción Mita', 'Atescatempa', 'El Adelanto', 'Comapa', 'Conguaco', 'El Progreso', 'Jalpatagua', 'Jerez', 'Jutiapa', 'Moyuta', 'San José Acatempa', 'Pasaco', 'Quesada', 'Santa Catarina Mita', 'Yupiltepeque', 'Zapotitlán']
+
+//PetenList
+MUNICIPIOS12 = ['Dolores', 'El Chal', 'Flores', 'La Libertad', 'Melchor de Mencos', 'Las Cruces', 'San Benito', 'Poptún', 'San Andrés', 'San Francisco', 'San José', 'San Luis', 'Santa Ana', 'Sayaxché']
+
+//QuetzaltenangoList
+MUNICIPIOS13 = ['Almolonga', 'Cabricán', 'Cantel', 'Cajolá', 'Coatepeque', 'Colomba', 'Concepción Chiquirichapa', 'El Palmar', 'Palestina de Los Altos', 'Flores Costa Cuca', 'Génova', 'Huitán', 'La Esperanza', 'Olintepeque', 'Ostuncalco', 'Quetzaltenango', 'Salcajá', 'San Carlos Sija', 'San Francisco La Unión', 'San Miguel Sigüila', 'San Martín Sacatepéquez', 'San Mateo', 'Sibilia', 'Zunil']
+
+//QuicheList
+MUNICIPIOS14 = ['Chinique', 'Canillá', 'Chajul', 'Chichicastenango', 'Chicamán', 'Chiché', 'Cunén', 'Ixcán', 'Joyabaj', 'Nebaj', 'Pachalum', 'Patzité', 'Sacapulas', 'San Andrés Sajcabajá', 'San Antonio Ilotenango', 'San Bartolomé Jocotenango', 'San Juan Cotzal', 'San Pedro Jocopilas', 'Santa Cruz del Quiché', 'Uspantán', 'Zacualpa']
+
+//RetalhuleuList
+MUNICIPIOS15 = ['Champerico', 'El Asintal', 'Nuevo San Carlos', 'Retalhuleu', 'San Andrés Villa Seca', 'San Felipe', 'San Martín Zapotitlán', 'San Sebastián', 'Santa Cruz Muluá']
+
+//SacatepequezList
+MUNICIPIOS16 = ['Alotenango', 'Antigua Guatemala', 'Ciudad Vieja', 'Jocotenango', 'San Bartolomé Milpas Altas', 'Magdalena Milpas Altas', 'San Lucas Sacatepéquez', 'Pastores', 'San Antonio Aguas Calientes', 'San Miguel Dueñas', 'Santa Catarina Barahona', 'Santa Lucía Milpas Altas', 'Santo Domingo Xenacoj', 'Santa María de Jesús', 'Santiago Sacatepéquez', 'Sumpango']
+
+//SanMarcosList
+MUNICIPIOS17 = ['Ayutla', 'Catarina', 'Comitancillo', 'Concepción Tutuapa', 'El Quetzal', 'El Rodeo', 'El Tumbador', 'Esquipulas Palo Gordo', 'Ixchiguán', 'San Antonio Sacatepéquez', 'La Blanca', 'La Reforma', 'Malacatán', 'Nuevo Progreso', 'Ocós', 'Pajapita', 'San José Ojetenam', 'San Cristóbal Cucho', 'Río Blanco', 'San Lorenzo', 'San Marcos', 'San Miguel Ixtahuacán', 'San Pablo', 'San Rafael Pie de la Cuesta', 'San Pedro Sacatepéquez', 'Sibinal', 'Sipacapa', 'Tacaná', 'Tajumulco', 'Tejutla']
+
+//SantaRosaList
+MUNICIPIOS18 = ['Barberena', 'Casillas', 'Chiquimulilla', 'Cuilapa', 'Guazacapán', 'Nueva Santa Rosa', 'Oratorio', 'Pueblo Nuevo Viñas', 'San Juan Tecuaco', 'San Rafael Las Flores', 'Santa Cruz Naranjo', 'Santa María Ixhuatán', 'Santa Rosa de Lima', 'Taxisco']
+
+//SololaList
+MUNICIPIOS19 = ['Concepción', 'Santa María Visitación', 'Lago De Atitlan', 'Nahualá', 'San José Chacayá', 'Panajachel', 'San Andrés Semetabaj', 'San Antonio Palopó', 'San Juan La Laguna', 'San Lucas Tolimán', 'San Marcos La Laguna', 'San Pablo La Laguna', 'San Pedro La Laguna', 'Santa Clara La Laguna', 'Santa Catarina Ixtahuacán', 'Santa Cruz La Laguna', 'Santa Catarina Palopó', 'Santa Lucía Utatlán', 'Santiago Atitlán', 'Sololá']
+
+//SuchitepequezList
+MUNICIPIOS20 = ['Chicacao', 'Cuyotenango', 'Santo Domingo Suchitepéquez', 'Mazatenango', 'San Bernardino', 'Patulul', 'Samayac', 'Pueblo Nuevo', 'Río Bravo', 'San Antonio Suchitepéquez', 'San Gabriel', 'San Francisco Zapotitlán', 'San José El Ídolo', 'San José La Máquina', 'San Juan Bautista', 'San Lorenzo', 'San Miguel Panán', 'San Pablo Jocopilas', 'Santa Bárbara', 'Santo Tomás La Unión', 'Zunilito']
+
+//TotonicapanList
+MUNICIPIOS21 = ['Momostenango', 'San Andrés Xecul', 'San Cristóbal Totonicapán', 'San Bartolo', 'San Francisco El Alto', 'Santa Lucía La Reforma', 'Santa María Chiquimula', 'Totonicapán']
+
+//ZacapaList
+MUNICIPIOS22 = ['Cabañas', 'Estanzuela', 'Gualán', 'Huité', 'La Unión', 'Río Hondo', 'San Diego', 'San Jorge', 'Teculután', 'Usumatlán', 'Zacapa']  
+
+
+
+var muni1 = Array();
+for (let i=0; i<MUNICIPIOS1.length; i++){
+    muni1.push({name : MUNICIPIOS1[i]});
+}
+
+
+var muni2 = Array();
+for (let i=0; i<MUNICIPIOS2.length; i++){
+    muni2.push({name : MUNICIPIOS2[i]});
+}
+
+var muni3 = Array();
+for (let i=0; i<MUNICIPIOS3.length; i++){
+    muni3.push({name : MUNICIPIOS3[i]});
+}
+
+var muni4 = Array();
+for (let i=0; i<MUNICIPIOS4.length; i++){
+    muni4.push({name : MUNICIPIOS4[i]});
+}
+
+var muni5 = Array();
+for (let i=0; i<MUNICIPIOS5.length; i++){
+    muni5.push({name : MUNICIPIOS5[i]});
+}
+
+var muni6 = Array();
+for (let i=0; i<MUNICIPIOS6.length; i++){
+    muni6.push({name : MUNICIPIOS6[i]});
+}
+
+var muni7 = Array();
+for (let i=0; i<MUNICIPIOS7.length; i++){
+    muni7.push({name : MUNICIPIOS7[i]});
+}
+
+var muni8 = Array();
+for (let i=0; i<MUNICIPIOS8.length; i++){
+    muni8.push({name : MUNICIPIOS8[i]});
+}
+
+var muni9 = Array();
+for (let i=0; i<MUNICIPIOS9.length; i++){
+    muni9.push({name : MUNICIPIOS9[i]});
+}
+
+var muni10 = Array();
+for (let i=0; i<MUNICIPIOS10.length; i++){
+    muni10.push({name : MUNICIPIOS10[i]});
+}
+
+var muni11 = Array();
+for (let i=0; i<MUNICIPIOS11.length; i++){
+    muni11.push({name : MUNICIPIOS11[i]});
+}
+
+var muni12 = Array();
+for (let i=0; i<MUNICIPIOS12.length; i++){
+    muni12.push({name : MUNICIPIOS12[i]});
+}
+
+var muni13 = Array();
+for (let i=0; i<MUNICIPIOS13.length; i++){
+    muni13.push({name : MUNICIPIOS13[i]});
+}
+
+var muni14 = Array();
+for (let i=0; i<MUNICIPIOS14.length; i++){
+    muni14.push({name : MUNICIPIOS14[i]});
+}
+
+var muni15 = Array();
+for (let i=0; i<MUNICIPIOS15.length; i++){
+    muni15.push({name : MUNICIPIOS15[i]});
+}
+
+var muni16 = Array();
+for (let i=0; i<MUNICIPIOS16.length; i++){
+    muni16.push({name : MUNICIPIOS16[i]});
+}
+
+var muni17 = Array();
+for (let i=0; i<MUNICIPIOS17.length; i++){
+    muni17.push({name : MUNICIPIOS17[i]});
+}
+
+var muni18 = Array();
+for (let i=0; i<MUNICIPIOS18.length; i++){
+    muni18.push({name : MUNICIPIOS18[i]});
+}
+
+var muni19 = Array();
+for (let i=0; i<MUNICIPIOS19.length; i++){
+    muni19.push({name : MUNICIPIOS19[i]});
+}
+
+var muni20 = Array();
+for (let i=0; i<MUNICIPIOS20.length; i++){
+    muni20.push({name : MUNICIPIOS20[i]});
+}
+
+var muni21 = Array();
+for (let i=0; i<MUNICIPIOS21.length; i++){
+    muni21.push({name : MUNICIPIOS21[i]});
+}
+
+var muni22 = Array();
+for (let i=0; i<MUNICIPIOS22.length; i++){
+    muni22.push({name : MUNICIPIOS22[i]});
+}
+
+var muni12 = Array();
+for (let i=0; i<MUNICIPIOS12.length; i++){
+    muni12.push({name : MUNICIPIOS12[i]});
+}
+
+
+
+
+var muni = new Vue({
+    el:"#select_municipio",
+    data:{
+        mList:muni13,
+        parent: "Quetzaltenango",
+        selected: "Quetzaltenango"
+    },
+    delimiters: ["**","**"],
+    watch:{
+        parent: function(newData, oldData){
+            if (newData       == "Alta Verapaz"){
+                this.mList = muni1
+            }else if (newData == "Baja Verapaz"){
+                this.mList = muni2
+            }else if (newData == "Chimaltenango"){
+                this.mList = muni3
+            }else if (newData == "Chiquimula"){
+                this.mList = muni4
+            }else if (newData == "El Progreso"){
+                this.mList = muni5
+            }else if (newData == "Escuintla"){
+                this.mList = muni6
+            }else if (newData == "Guatemala"){
+                this.mList = muni7
+            }else if (newData == "Huehuetenango"){
+                this.mList = muni8
+            }else if (newData == "Izabal"){
+                this.mList = muni9
+            }else if (newData == "Jalapa"){
+                this.mList = muni10
+            }else if (newData == "Jutiapa"){
+                this.mList = muni11
+            }else if (newData == "Petén"){
+                this.mList = muni12
+            }else if (newData == "Quetzaltenango"){
+                this.mList = muni13
+            }else if (newData == "Quiché"){
+                this.mList = muni14
+            }else if (newData == "Retalhuleu"){
+                this.mList = muni15
+            }else if (newData == "Sacatepéquez"){
+                this.mList = muni16
+            }else if (newData == "San Marcos"){
+                this.mList = muni17
+            }else if (newData == "Santa Rosa"){
+                this.mList = muni18
+            }else if (newData == "Sololá"){
+                this.mList = muni19
+            }else if (newData == "Suchitepéquez"){
+                this.mList = muni20
+            }else if (newData == "Totonicapán"){
+                this.mList = muni21
+            }else if (newData == "Zacapa"){
+                this.mList = muni22
+            }
+            this.selected = this.mList[0].name
+        }
+    }
+});
+
+</script>

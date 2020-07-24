@@ -1,0 +1,20 @@
+{% extends 'config/base.html' %}
+{% load static %}
+
+
+
+{% block head %}
+    <!-- adjusting footer -->
+    <link rel="stylesheet" href="{% static 'css/adjusting_footer.css' %}">
+{% endblock %}
+
+{% block content %}
+
+<div class="container">
+	<div class="row">
+		<div class="col">
+			<p class="h3 mt-5">No hay articulos</p>
+		</div>
+	</div>
+</div>
+{% endblock %}

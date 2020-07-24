@@ -1,0 +1,160 @@
+{% load user_agents %}
+
+{% if request|is_pc %}
+<div class="container">
+	<div class="row">
+
+		{% comment %} 申請者オブジェクトもないので表示させない {% endcomment %}
+		{% if request.user == item_obj.user and btn_choice == "no_solicitudes" %}
+		<div class="col-12">
+			<br />
+			<!-- solicitudオブジェクトが有る場合に表示される仕組みに修正をかける  -->
+			<a class="btn btn-primary btn-block text-white disabled" href="{% url 'solicitudes:solicitud_list' item_obj.id  %}">
+			{# 申請者が現れたら申請者を選ぶことができます#}
+			Cuando aparecen los solicitantes, puede seleccionar el solicitante
+			</a>
+		</div>
+
+
+		{% comment %} メッセージオブジェクトがないので申請者を選ぶ {% endcomment %}
+		{% elif request.user == item_obj.user and btn_choice == "select_solicitudes" %}
+		<!-- ここに条件を追加して申請者を選ぶを修正する  -->
+		<div class="col-12">
+			<br />
+			<!-- solicitudオブジェクトが有る場合に表示される仕組みに修正をかける  -->
+			<a class="btn btn-primary btn-block text-white" href="{% url 'solicitudes:solicitud_list' item_obj.id  %}">
+			{# 申請者を選ぶ #}
+			seleccionar el solicitante
+			</a>
+		</div>
+
+		{% comment %} メッセージ画面へ遷移させる {% endcomment %}
+		{% elif request.user == item_obj.user and direct_messages_objects.count != 0 %}
+		<div class="col-12">
+			<br />			
+			<a class="btn btn-primary btn-block text-white" href="{% url 'direct_messages:dm_detail' dm_obj.id %}">
+			{# 取引画面に遷移する #}Ir a la página de transaccion
+			</a>
+		</div>
+
+		{% comment %} 申し込む {% endcomment %}
+		{% elif request.user != item_obj.user and btn_choice == "moushikomi" %}
+		<div class="col-12">
+			<br >
+			<a class="btn btn-primary btn-block text-white" href="{% url 'solicitudes:solicitud_input' item_obj.id %}">
+			{# 申し込む #}Solicitar una transacción</a>
+		</div>
+
+		{% elif request.user.is_anonymous %}
+		<div class="col-12">
+			<br >
+			<a class="btn btn-primary btn-block text-white" href="{% url 'solicitudes:solicitud_input' item_obj.id %}">
+			{# 申し込む #}Solicitar una transacción</a>
+		</div>		
+
+		{% comment %} 申請済みです {% endcomment %}
+		{% elif request.user != item_obj.user and btn_choice == "sumi" %}
+		<div class="col-12">
+			<br />			
+			<a class="btn btn-primary btn-block text-white disabled" href="#">{# 申請済みです #} Ya has aplicado</a>
+		</div>
+
+		{% comment %} メッセージ画面へ遷移させる {% endcomment %}
+		{% elif request.user != item_obj.user and btn_choice == "torihiki" %}
+		<div class="col-12">
+			<br />			
+			<a class="btn btn-primary btn-block text-white" href="{% url 'direct_messages:dm_detail' dm_obj.id %}">
+			{# 取引相手とやり取りする #}Ir a la página de transaccion</a>
+		</div>
+
+		{% comment %} 他者に決定済みの場合 {% endcomment %}
+		{% elif request.user != item_obj.user and btn_choice == "fail" %}
+		<div class="col-12">
+			<br />			
+			<a class="btn btn-primary btn-block text-white disabled" href="#">{# 他者に決定済み #}Decidido por otros</a>
+		</div>
+
+		{% endif %}
+	</div>
+</div>
+
+
+{% elif request|is_mobile %}
+
+<div class="container mb-3">		
+	<div class="row">
+
+		{% comment %} 申請者オブジェクトもないので表示させない {% endcomment %}
+		{% if request.user == item_obj.user and btn_choice == "no_solicitudes" %}
+		<div class="col-12">
+			<br />
+			<!-- solicitudオブジェクトが有る場合に表示される仕組みに修正をかける  -->
+			<a class="btn btn-primary btn-block text-white disabled" href="{% url 'solicitudes:solicitud_list' item_obj.id  %}">
+			{# 申請者が現れたら申請者を選ぶことができます #}
+			Cuando aparecen los solicitantes, puede seleccionar el solicitante
+			</a>
+		</div>
+
+
+		{% comment %} メッセージオブジェクトがないので申請者を選ぶ {% endcomment %}
+		{% elif request.user == item_obj.user and btn_choice == "select_solicitudes" %}
+		<!-- ここに条件を追加して申請者を選ぶを修正する  -->
+		<div class="col-12">
+			<br />
+			<!-- solicitudオブジェクトが有る場合に表示される仕組みに修正をかける  -->
+			<a class="btn btn-primary btn-block text-white" href="{% url 'solicitudes:solicitud_list' item_obj.id  %}">
+			{# 申請者を選ぶ #}
+			seleccionar el solicitante
+			</a>
+		</div>
+
+		{% comment %} メッセージ画面へ遷移させる {% endcomment %}
+		{% elif request.user == item_obj.user and direct_messages_objects.count != 0 %}
+		<div class="col-12">
+			<br />			
+			<a class="btn btn-primary btn-block text-white" href="{% url 'direct_messages:dm_detail' dm_obj.id %}">{# 取引画面に遷移する #}Ir a la página de transaccion</a>
+		</div>
+
+		{% comment %} 申し込む {% endcomment %}
+		{% elif request.user != item_obj.user and btn_choice == "moushikomi" %}
+		<div class="col-12">
+			<br >
+			<a class="btn btn-primary btn-block text-white" href="{% url 'solicitudes:solicitud_input' item_obj.id %}">
+			{# 申し込む #} Solicitar una transacción</a>
+		</div>
+
+		{% elif request.user.is_anonymous %}
+		<div class="col-12">
+			<br >
+			<a class="btn btn-primary btn-block text-white" href="{% url 'solicitudes:solicitud_input' item_obj.id %}">
+			{# 申し込む #} Solicitar una transacción</a>
+		</div>		
+
+		{% comment %} 申請済みです {% endcomment %}
+		{% elif request.user != item_obj.user and btn_choice == "sumi" %}
+		<div class="col-12">
+			<br />			
+			<a class="btn btn-primary btn-block text-white disabled" href="#">{# 申請済みです #} Ya has aplicado</a>
+		</div>
+
+		{% comment %} メッセージ画面へ遷移させる {% endcomment %}
+		{% elif request.user != item_obj.user and btn_choice == "torihiki" %}
+		<div class="col-12">
+			<br />			
+			<a class="btn btn-primary btn-block text-white" href="{% url 'direct_messages:dm_detail' dm_obj.id %}">
+			{# 取引相手とやり取りする #} Ir a la página de transaccion</a>
+		</div>
+
+		{% comment %} 他者に決定済みの場合 {% endcomment %}
+		{% elif request.user != item_obj.user and btn_choice == "fail" %}
+		<div class="col-12">
+			<br />			
+			<a class="btn btn-primary btn-block text-white disabled" href="#">{# 他者に決定済み #} Decidido por otros</a>
+		</div>
+
+		{% endif %}
+	</div>
+</div>
+
+
+{% endif %}

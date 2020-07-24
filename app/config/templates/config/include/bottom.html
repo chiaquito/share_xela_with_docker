@@ -1,0 +1,23 @@
+{% load static %}
+
+<!--  -->
+<footer class="container-fluid footer" style="background-color: #DDDDDD;">
+  <div class="row justify-content-md-center" >
+    <div class="col-12" style="background-color: #DDDDDD;"> 
+
+      {% include "config/include/AndroidAppAds/ads.html" %}
+      
+
+        <ul class="text-center ">
+        {% comment %}<li style="display: inline-block;"><a href="">利用規約</a>&nbsp;|</li>{% endcomment %}
+        <li style="display: inline-block;"><a href="{% url 'home' %}">Home</a>&nbsp;|</li>
+        <li style="display: inline-block;"><a href="{% url 'privacy' %}">Política de privacidad</a>&nbsp;|</li>
+        <li style="display: inline-block;"><a href="{% url 'contacts:inquiries' %}">Contáctanos</a></li>
+        </ul>
+
+        <p class="text-center">ShareXela ALL RIGHTS RESERVED</p>
+
+    </div>
+  </div>
+
+</footer>

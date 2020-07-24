@@ -1,0 +1,35 @@
+django==2.2.3
+django-allauth==0.40.0
+django-rest-auth==0.9.5 # https://github.com/pennersr/django-allauth
+django-sendgrid-v5==0.8.1
+django-user-agents==0.4.0
+django-cors-headers==3.4.0
+psycopg2==2.8.5        # https://pypi.org/project/psycopg2/
+psycopg2-binary==2.8.5 # https://pypi.org/project/psycopg2-binary/
+gunicorn==19.9.0
+selenium==3.141.0
+django-environ==0.4.5 # https://github.com/joke2k/django-environ
+django-filter==2.2.0
+django-geojson==2.12.0
+#leaflet==0.0.3
+#django-leaflet==0.25.0
+django-phonenumber-field==3.0.1
+django-tempus-dominus==5.1.2.9
+django-user-agents==0.4.0
+djangorestframework==3.11.0 # https://github.com/encode/django-rest-framework
+docutils==0.15.2
+firebase-admin==4.3.0
+phonenumbers==8.10.21
+Pillow==6.2.0 # https://github.com/python-pillow/Pillow
+python-memcached==1.59
+mock==3.0.5
+webdriver_manager==3.2.1
+
+pytz==2019.1  # https://github.com/stub42/pytz
+python-slugify==3.0.2  # https://github.com/un33k/python-slugify
+argon2-cffi==19.1.0  # https://github.com/hynek/argon2_cffi
+redis==3.2.1  # https://github.com/antirez/redis
+django-model-utils==3.1.2  # https://github.com/jazzband/django-model-utils
+django-crispy-forms==1.7.2  # https://github.com/django-crispy-forms/django-crispy-forms
+django-redis==4.10.0  # https://github.com/niwinz/django-redis
+coreapi==2.3.3  # https://github.com/core-api/python-client

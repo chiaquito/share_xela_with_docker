@@ -1,0 +1,17 @@
+
+
+{# facebook用のogp #}
+
+{# detailページの場合は各オブジェクトはitem_objで表示する #}
+<meta property="og:url"     content="https://sharexela.ga/items/item/{{ item_obj.id }}/" />
+{# <meta property="og:type"               content="article" /> #}
+<meta property="og:type"               content="website" />
+<meta property="og:title"              content="{{ item_obj.title }}" />
+<meta property="og:description"        content="{{ item_obj.adm1 }}/{{ item_obj.description|truncatechars:280 }}" />
+<meta property="og:image"              content="https://sharexela.ga{{ item_obj.image1.url }}" />
+{% if item_obj.image2 %}
+<meta property="og:image"              content="https://sharexela.ga{{ item_obj.image2.url }}" />
+{% endif %}
+{% if item_obj.image3 %}
+<meta property="og:image"              content="https://sharexela.ga{{ item_obj.image3.url }}" />
+{% endif %}

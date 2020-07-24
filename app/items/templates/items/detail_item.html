@@ -1,0 +1,560 @@
+{% extends 'config/base.html' %}
+{% load user_agents %}
+{% load static %}
+
+{% block head %}
+    <!-- adjusting footer -->
+    <link rel="stylesheet" href="{% static 'css/adjusting_footer.css' %}">
+{% endblock %}
+
+
+{% block content %}
+<!------------------------------------      pc        ---------------------------------------------->
+{% if request|is_pc %}
+
+<div class="container">
+	<div class="row">
+		<div class="col-12">
+			<!-- メッセージフレームワーク -->			
+			{% include "config/include/message_and_delete.html" %}
+			<!-- メッセージフレームワーク終わり -->
+		</div>	
+		<div class="col-7">
+			<p class="text-left h2">{{ item_obj.title }} </p>
+		</div>
+
+		<!-- 出品者なら編集、削除ボタンを表示する -->
+		{% if request.user == item_obj.user %}		
+		<div class="col-5 ">
+		<a class="btn btn-primary btn-sm" href="{% url 'items:item_edit' item_obj.id %}">editar</a>
+		<a class="btn btn-primary btn-sm" href="{% url 'items:item_deactivate' item_obj.id %}" >borrar</a>
+		</div>		
+		{% endif %}
+		<!-- 出品者なら編集、削除ボタンを表示する 終わり-->
+	</div>
+	<div class="row">
+		<div class="col-7">
+			{% comment %}
+			<div id="carouselExampleIndicators" class="carousel slide" data-ride="carousel">
+			<ol class="carousel-indicators">
+			<li data-target="#carouselExampleIndicators" data-slide-to="0" class="active"></li>
+			{% if item_obj.image2 %}
+			<li data-target="#carouselExampleIndicators" data-slide-to="1"></li>
+			{% endif %}
+			{% if item_obj.image3 %}
+			<li data-target="#carouselExampleIndicators" data-slide-to="2"></li>
+			{% endif %}
+			{% if item_obj.image4 %}
+			<li data-target="#carouselExampleIndicators" data-slide-to="3"></li>
+			{% endif %}
+			{% if item_obj.image5 %}
+			<li data-target="#carouselExampleIndicators" data-slide-to="4"></li>
+			{% endif %}
+			{% if item_obj.image6 %}
+			<li data-target="#carouselExampleIndicators" data-slide-to="5"></li>
+			{% endif %}
+			</ol>
+			<div class="carousel-inner">
+			<div class="carousel-item active">
+			<img src="{{ item_obj.image1.url }}" class="d-block w-50" style="width: 13rem;" alt="...">
+			</div>
+			{% if item_obj.image2 %}
+			<div class="carousel-item">
+			<img src="{{ item_obj.image2.url }}" class="d-block w-100" alt="...">
+			</div>
+			{% endif %}
+			
+			{% if item_obj.image3 %}
+			<div class="carousel-item">
+			<img src="{{ item_obj.image3.url }}" class="d-block w-100" alt="...">
+			</div>
+			{% endif %}
+			
+			{% if item_obj.image4 %}
+			<div class="carousel-item">
+			<img src="{{ item_obj.image4.url }}" class="d-block w-100" alt="...">
+			</div>
+			{% endif %}
+			
+			{% if item_obj.image5 %}
+			<div class="carousel-item">
+			<img src="{{ item_obj.image5.url }}" class="d-block w-100" alt="...">
+			</div>
+			{% endif %}
+			
+			{% if item_obj.image6 %}
+			<div class="carousel-item">
+			<img src="{{ item_obj.image6.url }}" class="d-block w-100" alt="...">
+			</div>
+			{% endif %}
+			</div>
+			<a class="carousel-control-prev" href="#carouselExampleIndicators" role="button" data-slide="prev">
+			<span class="carousel-control-prev-icon" aria-hidden="true"></span>
+			<span class="sr-only">Previous</span>
+			</a>
+			<a class="carousel-control-next" href="#carouselExampleIndicators" role="button" data-slide="next">
+			<span class="carousel-control-next-icon" aria-hidden="true"></span>
+			<span class="sr-only">Next</span>
+			</a>
+			</div>
+			{% endcomment %}
+
+
+
+		
+		{% if item_obj.image1 %}
+		<img src="{{ item_obj.image1.url }}" style="width: 13rem;" class="border" />
+		{% endif %}
+		
+		{% if item_obj.image2 %}
+		<img src="{{ item_obj.image2.url }}" style="width: 13rem;" class="border" />
+		{% endif %}
+		{% if item_obj.image3 %}
+		<img src="{{ item_obj.image3.url }}" style="width: 13rem;" class="border" />
+		{% endif %}
+		{% if item_obj.image4 %}
+		<img src="{{ item_obj.image4.url }}" style="width: 13rem;" class="border" />
+		{% endif %}
+		{% if item_obj.image5 %}
+		<img src="{{ item_obj.image5.url }}" style="width: 13rem;" class="border" />
+		{% endif %}
+		{% if item_obj.image6 %}
+		<img src="{{ item_obj.image6.url }}" style="width: 13rem;" class="border" />
+		{% endif %}
+		
+
+		</div>
+
+		<div class="col-5">
+			<p class="h4 p-2 bg-light">Área de entrega </p>
+			<p class="h5">　{{ item_obj.adm1 }} </p>
+			<p class="h5">　{{ item_obj.adm2 }} </p>
+			<p class="h4 p-2 bg-light">Usario Info</p>
+				<div class="container">
+					<div class="row">
+						<div class="col-4">
+							<img class="img-thumbnail" src="{{ profile_obj.image.url }}" style="width: 5rem;"/>
+						</div>
+						<div class="col-8">
+							<p><a href="{% url 'items:itemuser_list' %}">{{ profile_obj.user }}</a><br />
+							フィードバック<br />
+							{% comment %}&emsp;<a href="{% url 'items:itemuser_list' %}">他の出品</a>{% endcomment %}
+							<a href="{% url 'items:itemuser_list' %}">su articulos otros</a></p>
+						</div>
+					</div>
+				</div>
+			
+			
+		</div>
+	</div>
+
+		<br />
+	<div class="row">
+		<div class="col-7">
+			<p class="h4 p-2 bg-light">
+				<!--span>DESCRIPTION<br /></span-->
+				Descripción
+			</p>	
+			<p class=" h6">
+			
+			{{ item_obj.description }}
+			</p>		
+		</div>
+
+		{% comment %} メッセージ画面へ遷移させる {% endcomment %}
+		{% if request.user == item_obj.user and dm_boolean == True %}
+		<div class="col-7">
+			<br />			
+			<a class="btn btn-primary btn-block text-white" href="{% url 'direct_messages:dm_detail' dm_obj.id %}">取引相手とやり取りする</a>
+		</div>
+		{% comment %} メッセージオブジェクトがないので申請者を選ぶ {% endcomment %}
+		{% elif request.user == item_obj.user and dm_boolean == False and solicitud_objects_count != 0 %}
+		<!-- ここに条件を追加して申請者を選ぶを修正する  -->
+		<div class="col-7">
+			<br />
+			<!-- solicitudオブジェクトが有る場合に表示される仕組みに修正をかける  -->
+			<a class="btn btn-primary btn-block text-white" href="{% url 'solicitudes:solicitud_decision' item_obj.id  %}">申請者を選ぶ</a>
+		</div>
+		{% comment %} 申請者オブジェクトもないので表示させない {% endcomment %}
+		{% elif request.user == item_obj.user and dm_boolean == False and solicitud_objects_count == 0 %}
+		<div class="col-7">
+			<br />
+			<!-- solicitudオブジェクトが有る場合に表示される仕組みに修正をかける  -->
+			<a class="btn btn-primary btn-block text-white disabled" href="{% url 'solicitudes:solicitud_decision' item_obj.id  %}">申請者が現れたら申請者を選ぶことができます</a>
+		</div>		
+
+
+		{% elif request.user != item_obj.user and dm_boolean == True %}
+		<div class="col-7">
+			<br />			
+			<a class="btn btn-primary btn-block text-white" href="{% url 'direct_messages:dm_detail' dm_obj.id %}">取引相手とやり取りする</a>
+		</div>
+		{% elif request.user != item_obj.user and dm_boolean == False %}
+		<div class="col-7">
+			<br >
+			<a class="btn btn-primary btn-block text-white" href="{% url 'solicitudes:solicitud_input' item_obj.id %}">申し込む</a>
+		</div>
+		{% endif %}
+
+		<div class="col-7">
+			<br />
+			<p class="h4 p-2 bg-light">Commentos</p>
+		</div>		
+	</div>
+
+
+	<div class="row">
+		<div class="col-12 ">
+
+		<div class="mx-5">
+
+
+		{% for obj in item_contact_objects %}
+
+
+		<div class="card my-3" style="width: 31rem;">
+  		<div class="card-body">
+    	<h5 class="card-title">{{ obj.user }}</h5>
+    	<!--h6 class="card-subtitle mb-2 text-muted">Card subtitle</h6-->
+    	<p class="card-text">{{ obj.message }}</p>
+    	
+    	<p  class="card-link">{{ obj.timestamp }}</p>
+  		</div>
+		</div>
+
+
+
+		{% endfor %}
+		</div>
+		<br />
+		</div>
+	</div>
+
+	<!-- item_contact_objectsが0のときは、回答フォームを表示しない  -->
+	{% if request.user == item_obj.user and item_contact_objects.count == 0 %}
+
+	<!-- item_contact_objectsが存在し、request.userがアイテム投稿者の場合、回答フォームを表示する  -->
+	{% elif request.user == item_obj.user %}
+	<div class="row">
+		<div class="col-7 ">
+		<form method="post" action="{% url 'items:item_detail' item_obj.id %}" class="mx-auto" >{% csrf_token %}
+		
+		{{ form.user.as_hidden }}
+		{{ form.item.as_hidden }}
+		
+		{{ form.reply_to }}に返答する
+		{{ form.message }}
+		<!--textarea name="message" class="form-control"></textarea-->
+
+		<button type="submit" class="btn btn-primary float-right">contestar </button>
+		</form>
+		</div>
+	</div>
+
+	<!-- request.userがアイテム投稿者以外のの場合、質問フォームを表示する  -->
+	{% elif request.user != item_obj.user  %}
+	<div class="row">
+		<div class="col-7 ">
+		<form method="post" action="{% url 'items:item_detail' item_obj.id %}" class="mx-auto" >{% csrf_token %}
+		
+		{{ form.user.as_hidden }}
+		{{ form.item.as_hidden }}
+		
+		
+		{{ form.reply_to.as_hidden }}投稿主に質問する
+		{{ form.message }}
+		<!--textarea name="message" class="form-control"></textarea-->
+
+		<button type="submit" class="btn btn-primary float-right">preguntar </button>
+		</form>
+		</div>
+	</div>
+	
+
+	{% endif %}
+
+
+
+</div>
+<!-- メッセージフレームワークによるメッセージの削除 -->
+{% include 'config/include/message_and_delete_jquery.html' %}
+<!-- メッセージフレームワークによるメッセージの削除  終わり-->
+{% endif %}
+<!---------------------------------        pc終わり            ----------------------------------------->
+
+
+<!---------------------------------        mobile             ----------------------------------------->
+{% if request|is_mobile %}
+<div class="container">
+	<div class="row">
+		<div class="col-12">
+			<!-- メッセージフレームワーク -->			
+			{% include "config/include/message_and_delete.html" %}
+			<!-- メッセージフレームワーク終わり -->
+		</div>	
+		<div class="col-7">
+			<p class="text-left h2">{{ item_obj.title }} </p>
+
+		<!-- 出品者なら編集、削除ボタンを表示する -->
+		{% if request.user == item_obj.user %}		
+		
+		<a class="btn btn-primary btn-sm mb-1" href="{% url 'items:item_edit' item_obj.id %}">editar</a>
+		<a class="btn btn-primary btn-sm mb-1" href="{% url 'items:item_deactivate' item_obj.id %}" >borrar</a>
+		</div>		
+		{% endif %}
+		<!-- 出品者なら編集、削除ボタンを表示する 終わり-->
+	</div>
+	<div class="row">
+		<div class="col-12">
+			
+			<div id="carouselExampleIndicators" class="carousel slide" data-ride="carousel">
+			<ol class="carousel-indicators">
+			<li data-target="#carouselExampleIndicators" data-slide-to="0" class="active bg-primary"></li>
+			{% if item_obj.image2 %}
+			<li data-target="#carouselExampleIndicators" data-slide-to="1" class="bg-primary"></li>
+			{% endif %}
+			{% if item_obj.image3 %}
+			<li data-target="#carouselExampleIndicators" data-slide-to="2" class="bg-primary"></li>
+			{% endif %}
+			{% if item_obj.image4 %}
+			<li data-target="#carouselExampleIndicators" data-slide-to="3" class="bg-primary"></li>
+			{% endif %}
+			{% if item_obj.image5 %}
+			<li data-target="#carouselExampleIndicators" data-slide-to="4" class="bg-primary"></li>
+			{% endif %}
+			{% if item_obj.image6 %}
+			<li data-target="#carouselExampleIndicators" data-slide-to="5" class="bg-primary"></li>
+			{% endif %}
+			</ol>
+			<div class="carousel-inner">
+			<div class="carousel-item active">
+			<img src="{{ item_obj.image1.url }}" class="d-block w-50" style="width: 13rem;" alt="...">
+			</div>
+			{% if item_obj.image2 %}
+			<div class="carousel-item">
+			<img src="{{ item_obj.image2.url }}" class="d-block w-100" alt="...">
+			</div>
+			{% endif %}
+			
+			{% if item_obj.image3 %}
+			<div class="carousel-item">
+			<img src="{{ item_obj.image3.url }}" class="d-block w-100" alt="...">
+			</div>
+			{% endif %}
+			
+			{% if item_obj.image4 %}
+			<div class="carousel-item">
+			<img src="{{ item_obj.image4.url }}" class="d-block w-100" alt="...">
+			</div>
+			{% endif %}
+			
+			{% if item_obj.image5 %}
+			<div class="carousel-item">
+			<img src="{{ item_obj.image5.url }}" class="d-block w-100" alt="...">
+			</div>
+			{% endif %}
+			
+			{% if item_obj.image6 %}
+			<div class="carousel-item">
+			<img src="{{ item_obj.image6.url }}" class="d-block w-100" alt="...">
+			</div>
+			{% endif %}
+			</div>
+			<a class="carousel-control-prev" href="#carouselExampleIndicators" role="button" data-slide="prev">
+			<span class="carousel-control-prev-icon" aria-hidden="true"></span>
+			<span class="sr-only text-primary">Previous</span>
+			</a>
+			<a class="carousel-control-next" href="#carouselExampleIndicators" role="button" data-slide="next">
+			<span class="carousel-control-next-icon" aria-hidden="true"></span>
+			<span class="sr-only">Next</span>
+			</a>
+			</div>
+			
+
+
+
+
+		{% comment %}
+		{% if item_obj.image1 %}
+		<img src="{{ item_obj.image1.url }}" style="width: 13rem;" class="border" />
+		{% endif %}
+		
+		{% if item_obj.image2 %}
+		<img src="{{ item_obj.image2.url }}" style="width: 13rem;" class="border" />
+		{% endif %}
+		{% if item_obj.image3 %}
+		<img src="{{ item_obj.image3.url }}" style="width: 13rem;" class="border" />
+		{% endif %}
+		{% if item_obj.image4 %}
+		<img src="{{ item_obj.image4.url }}" style="width: 13rem;" class="border" />
+		{% endif %}
+		{% if item_obj.image5 %}
+		<img src="{{ item_obj.image5.url }}" style="width: 13rem;" class="border" />
+		{% endif %}
+		{% if item_obj.image6 %}
+		<img src="{{ item_obj.image6.url }}" style="width: 13rem;" class="border" />
+		{% endif %}
+		{% endcomment %}
+		
+
+		</div>
+		<div class="col-12">
+			<p class="h4 p-2 mt-3 bg-light">Descripción</p>
+			<p class="ml-3"><font size="3">{{ item_obj.description }}</font></p>
+
+		</div>
+
+		<div class="col-12">
+			<p class="h4 p-2  bg-light">Área de entrega </p>
+			<p><font size="4">　{{ item_obj.adm1 }}&emsp;
+			{{ item_obj.adm2 }}</font></p>
+			<p class="h4 p-2 bg-light">Usario Info</p>
+			<div class="container">
+				<div class="row">
+					<div class="col-4">
+						<img class="img-thumbnail" src="{{ profile_obj.image.url }}" style="width: 5rem;"/>
+					</div>
+					<div class="col-8">
+						<p><a href="{% url 'items:itemuser_list' %}">{{ profile_obj.user }}</a>
+							<br />
+							フィードバック<br />
+							<a href="{% url 'items:itemuser_list' %}">他の出品</a></p>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+
+		
+	<div class="row">
+		<!--div class="col-12">
+			<p class="h4 bg-light"-->
+				<!--span>DESCRIPTION<br /></span>
+				Detalles
+			</p>	
+			<p class=" h6">
+			
+			{{ item_obj.description }}
+			</p>		
+		</div-->
+		{% if request.user == item_obj.user and dm_boolean == True %}
+		<div class="col-12">
+			<br />			
+			<a class="btn btn-primary btn-block text-white" href="{% url 'direct_messages:dm_detail' dm_obj.id %}">取引相手とやり取りする</a>
+		</div>
+		{% elif request.user == item_obj.user and dm_boolean == False %}<!-- ここに条件を追加して申請者を選ぶを修正する  -->
+		<div class="col-12">
+			<br />
+			<!-- solicitudオブジェクトが有る場合に表示される仕組みに修正をかける  -->
+			<a class="btn btn-primary btn-block text-white" href="{% url 'solicitudes:solicitud_decision' item_obj.id  %}">申請者を選ぶ</a>
+		</div>
+		{% elif request.user != item_obj.user and dm_boolean == True %}
+		<div class="col-12">
+			<br />			
+			<a class="btn btn-primary btn-block text-white" href="{% url 'direct_messages:dm_detail' dm_obj.id %}">取引相手とやり取りする</a>
+		</div>
+		{% elif request.user != item_obj.user and dm_boolean == False %}
+		<div class="col-12">
+			<br >
+			<a class="btn btn-primary btn-block text-white" href="{% url 'solicitudes:solicitud_input' item_obj.id %}">申し込む</a>
+		</div>
+		{% endif %}
+
+		<div class="col-12">
+			
+			<p class="h4 mt-3 p-2 bg-light">Comentarios</p>
+		</div>		
+	</div>
+
+
+	<div class="row">
+		<div class="col-12 ">
+
+		<div class="mx-0">
+
+
+		{% for obj in item_contact_objects %}
+
+
+		<div class="card my-3" >
+  		<div class="card-body">
+    	<h5 class="card-title">{{ obj.user }}</h5>
+    	<!--h6 class="card-subtitle mb-2 text-muted">Card subtitle</h6-->
+    	<p class="card-text">{{ obj.message }}</p>
+    	
+    	<p  class="card-link">{{ obj.timestamp }}</p>
+  		</div>
+		</div>
+
+
+
+		{% endfor %}
+		</div>
+		<br />
+		</div>
+	</div>
+
+	<!-- item_contact_objectsが0のときは、回答フォームを表示しない  -->
+	{% if request.user == item_obj.user and item_contact_objects.count == 0 %}
+
+	<!-- item_contact_objectsが存在し、request.userがアイテム投稿者の場合、回答フォームを表示する  -->
+	{% elif request.user == item_obj.user %}
+	<div class="row">
+		<div class="col-12 ">
+		<form method="post" action="{% url 'items:item_detail' item_obj.id %}" class="mx-auto" >{% csrf_token %}
+		
+		{{ form.user.as_hidden }}
+		{{ form.item.as_hidden }}
+		
+		{{ form.reply_to }}に返答する
+		{{ form.message }}
+		<!--textarea name="message" class="form-control"></textarea-->
+
+		<button type="submit" class="btn btn-primary btn-block">contestar </button>
+		</form>
+		</div>
+	</div>
+
+	<!-- request.userがアイテム投稿者以外のの場合、質問フォームを表示する  -->
+	{% elif request.user != item_obj.user  %}
+	<div class="row">
+		<div class="col-7 ">
+		<form method="post" action="{% url 'items:item_detail' item_obj.id %}" class="mx-auto" >{% csrf_token %}
+		
+		{{ form.post_user.as_hidden }}
+		{{ form.item.as_hidden }}
+		
+		
+		{{ form.reply_user.as_hidden }}投稿主に質問する
+		{{ form.message }}
+		<!--textarea name="message" class="form-control"></textarea-->
+
+		<button type="submit" class="btn btn-primary float-right">preguntar </button>
+		</form>
+		</div>
+	</div>
+	
+	{% endif %}
+
+
+
+</div>
+<!-- メッセージフレームワークによるメッセージの削除 -->
+{% include 'config/include/message_and_delete_jquery.html' %}
+<!-- メッセージフレームワークによるメッセージの削除  終わり-->
+
+<script>
+$(function () {
+//const iconColor = "#000";
+const iconColor = "#1e90ff";
+
+$('.carousel-control-prev-icon').css("background-image", `url("data:image/svg+xml;charset=utf8,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='${encodeURIComponent(iconColor)}' viewBox='0 0 8 8'%3E%3Cpath d='M5.25 0l-4 4 4 4 1.5-1.5-2.5-2.5 2.5-2.5-1.5-1.5z'/%3E%3C/svg%3E")`);
+$(".carousel-control-next-icon").css("background-image", `url("data:image/svg+xml;charset=utf8,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='${encodeURIComponent(iconColor)}' viewBox='0 0 8 8'%3E%3Cpath d='M2.75 0l-1.5 1.5 2.5 2.5-2.5 2.5 1.5 1.5 4-4-4-4z'/%3E%3C/svg%3E")`);
+});
+</script>
+{% endif %}
+<!---------------------------------        mobile終わり            ----------------------------------------->
+
+
+
+{% endblock %}

@@ -1,0 +1,26 @@
+{% extends 'config/base.html' %}
+
+
+
+{% block content %}
+<div class="container">
+	<div class="row">
+		<div class="col">
+
+{{ profile_obj.user }}<br /><br />
+
+取引エリア<br /><br />
+{{ profile_obj.adm0 }}<br />
+{{ profile_obj.adm1 }}<br />
+{{ profile_obj.adm2 }}<br />
+<img src="{{ profile_obj.image.url }}" style="width: 13rem;"/>
+<p>フィードバック</p>
+<p><a href='{% url "items:itemuser_list" %}'>出品内容を見る</a></p>
+
+
+
+
+		</div>
+	</div>
+</div>
+{% endblock %}

@@ -1,0 +1,263 @@
+{% extends 'config/base.html' %}
+{% load user_agents %}
+{% load static %}
+
+
+{% block head %}
+    {% if request|is_pc %}
+
+
+     <link rel="stylesheet" href="{% static 'css/footer_settings.css' %}"> 
+    {% elif request|is_mobile %}
+    <link rel="stylesheet" href="{% static 'css/footer_settings.css' %}"> 
+    {% endif %}
+{% endblock %}
+
+
+{% block content %}
+{% if request|is_pc %}
+<div class="container">
+	<div class="row">
+		<div class="col-3">
+
+			<p class="mt-0 pb-0"><font size="6">Avisos</font></p>
+			<hr class="pt-0 mt-o" />	
+		</div>
+		<div class="col-9 mt-4">
+			
+
+			<ul class="nav nav-tabs">
+			{% if type == "ALL" %}
+			<li class="nav-item">
+			<a class="nav-link active" href="#">Todo de Aviso</a>
+			</li>
+			<li class="nav-item">
+			<a class="nav-link" href="{% url 'avisos:avisos_list' %}">Solo Avisos no leído</a>
+			</li>
+			<!--
+
+			<li class="nav-item">
+			<a class="nav-link" href="#">Link</a>
+			</li>
+			<li class="nav-item">
+			<a class="nav-link disabled" href="#" tabindex="-1" aria-disabled="true">Disabled</a>
+			</li>
+			
+			-->
+			</ul>
+			{% elif type == "FILETERED" %}
+			<li class="nav-item">
+			<a class="nav-link" href="{% url 'avisos:avisos_alllist' %}">Todo de Aviso</a>
+			</li>
+			<li class="nav-item">
+			<a class="nav-link active" href="#">Solo Avisos no leído</a>
+			</li>			
+			</ul>
+			{% endif %}
+		</div>	
+	</div>
+
+	<div class="row">
+
+
+
+	</div>
+	<div class="row">
+		<div class="col">
+
+		
+				<table class="table table-striped mt-5">
+				<thead>
+				<tr>
+				<th scope="col">Estado</th>
+				<th scope="col">Fecha</th>
+				<th scope="col">Tipo de aviso</th>
+				<th scope="col">Articulo</th>
+				</tr>
+				</thead>
+				<tbody>
+				{% for obj in aviso_objects %}
+				<tr>
+				<th scope="row">
+					{% if obj.checked == False %}
+					{# 未読 #} No leído
+					{% elif obj.checked == True %}
+					{# 既読 #} &nbsp;&nbsp;&nbsp;
+					{% endif %}					
+				</th>
+				<td>
+					{{ obj.created_at }}
+				</td>
+				<td>
+					{% if obj.content_type.model == "solicitud" %}
+
+					{#  <a href="{% url 'solicitudes:get_solicitud' obj.object_id %}">アイテムの取引申請が来ています</a> #}
+					{#  <a href="{% url 'avisos:aviso_check' obj.id %}">アイテムの取引申請が来ています</a> #}
+					<a href="{% url 'avisos:aviso_check' obj.id %}">Hay Solicitud de transacción</a>
+				</td>
+				<td>	
+					{{ obj.content_object.item }}<br/>
+				</td>
+				<td>
+					{% elif obj.content_type.model == "directmessage" %}
+
+					{# <a href="{% url 'direct_messages:get_dm' obj.object_id  %}">あなたが取引相手として決まりました</a> #}
+					<a href="{% url 'avisos:aviso_check' obj.id %}">Usted ha sido decidido como socio comercial</a>
+				</td>	
+				<td>	
+					{{ obj.content_object.item }}<br/>
+				</td>				
+				<td>
+					{% elif obj.content_type.model == "directmessagecontent" %}
+
+					{# <a href="{% url 'direct_messages:get_dm' obj.object_id  %}">メッセージが来ました</a> #}
+					<a href="{% url 'avisos:aviso_check' obj.id %}">Hay mensaje</a>
+				</td>
+				<td>
+					{{ obj.content_object.dm.item }}<br/>
+				</td>	
+				<td>
+					{% elif obj.content_type.model == 'itemcontact' %}
+
+					{# <a href="{% url 'item_contacts:item_itemcontact' obj.object_id %}">アイテムにコメントが付きました。</a> #}
+					{# <a href="{% url 'avisos:aviso_check' obj.id %}">アイテムにコメントが付きました。</a> #}
+					<a href="{% url 'avisos:aviso_check' obj.id %}">Hay commentarios del articulo</a>
+
+				</td>
+				<td>
+					{{ obj.content_object.item }}<br/>
+				</td>
+
+					{% endif %}					
+
+				</td>
+				
+				</tr>
+				{% endfor %}
+				</tbody>
+				</table>
+			
+		</div>
+	</div>
+</div>
+{% elif request|is_mobile %}
+
+<div class="container">
+	<div class="row">
+		<div class="col-12">
+
+			<p class="mt-2 pb-0"><font size="6">Avisos</font></p>
+			<hr class="pt-0 mt-o" />	
+		</div>
+		<div class="col-12 mt-1">
+			
+
+			<ul class="nav nav-tabs">
+			{% if type == "ALL" %}
+			<li class="nav-item">
+			<a class="nav-link active" href="#">Todo de Aviso</a>
+			</li>
+			<li class="nav-item">
+			<a class="nav-link" href="{% url 'avisos:avisos_list' %}">Solo Avisos no leído</a>
+			</li>
+
+			</ul>
+			{% elif type == "FILETERED" %}
+			<li class="nav-item">
+			<a class="nav-link" href="{% url 'avisos:avisos_alllist' %}">Todo de Aviso</a>
+			</li>
+			<li class="nav-item">
+			<a class="nav-link active" href="#">Solo Avisos no leído</a>
+			</li>			
+			</ul>
+			{% endif %}
+		</div>	
+	</div>
+
+	<div class="row">
+
+
+
+	</div>
+	<div class="row">
+		<div class="col">
+
+		
+				<table class="table table-striped mt-3">
+				<thead>
+				<tr>
+				<th scope="col">Estado</th>
+				<th scope="col">Fecha</th>
+				<th scope="col">Tipo de aviso</th>
+				<th scope="col">Articulo</th>
+				</tr>
+				</thead>
+				<tbody>
+				{% for obj in aviso_objects %}
+				<tr>
+				<th scope="row">
+					{% if obj.checked == False %}
+					{# 未読 #} No leído
+					{% elif obj.checked == True %}
+					{# 既読 #} &nbsp;&nbsp;&nbsp;
+					{% endif %}					
+				</th>
+				<td>
+					{{ obj.created_at }}
+				</td>
+				<td>
+					{% if obj.content_type.model == "solicitud" %}
+
+					{#  <a href="{% url 'solicitudes:get_solicitud' obj.object_id %}">アイテムの取引申請が来ています</a> #}
+					{#  <a href="{% url 'avisos:aviso_check' obj.id %}">アイテムの取引申請が来ています</a> #}
+					<a href="{% url 'avisos:aviso_check' obj.id %}">Hay Solicitud de transacción</a>
+				</td>
+				<td>	
+					{{ obj.content_object.item }}<br/>
+				</td>
+				<td>
+					{% elif obj.content_type.model == "directmessage" %}
+
+					{# <a href="{% url 'direct_messages:get_dm' obj.object_id  %}">あなたが取引相手として決まりました</a> #}
+					<a href="{% url 'avisos:aviso_check' obj.id %}">Usted ha sido decidido como socio comercial</a>
+				</td>	
+				<td>	
+					{{ obj.content_object.item }}<br/>
+				</td>				
+				<td>
+					{% elif obj.content_type.model == "directmessagecontent" %}
+
+					{# <a href="{% url 'direct_messages:get_dm' obj.object_id  %}">メッセージが来ました</a> #}
+					<a href="{% url 'avisos:aviso_check' obj.id %}">Hay mensaje</a>
+				</td>
+				<td>
+					{{ obj.content_object.dm.item }}<br/>
+				</td>	
+				<td>
+					{% elif obj.content_type.model == 'itemcontact' %}
+
+					{# <a href="{% url 'item_contacts:item_itemcontact' obj.object_id %}">アイテムにコメントが付きました。</a> #}
+					{# <a href="{% url 'avisos:aviso_check' obj.id %}">アイテムにコメントが付きました。</a> #}
+					<a href="{% url 'avisos:aviso_check' obj.id %}">Hay commentarios del articulo</a>
+
+				</td>
+				<td>
+					{{ obj.content_object.item }}<br/>
+				</td>
+
+					{% endif %}					
+
+				</td>
+				
+				</tr>
+				{% endfor %}
+				</tbody>
+				</table>
+			
+		</div>
+	</div>
+</div>
+
+{% endif %}
+{% endblock %}
+

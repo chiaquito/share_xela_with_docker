@@ -1,0 +1,51 @@
+
+<div class="container">
+    
+
+    <!-- item_contact_objectsが0のときは、回答フォームを表示しない  -->
+    {% if request.user == item_obj.user and item_contact_objects.count == 0 %}
+
+    <!-- item_contact_objectsが存在し、request.userがアイテム投稿者の場合、回答フォームを表示する  -->
+    {% elif request.user == item_obj.user %}
+    <div class="row">
+        <div class="col-12 ">
+        {# <p class="h4 p-2 mb-3 bg-light">質問者に返答する</p> #}
+        <p class="h4 p-2 mb-3 bg-light">Responde al interlocutor</p>
+
+        <form method="post" action="{% url 'item_contacts:ItemContactView' %}" class="mx-auto" >{% csrf_token %}
+        
+        <input type="hidden" name="item_obj_id" value="{{ item_obj.id }}" />
+        {# {{ form.post_user.as_hidden }} #}{# formからpost_userの項目を削除 #}
+
+        {{ form.message }}
+        <!--textarea name="message" class="form-control"></textarea-->
+
+        <button type="submit" class="btn btn-primary btn-block mt-2">contestar </button>
+        </form>
+
+        </div>
+    </div>
+
+    <!-- request.userがアイテム投稿者以外のの場合、質問フォームを表示する  -->
+    {% elif request.user != item_obj.user  %}
+    <div class="row">
+        <div class="col-12 ">
+        <!--form method="post" action="{% url 'items:item_detail' item_obj.id %}" class="mx-auto" -->
+        <form method="post" action="{% url 'item_contacts:ItemContactView' %}" class="mx-auto" >{% csrf_token %}
+        
+        <input type="hidden" name="item_obj_id" value="{{ item_obj.id }}" />
+        {# {{ form.post_user.as_hidden }} #}
+        
+        {# <p class="h4 p-2 mb-3 bg-light">投稿主に質問する</p> #}
+         <p class="h4 p-2 mb-3 bg-light">Pregunta a la publicación principal</p>
+
+        {{ form.message }}
+        <!--textarea name="message" class="form-control"></textarea-->
+
+        <button type="submit" class="btn btn-primary btn-block mt-2 mb-3">preguntar </button>
+        </form>
+        </div>
+    </div>
+    {% endif %}
+</div>
+

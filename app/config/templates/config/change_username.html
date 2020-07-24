@@ -1,0 +1,61 @@
+{% extends 'config/base.html' %}
+{% load user_agents %}
+{% load static %}
+
+{% block head %}
+    
+    <link rel="stylesheet" href="{% static 'css/footer_settings.css' %}">
+{% endblock %}
+
+{% block content %}
+{% if request|is_pc %}
+<div class="container">
+	<div class="row justify-content-md-center">
+		<div class="col-5 ">
+			<p class="h2">Cambiar Nombre de Usuario</p>
+			<form method="post" action="#">{% csrf_token %}
+			
+			<label>Nombre de usuario que quieres cambiar:</label>
+			{{ form.username }}
+
+			{% if form.username.errors %}
+			{{ form.username.errors }}
+
+
+			{% endif %}
+
+
+			{% comment %}<button class="btn btn-block btn-primary">変更する</button>{% endcomment %}
+			<button class="btn btn-block btn-primary mt-2">Cambiar</button>
+			</form>
+		</div>
+	</div>
+</div>
+{% elif request|is_mobile %}
+
+<div class="container">
+	<div class="row justify-content-md-center">
+		<div class="col-12 ">
+			<p class="h5 mt-3 pb-0">Cambiar Nombre de Usuario</p>
+			<hr class="mt-1 mb-4"/>
+
+			<form method="post" action="#">{% csrf_token %}
+			
+			<label>Nombre de usuario que quieres cambiar:</label>
+			{{ form.username }}
+
+			{% if form.username.errors %}
+			{{ form.username.errors }}
+
+
+			{% endif %}
+
+
+			{% comment %}<button class="btn btn-block btn-primary">変更する</button>{% endcomment %}
+			<button class="btn btn-block btn-primary mt-2">Cambiar</button>
+			</form>
+		</div>
+	</div>
+</div>
+{% endif %}
+{% endblock %}

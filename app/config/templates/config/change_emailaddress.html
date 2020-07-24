@@ -1,0 +1,71 @@
+{% extends 'config/base.html' %}
+{% load user_agents %}
+{% load static %}
+
+{% block head %}
+    
+    
+    <link rel="stylesheet" href="{% static 'css/footer_settings.css' %}">
+{% endblock %}
+
+{% block content %}
+{% include 'config/include/message_and_delete.html' %}
+
+{% if request|is_pc %}
+<div class="container">
+	<div class="row justify-content-md-center">
+		<div class="col-6 ">
+			<p class="h3 mt-4">Cambiar Dirección de correo electrónico</p>
+			<hr class="mb-3" />
+			<form method="post" action="{% url 'email_change' %}">{% csrf_token %}
+			
+			<label>Dirección de correo electrónico que quieres cambiar:</label>
+			{{ form.email }}
+
+			{% if form.email.errors %}
+			{{ form.email.errors }}
+
+
+			{% endif %}
+
+
+			{% comment %}<button class="btn btn-block btn-primary">変更する</button>{% endcomment %}
+			<button class="btn btn-block btn-primary mt-2">Cambiar</button>
+			</form>
+		</div>
+	</div>
+</div>
+
+{% elif request|is_mobile %}
+
+<div class="container">
+	<div class="row justify-content-md-center">
+		<div class="col-12 ">
+			<p class="h6 mt-3">Cambiar Dirección de correo electrónico</p>
+			<hr class="mt-2 mb-3" />
+			<form method="post" action="{% url 'email_change' %}">{% csrf_token %}
+			
+			<label>Dirección de correo electrónico que quieres cambiar:</label>
+			{{ form.email }}
+
+			{% if form.email.errors %}
+			{{ form.email.errors }}
+
+
+			{% endif %}
+
+
+			{% comment %}<button class="btn btn-block btn-primary">変更する</button>{% endcomment %}
+			<button class="btn btn-block btn-primary mt-2">Cambiar</button>
+			</form>
+		</div>
+	</div>
+</div>
+
+{% endif %}
+
+
+<!-- メッセージフレームワークによるメッセージの削除 -->
+{% include 'config/include/message_and_delete_jquery.html' %}
+<!-- メッセージフレームワークによるメッセージの削除  終わり-->
+{% endblock %}

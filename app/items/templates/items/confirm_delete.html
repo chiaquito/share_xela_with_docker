@@ -1,0 +1,96 @@
+{% extends 'config/base.html' %}
+{% load user_agents %}
+{% load static %}
+
+{% block head %}
+    {% if request|is_pc %}
+
+
+     <link rel="stylesheet" href="{% static 'css/footer_settings.css' %}"> 
+    {% elif request|is_mobile %}
+    <link rel="stylesheet" href="{% static 'css/footer_settings.css' %}"> 
+    {% endif %}
+{% endblock %}
+
+
+{% block content %}
+{% if request|is_pc %}
+
+<div class="container mt-3 mb-3">
+  <div class="row justify-content-md-center">
+    <div class="col-12">
+
+
+              <div class="card mb-5">
+              <h5 class="card-header">{{ item_obj.title }}</h5>
+              <div class="card-body px-auto">
+                <div class="container px-auto">
+                  <div class="row ">
+                    <div class="col-6 p-0 m-0 ">
+                      <img style="width:13rem;" class="ml-0 p-4" src="{{ item_obj.image1.url }}">
+                    </div>
+                    <div class="col-6">
+                      <h5 class="card-title mb-1">Descripsion</h5>
+                      <hr class="mt-0" />
+                      <p class="card-text">{{ item_obj.description }}</p>
+                    </div>
+                  </div>
+                </div>  
+              </div>
+              </div>
+    </div>
+  </div>
+</div>
+
+<div class="container mt-0 ">
+  <div class="row justify-content-md-center">
+    <div class="col-12">
+		<form method="POST" >{% csrf_token %}
+		<button  class="btn btn-primary btn-block" href="{% url 'items:item_deactivate' item_obj.id %}">{# 削除します #}Eliminar este articlo</button>
+		</form>
+    </div>
+  </div>
+</div>
+
+{% elif request|is_mobile %}
+<div class="container mt-3 mb-3">
+  <div class="row justify-content-md-center">
+    <div class="col-12">
+
+
+              <div class="card mb-5">
+              <h5 class="card-header">{{ item_obj.title }}</h5>
+              <div class="card-body pl-0">
+                <div class="container pl-0">
+                  <div class="row ">
+                    <div class="col-6 p-0 m-0 ">
+                      <img style="width:13rem;" class="ml-0 p-4" src="{{ item_obj.image1.url }}">
+                    </div>
+                    <div class="col-6">
+                      <h5 class="card-title mb-1">Descripsion</h5>
+                      <hr class="mt-0" />
+                      <p class="card-text">{{ item_obj.description }}</p>
+                    </div>
+                  </div>
+                </div>  
+              </div>
+              </div>
+    </div>
+  </div>
+</div>
+
+<div class="container mt-0 ">
+  <div class="row justify-content-md-center">
+    <div class="col-12">
+		<form method="POST" >{% csrf_token %}
+		<button  class="btn btn-primary btn-block" href="{% url 'items:item_deactivate' item_obj.id %}">{# 削除します #}Eliminar este articlo</button>
+		</form>
+    </div>
+  </div>
+</div>
+
+{% endif %}
+
+
+
+{% endblock %}

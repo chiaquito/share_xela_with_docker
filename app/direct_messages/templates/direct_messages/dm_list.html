@@ -1,0 +1,49 @@
+{% extends 'config/base.html' %}
+
+
+
+{% block content %}
+<div class="container-fluid">
+	<div class="row">
+		<div class="col">
+			<!--p class="h2">メッセージ一覧</p-->
+      <p class="h2">A la lista de mensajes</p>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-2">
+    {% include 'config/include/avisos_menu.html' %}
+    </div>
+    <br />
+    <br />
+    <div class="col-7">
+      <br />
+
+<table class="table">
+  <thead>
+    <tr>
+      <th scope="col">fecha</th>
+      <th scope="col">Articulos</th>
+      <th scope="col">from</th>
+    </tr>
+  </thead>
+  <tbody>
+
+{% for dm in dm_qs %}
+    <tr>
+      <th scope="row">{{ dm.created_at }}</th>
+      <td>
+      	<a href="{% url 'direct_messages:dm_detail' dm.id %}">{{ dm }}</a>
+      </td>
+      <td>{{ dm.post_user }}</td>
+    </tr>
+{% endfor %}
+
+  </tbody>
+</table>
+
+		</div>
+	</div>
+</div>
+
+{% endblock %}

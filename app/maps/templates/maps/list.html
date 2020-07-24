@@ -1,0 +1,26 @@
+
+
+{% load leaflet_tags %}
+
+{% leaflet_css %}
+{% leaflet_js %}
+
+
+<h1>list</h1>
+
+
+{{ all_objects }}
+{% leaflet_map "main" callback="map_init_basic" %}
+
+
+<script type="text/javascript">
+	function map_init_basic(map, options) {
+			{% for object in all_objects %}
+		var lon = "{{ object.point.x }}";
+		var lat = "{{ object.point.y }}";
+
+		map.setView([lat, lon], 10);
+		L.marker([lat, lon]).bindPopup("{{object.user_name}}").addTo(map);
+			{% endfor %}
+		}	
+</script>

@@ -1,0 +1,27 @@
+
+
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-12">
+
+            <form method="post" action="{% url 'items:item_favorite' item_obj.id %}">{% csrf_token %}
+            <input type="hidden" name="item_obj_id" value="{{ item_obj.id }}">
+            {% if btn_fav == "RED_HEART" %}                 
+            <button class="btn-primary btn-block mt-1 " >Favoritos</button>
+
+            
+
+
+
+            {% elif btn_fav == "WHITE_HEART" %}
+            <button class="btn-primary btn-block mt-1" >Añadir a los favoritos</button>
+
+
+            {% endif %}
+            </form>
+
+        </div>
+    </div>
+</div>
+
+

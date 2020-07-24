@@ -1,0 +1,140 @@
+{% extends 'config/base.html' %}
+{% load user_agents %}
+{% load static %}
+
+
+
+
+
+
+{% block head %}
+<!-- Font Awesome -->
+
+    <link rel="stylesheet" href="https://netdna.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.css">
+
+<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
+<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+
+<!-- jQuery -->
+<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+{{ form.media }}
+
+
+<link rel="stylesheet" href="{% static 'css/footer_settings.css' %}"> 
+
+
+<title>Editar Profile</title>
+{% endblock %}
+
+
+
+{% block content %}
+
+{# <---------------------------------------------    pc   ----------------------------------------------->  #}
+{% if request|is_pc %}
+<div class="container">
+	<div class="row">
+		<div class="col-12">
+			{#    メッセージフレームワーク      #}			
+			{% include "config/include/message_and_delete.html" %}
+			{#   メッセージフレームワーク終わり  #}
+		</div>
+
+
+		<div class="col-12">
+			<p class="h2">TU PERFIL INFORMACION</p>
+
+			<form method="POST" enctype="multipart/form-data" action="{% url 'profiles:profile_creating' %}" >{%csrf_token%}
+
+			<!-- エリア情報 -->
+			<p class="h4 bg-light  p-3" >Area Informacion</p>
+			{# <p>＊投稿する記事のエリアのデフォルト、または投稿記事の検索エリアの設定になります。</p> #}
+			<p>＊Es el valor predeterminado del área del artículo que se publicará, o la configuración del área de búsqueda del artículo publicado.</p>
+			{{ form.user.as_hidden }}
+			<div class="form-row">
+			<div class="form-group col-md-3">
+			Pais :
+			{{ form.adm0 }}<br /><br />
+			</div>
+			<div class="form-group col-md-4">
+			Departamento :
+			{{ form.adm1 }}<br /><br />
+			</div>
+			<div class="form-group col-md-5">
+			Municipio :
+			{{ form.adm2 }}<br /><br />
+			</div>
+			<!-- エリア情報終わり -->
+			</div>
+
+			<button class="btn btn-primary btn-block mb-2 " >Registar area informacion</button>
+			</form>
+
+		</div>
+</div>
+</div>
+
+{# ---------------------------------------------- pc終わり -------------------------------------------------- #}
+
+{# ---------------------------------------        mobile        -------------------------------------------- #}
+
+{% elif request|is_mobile %}
+<div class="container">
+	<div class="row">
+		<div class="col">
+		{# メッセージフレームワーク #}			
+		{% include "config/include/message_and_delete.html" %}
+
+		</div>
+		<div class="col">
+
+<p class="h2">TU PERFIL INFORMACION</p>
+
+
+<form method="POST" enctype="multipart/form-data" action="{% url 'profiles:profile_creating' %}" >{%csrf_token%}
+
+{{ form.non_field_errors }}
+{% comment %}
+{{ form.user.label }}:
+{{ form.user }}<br /><br />
+{% endcomment %}
+<!--input type="text" name="test" class="form-control-plaintext" readonly="False" value="testy"-->
+
+
+
+
+<!-- エリア情報 -->
+<p class="h4 bg-light  p-3" >Area Informacion</p>
+<p class="mb-1">{# ＊投稿する記事のエリアのデフォルト、または投稿記事の検索エリアの設定になります。#}
+<p>＊Es el valor predeterminado del área del artículo que se publicará, o la configuración del área de búsqueda del artículo publicado.</p></p>
+
+<div class="col-12 px-0 mb-3">
+Pais :
+{{ form.adm0 }}
+
+Departamento :
+{{ form.adm1 }}
+
+Municipio :
+{{ form.adm2 }}
+</div>
+<!-- エリア情報終わり -->
+</div>
+
+{{ form.user.as_hidden }}
+
+
+<button class="btn btn-primary btn-block mb-4" >Registar area informacion</button>
+</form>
+
+
+</div>
+</div>
+</div>
+{% endif %}
+
+{# ---------------------------------------      mobile終わり    --------------------------------------------- #}
+
+
+{% include 'config/include/message_and_delete_jquery.html' %}
+{% endblock %}

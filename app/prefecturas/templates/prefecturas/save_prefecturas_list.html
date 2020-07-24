@@ -1,0 +1,28 @@
+{% load leaflet_tags %}
+{% leaflet_css %}
+{% leaflet_js %}
+
+
+<h1>list</h1>
+
+
+
+{{ coordinates }}
+
+
+{% leaflet_map "main" callback="map_init_basic" %}
+
+
+<script type="text/javascript">
+	function map_init_basic(map, options){
+	
+
+		map.setView([14.596336305, -90.960268475], 10);
+		//L.marker([ 14.596336305, -90.960268475,]).bindPopup("{{objects.adm2_es}}").addTo(map);
+		var latlngs = {{ coordinates }};
+		L.polygon(latlngs,{color:"red"}).addTo(map);
+
+		}	
+</script>
+
+<!-- postgisはlonlat leafletはlatlon-->

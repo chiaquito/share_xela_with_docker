@@ -1,0 +1,35 @@
+{% extends 'config/base.html' %}
+
+
+
+{% block content %}
+
+<br />
+
+
+
+<table class="table table-striped">
+  <thead>
+    <tr>
+      <th scope="col">fecha</th>
+      <th scope="col">titulo de articulo</th>
+      <th scope="col">mensaje</th>
+      <th scope="col">usario</th>
+    </tr>
+  </thead>
+
+  <tbody>
+{% for obj in qs %}  	
+    <tr>
+      <th scope="row">{{ obj.timestamp }}</th>
+      <td><a href="{% url 'avisos:aviso2item_detail' obj.id %}">{{ obj.item }}</a></td>
+      <td>{{ obj.message }}</td>
+      <td><a href="{% url 'avisos:aviso2itemuserlist' obj.id %}">{{ obj.user }}</a></td>
+    </tr>
+
+  </tbody>
+{% endfor %}
+</table>
+
+
+{% endblock %}

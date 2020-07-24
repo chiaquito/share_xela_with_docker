@@ -1,0 +1,8 @@
+        <!-- 出品者なら編集、削除ボタンを表示する -->
+        {% if request.user == item_obj.user %}      
+        
+        <a class="btn btn-primary btn-sm" href="{% url 'items:item_edit' item_obj.id %}">editar este articlo</a>
+        <a class="btn btn-primary btn-sm" href="{% url 'items:item_deactivate' item_obj.id %}" >borrar este articlo</a>
+            
+        {% endif %}
+        <!-- 出品者なら編集、削除ボタンを表示する 終わり-->

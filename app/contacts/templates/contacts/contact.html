@@ -1,0 +1,95 @@
+{% extends 'config/base.html' %}
+{% load static %}
+{% load user_agents %}
+
+
+
+{% block head %}
+    {% if request|is_pc %}
+    <link rel="stylesheet" href="{% static 'css/footer_settings.css' %}"> 
+    {% elif request|is_mobile %}
+    <link rel="stylesheet" href="{% static 'css/footer_settings.css' %}"> 
+    {% endif %}
+
+
+{% endblock %}
+
+
+
+{% block content %}
+
+{% if request|is_pc %}
+<div class="container">
+	<div class="row justify-content-md-center">
+		<div class="col-6">
+			<p class="h2 pt-2">Consulta a ShareXela</p>
+			<hr class="mt-0" />
+		</div>
+	</div>
+
+
+
+
+
+	<div class="row justify-content-md-center">
+		<div class="col-6">
+		{% if form.errors %}		
+		{{ form.non_field_errors }}
+		{% endif %}
+
+		<form method="post" action="{% url 'contacts:inquiries' %}">{% csrf_token %}
+		<!--label>user</label-->
+		{{ form.user }}
+		<label class="mb-0 mt-2">Titulo</label>
+		<!--label class="mb-0 mt-2">title</label-->
+		{{ form.title }}
+		<label class="mb-0 mt-1">Dirección de correo electrónico</label>
+		<!--label class="mb-0 mt-1">email_address</label-->
+		{{ form.email_address }}
+		<label class="mb-0 mt-1">Contenido</label>
+		<!--label class="mb-0 mt-1">content</label-->
+		{{ form.content }}
+		{% comment %}<button class="btn btn-primary btn-block">送信する</button>{% endcomment %}
+		<button class="btn btn-primary btn-block mb-4">Enviar</button>
+		</form>
+
+		</div>
+	</div>
+</div>
+{% elif request|is_mobile %}
+<div class="container">
+	<div class="row justify-content-md-center">
+		<div class="col-12">
+			<p class="h2 pt-2">Consulta a ShareXela</p>
+			<hr class="mt-0" />
+		</div>
+	</div>
+	<div class="row justify-content-md-center">
+		<div class="col-12">
+		{% if form.errors %}		
+		{{ form.non_field_errors }}
+		{% endif %}
+
+		<form method="post" action="{% url 'contacts:inquiries' %}">{% csrf_token %}
+		<!--label>user</label-->
+		{{ form.user }}
+		<label class="mb-0 mt-2">Titulo</label>
+		<!--label class="mb-0 mt-2">title</label-->
+		{{ form.title }}
+		<label class="mb-0 mt-1">Dirección de correo electrónico</label>
+		<!--label class="mb-0 mt-1">email_address</label-->
+		{{ form.email_address }}
+		<label class="mb-0 mt-1">Contenido</label>
+		<!--label class="mb-0 mt-1">content</label-->
+		{{ form.content }}
+		{% comment %}<button class="btn btn-primary btn-block ">送信する</button>{% endcomment %}
+		<button class="btn btn-primary btn-block mb-4">Enviar</button>
+		</form>
+
+		</div>
+	</div>
+</div>
+
+{% endif %}	
+
+{% endblock %}

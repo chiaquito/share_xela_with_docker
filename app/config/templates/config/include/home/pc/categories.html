@@ -1,0 +1,49 @@
+{% load static %}
+
+
+<div class="container" id="category">
+  <div class="row">
+      <div class="col-6">
+
+          <div  class="card">
+          <h5 id="title_guatemala" class="card-header"><img style="width: 4rem;" src="{% static 'guatemala_icon.png' %}">&nbsp;&nbsp;Gente de Guatemala&nbsp;<br /></h5>
+          <div id="menu_guatemala" class="card-body">
+          <h5 class="card-title"><a class="h3" href="{% url 'items:ItemCategoryListView' 1 %}"><img style="width: 2rem;" src="{% static 'libro_icon.jpeg' %}">&nbsp;quiere donar o vender</a></h5>
+          <h5 class="card-title"><a class="h3" href="{% url 'items:ItemCategoryListView' 2 %}"><img style="width: 2rem;" src="{% static 'corazon_icon1.jpeg' %}">&nbsp;busca donante</a></h5>
+          <h5 class="card-title"><a class="h3" href="{% url 'items:ItemCategoryListView' 3 %}"><img style="width: 2rem;" src="{% static 'pin_icon.jpeg' %}"/>&nbsp;quiere avisar</a></h5>
+          <h5 class="card-title"><a class="h3" href="{% url 'items:ItemCategoryListView' 4 %}"><img style="width: 2rem;" src="{% static 'pin_icon.jpeg' %}"/>&nbsp;busca una habitación</a></h5>
+          <h5 class="card-title"><a class="h3" href="{% url 'items:ItemCategoryListView' 5 %}"><img style="width: 2rem;" src="{% static 'pin_icon.jpeg' %}"/>&nbsp;alquila una habitación</a></h5>
+          <h5 class="card-title"><a class="h3" href="{% url 'items:ItemCategoryListView' 6 %}"><img style="width: 2rem;" src="{% static 'pin_icon.jpeg' %}"/>&nbsp;busca pensionado</a></h5>
+          <h5 class="card-title"><a class="h3" href="{% url 'items:ItemCategoryListView' 7 %}"><img style="width: 2rem;" src="{% static 'pin_icon.jpeg' %}"/>&nbsp;busca pensionista</a></h5>
+          <h5 class="card-title"><a class="h3" href="{% url 'items:ItemCategoryListView' 8 %}"><img style="width: 2rem;" src="{% static 'pin_icon.jpeg' %}"/>&nbsp;busca empleado</a></h5>
+          <h5 class="card-title"><a class="h3" href="{% url 'items:ItemCategoryListView' 9 %}"><img style="width: 2rem;" src="{% static 'pin_icon.jpeg' %}"/>&nbsp;busca trabajador</a></h5>
+          <h5 class="card-title"><a class="h3" href="{% url 'items:ItemCategoryListView' 10 %}"><img style="width: 2rem;" src="{% static 'pin_icon.jpeg' %}"/>&nbsp;publicidad de Enpresas y Servicios</a></h5>
+          
+          </div>
+          </div>
+
+      </div>
+
+
+      <div class="col-6">
+
+          <div class="card">
+    <h5 id="title_local" class="card-header"><img style="width: 3rem;" src="{% static 'gps_icon.png' %}"/>&nbsp;&nbsp;Gente de Tu departamento</h5>
+    <div id="menu_local" class="card-body">
+    <h5 class="card-title"><a id="donarVender" class="h3" href="{% url 'items:ItemCategoryLocalListView' 1 %}"><img style="width: 2rem;" src="{% static 'libro_icon.jpeg' %}">&nbsp;quiere donar o vender</a></h5>
+    <h5 class="card-title"><a class="h3" href="{% url 'items:ItemCategoryLocalListView' 2 %}"><img style="width: 2rem;" src="{% static 'corazon_icon1.jpeg' %}">&nbsp;busca donante</a></h5>
+    <h5 class="card-title"><a class="h3" href="{% url 'items:ItemCategoryLocalListView' 3 %}"><img style="width: 2rem;" src="{% static 'pin_icon.jpeg' %}"/>&nbsp;quiere avisar</a></h5>  
+    <h5 class="card-title"><a class="h3" href="{% url 'items:ItemCategoryLocalListView' 4 %}"><img style="width: 2rem;" src="{% static 'pin_icon.jpeg' %}"/>&nbsp;busca una habitación</a></h5>
+    <h5 class="card-title"><a class="h3" href="{% url 'items:ItemCategoryLocalListView' 5 %}"><img style="width: 2rem;" src="{% static 'pin_icon.jpeg' %}"/>&nbsp;alquila una habitación</a></h5>
+    <h5 class="card-title"><a class="h3" href="{% url 'items:ItemCategoryLocalListView' 6 %}"><img style="width: 2rem;" src="{% static 'pin_icon.jpeg' %}"/>&nbsp;busca pensionado</a></h5>
+    <h5 class="card-title"><a class="h3" href="{% url 'items:ItemCategoryLocalListView' 7 %}"><img style="width: 2rem;" src="{% static 'pin_icon.jpeg' %}"/>&nbsp;busca pensionista</a></h5>
+    <h5 class="card-title"><a class="h3" href="{% url 'items:ItemCategoryLocalListView' 8 %}"><img style="width: 2rem;" src="{% static 'pin_icon.jpeg' %}"/>&nbsp;busca empleado</a></h5>
+    <h5 class="card-title"><a class="h3" href="{% url 'items:ItemCategoryLocalListView' 9 %}"><img style="width: 2rem;" src="{% static 'pin_icon.jpeg' %}"/>&nbsp;busca trabajador</a></h5>
+    <h5 class="card-title"><a class="h3" href="{% url 'items:ItemCategoryLocalListView' 10 %}"><img style="width: 2rem;" src="{% static 'pin_icon.jpeg' %}"/>&nbsp;publicidad de Enpresas y Servicios</a></h5>
+
+          </div>
+          </div>          
+      </div>
+      
+  </div>
+</div>

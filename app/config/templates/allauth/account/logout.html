@@ -1,0 +1,69 @@
+{% extends "account/base.html" %}
+{% load static %}
+{% load i18n %}
+{% load user_agents %}
+
+{% block head_title %}
+
+{% trans "Sign Out" %}
+
+{% endblock %}
+{% block extra_head %}
+    <!-- adjusting footer -->
+    <link rel="stylesheet" href="{% static 'css/adjusting_footer.css' %}">
+{% endblock %}
+
+
+
+
+
+{% block content %}
+{% if request|is_pc %}
+<div class="container">
+	<div class="row justify-content-md-center">
+		<div class="col-6">
+
+
+<h1 class="mb-1">{% trans "Sign Out" %}</h1>
+<hr class="mt-0"/>
+
+<p>{% trans 'Are you sure you want to sign out?' %}</p>
+<form method="post" action="{% url 'account_logout' %}">
+  {% csrf_token %}
+  {% if redirect_field_value %}
+  <input type="hidden" name="{{ redirect_field_name }}" value="{{ redirect_field_value }}"/>
+  {% endif %}
+  <button class="btn btn-primary btn-block mt-5" type="submit">{% trans 'Sign Out' %}</button>
+</form>
+
+
+		</div>
+	</div>
+</div>
+{% elif request|is_mobile %}
+<div class="container">
+  <div class="row justify-content-md-center">
+    <div class="col-12">
+
+
+<h3 class="mb-1">{% trans "Sign Out" %}</h3>
+<hr class="mt-0"/>
+
+<p>{% trans 'Are you sure you want to sign out?' %}</p>
+<form method="post" action="{% url 'account_logout' %}">
+  {% csrf_token %}
+  {% if redirect_field_value %}
+  
+  <input type="hidden" name="{{ redirect_field_name }}" value="{{ redirect_field_value }}"/>
+  {% endif %}
+  <button class="btn btn-primary btn-block mt-5" type="submit">{% trans 'Sign Out' %}</button>
+</form>
+
+
+    </div>
+  </div>
+</div>
+
+{% endif %}
+
+{% endblock %}

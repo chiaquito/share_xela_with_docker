@@ -1,0 +1,135 @@
+{% extends 'config/base.html' %}
+
+{% load user_agents %}
+{% load static %}
+
+
+
+{% block head %}
+    {% if request|is_pc %}
+    <link rel="stylesheet" href="{% static 'css/footer_settings.css' %}"> 
+    {% elif request|is_mobile %}
+    <link rel="stylesheet" href="{% static 'css/footer_settings.css' %}"> 
+    {% endif %}
+{% endblock %}
+
+
+{% block content %}
+
+
+<div class="container">
+	<div class="row">
+		<div class="col">
+
+
+<h4 class="mb-0 pb-2 pt-2">Política de privacidad</h4>
+<hr class="mt-1"/>
+<p class="font-weight-bolder">Definición de información personal</p>
+<p class="ml-3"><font size="2">La información personal es información sobre el usuario, y el usuario puede identificarse por el nombre, la dirección de correo electrónico, la fecha de nacimiento y otras descripciones que constituyen la información.
+</font></p>
+
+<p class="font-weight-bolder">Propósito del uso de la información personal</p>
+<p class="ml-3"><font size="2">ShareXela utiliza información personal solo para los siguientes propósitos.<br /><br />
+
+Además, no utilizaremos información personal más allá de este rango a menos que tengamos su consentimiento y la Ley de Protección de Información Personal y otras leyes nos permitan la información personal.</font></p>
+<ul><font size="2">
+<li>Brindar servicios a usuarios y autenticación personal en ShareXela</li>
+{% comment %}<li>商品広告を提供する企業等への会員サービスを目的とした情報提供</li>{% endcomment %}
+{% comment %}<li>ShareXelaによるサービスの向上等を目的としたアンケート、キャンペーンの実施</li>{% endcomment %}
+<li>Suministro gratuito de información variada por correo electrónico desde ShareXela, respuesta a consultas</li>
+{% comment %}<li>ShareXelaによる有料サービス提供時の利用料金請求</li>{% endcomment %}
+<li>Evite el uso ilegal, como la violación de los Términos de servicio, el correo no deseado, el acceso no autorizado, etc.</li>
+<li>Comprensión del estado de acceso, provisión y mejora de los servicios adaptados a las necesidades</li>
+{% comment %}<li>広告の配信または表示</li>{% endcomment %}
+</font></ul>
+
+<p class="font-weight-bolder">Suministro de información personal a terceros</p>
+<p class="ml-3"><font size="2">ShareXela no proporciona información personal a terceros, excepto en los siguientes casos.</font></p>
+<ul><font size="2">
+<li>Al recopilar y analizar información personal con el fin de mejorar el servicio de este servicio</li>
+{% comment %}<li>上記の集計及び分析等により得られたものを、個人を識別又は特定できない態様にて提携先等第三者に開示又は提供する場合</li>{% endcomment %}
+{% comment %}<li>本サービスの全部または一部の営業譲渡が行われ、譲渡先に対して法的に権利義務一切が引き継がれる場合</li>{% endcomment %}
+<li>Al obtener el consentimiento de la persona por adelantado al proporcionar información personal a un tercero</li>
+<li>Cuando lo requiera la ley</li>
+<li>Cuando es necesario proteger la vida, el cuerpo o la propiedad de una persona y es difícil obtener el consentimiento de la persona</li>
+<li>Cuando es particularmente necesario mejorar la salud pública o promover el desarrollo sano de los niños y es difícil obtener el consentimiento del individuo</li>
+<li>
+Cuando es necesario que una institución nacional, una entidad pública local o una persona encargada de cooperar en el desempeño de los deberes estipulados por las leyes y reglamentos, y con el consentimiento del individuo, impidan la ejecución de los deberes. Cuando existe el riesgo de ejercer</li>
+{% comment %}<li>利用目的の達成に必要な範囲内において、個人データの取扱いの全部又は一部を委託する場合</li>{% endcomment %}
+{% comment %}<li>商品広告を提供する企業等への会員サービスを目的とした情報提供</li>{% endcomment %}
+{% comment %}<li>広告の配信または表示を目的とした利用</li>{% endcomment %}
+<li>Otros casos permitidos por ley</li>
+</font></ul>
+
+<p class="font-weight-bolder">Gestión de la seguridad de la información personal</p>
+<p class="ml-3"><font size="2">{% comment '元文章' %}ShareXelaは、個人情報の漏えい、減失又は毀損の防止その他の安全管理のための措置を講じるとともに、ShareXelaの従業員に対する教育を行い、個人情報保護を徹底します。{% endcomment %}
+ShareXela tomará medidas para evitar fugas, pérdida o destrucción de información personal y otras medidas de seguridad, y protegerá completamente la información personal.</font></p>
+
+<p class="font-weight-bolder">Cambios en la información personal, etc</p>
+<p class="ml-3"><font size="2">El usuario puede solicitar a ShareXela que cambie o agregue la información personal registrada por razones que no son ciertas (incluidos los casos en que la información personal no es verdadera debido a adiciones o cambios). Después de confirmar que la solicitud es la solicitud del usuario, realice la investigación necesaria y agréguela / cámbiela sin demora.<br /><br />
+
+Sin embargo, si ShareXela no realiza cambios ni adiciones por razones razonables, lo notificará al usuario en consecuencia.<br /><br />
+
+
+Además, el usuario puede solicitar a ShareXela que elimine la información personal registrada. Si decides, bórralo.</font></p>
+<p class="font-weight-bolder">Notificación del propósito del uso de información personal, divulgación, solicitud de suspensión, etc.</p>
+<p class="ml-3"><font size="2">ShareXela acepta la notificación del propósito de uso y divulgación de información personal, suspensión de uso o borrado, y suspensión de provisión a terceros en la siguiente ventana de consulta.<br /><br />
+
+Si hay una solicitud de la persona, confirmaremos que la persona que realizó la solicitud es la persona o su agente, responderemos de acuerdo con las leyes y reglamentos, y responderemos por escrito o por correo electrónico.<br /><br />
+
+
+Además, es posible que no podamos cumplir con su solicitud si su aplicación no cumple con los requisitos estipulados por las leyes o reglamentos, o si hay una razón para rechazar la divulgación, etc. de acuerdo con la Ley de Protección de Información Personal u otras leyes y reglamentos.</font></p>
+
+<p class="font-weight-bolder">Consultas</p>
+<p class="ml-3"><font size="2">Para consultas sobre divulgación, etc., opiniones, preguntas, quejas y otras consultas sobre el manejo de información personal, contáctenos desde el formulario de consulta.</font></p>
+
+<p class="font-weight-bolder">Descargo de responsabilidad</p>
+<p class="ml-3"><font size="2">
+ShareXela no es responsable de la adquisición de información personal por un tercero en los siguientes casos.
+<ul>
+<li>Cuando el usuario divulga información personal a otros usuarios que utilizan la función en ShareXela u otro medio</li>
+<li>
+Si el usuario ha sido identificado inesperadamente por la información ingresada por el mismo usuario u otra información ingresada por el usuario</li>
+<li>Cuando un usuario que no sea la persona ha obtenido información de identificación personal (ID, contraseña, etc.)</li>
+</ul></font></p>
+
+
+{% comment %}
+
+
+<p class="font-weight-bolder">cookie（クッキー）の使用</p>
+<p class="ml-3"><font size="2">ShareXelaは、よりよいサービスを提供するため、cookie（クッキー）を使用することがありますが、 これにより個人を特定できる情報の収集を行えるものではなく、ユーザーのプライバシーを侵害することはありません。<br /><br />
+
+また、cookie（クッキー）の受け入れを希望しない場合は、ブラウザの設定で変更することができます。<br /><br />
+
+※ cookie（クッキー）とは、サーバーコンピュータからユーザーのブラウザに送信され、ユーザーが使用しているコンピュータのハードディスクに蓄積される情報です。</font></p>
+
+<p class="font-weight-bolder">端末識別子の使用</p>
+<p class="ml-3"><font size="2">ShareXelaは、iOS版・Android版アプリを利用するスマートデバイス端末から端末識別子（Apple社が発行するIDFAやGoogle社が発行するAAID等の広告識別子を含みます。）を取得し使用することがあります。</font></p>
+
+<p class="font-weight-bolder">位置情報の使用</p>
+<p class="ml-3"><font size="2">ShareXelaは、ユーザーがShareXelaを利用する際のユーザーの位置情報（緯度経度情報）を、ユーザーの同意がある場合に取得し使用することがあります。</font></p>
+
+<p class="font-weight-bolder">サービス内での行動情報の使用</p>
+<p class="ml-3"><font size="2">ShareXelaは、ユーザーがShareXelaを利用されている際の検索条件や、投稿・問合せ内容などお客様がサービス内で行った行動の情報を取得し使用することがあります。</font></p>
+
+<p class="font-weight-bolder">アクセスログ等の記録、開示</p>
+<p class="ml-3"><font size="2">ShareXelaは、ShareXelaにメッセージ等の書き込みを行ったユーザーのIPアドレス、 当該IPアドレスからShareXelaに書き込みを行った日時等のアクセスログを記録することがあります。<br /><br />
+
+ShareXelaは、ユーザーが開示に同意した場合、犯罪捜査など法律手続の中で開示を要請された場合又は消費者センター、 弁護士会等の公的機関から正当な理由に基づき照会を受けた場合の他、 ShareXelaになされた書き込み等により損害を被ったと主張する第三者から開示を要請された場合において、 当該書き込みを行ったユーザーの氏名、住所、電子メールアドレス、電話番号などの個人情報及びアクセスログを開示することがあります。</font></p>
+
+<p class="font-weight-bolder">統計データの利用</p>
+<p class="ml-3"><font size="2">ShareXelaは、提供を受けた個人情報をもとに、個人を特定できない形式による統計データを作成し、 当該データにつき何らの制限なく利用することができるものとします。</font></p>
+
+
+{% endcomment %}
+
+<p class="font-weight-bolder">Mejora continua</p>
+<p class="ml-3"><font size="2">ShareXela revisará el estado operativo con respecto al manejo de información personal de vez en cuando y se esforzará por la mejora continua, y puede cambiar su política de privacidad según sea necesario.<br /><br />
+
+Cualquier cambio a esta política se publicará en esta página. La Política revisada se aplicará desde el momento en que comienza a publicarse.</font></p>
+
+		</div>
+	</div>
+</div>
+{% endblock %}

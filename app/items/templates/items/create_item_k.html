@@ -1,0 +1,78 @@
+{% extends 'config/base.html' %}
+{% load user_agents %}
+{% load static %}
+
+
+
+{% block head %}
+
+
+    {% if request|is_pc %}
+
+
+     <link rel="stylesheet" href="{% static 'css/footer_settings.css' %}"> 
+    {% elif request|is_mobile %}
+    {% endif %}
+{% endblock %}
+
+
+
+
+
+{%  block content %}
+
+<div class="container">
+    <div class="row">
+        <div class="col">
+            <!-- メッセージフレームワーク -->           
+            {% include "config/include/message_and_delete.html" %}
+            <!-- メッセージフレームワーク終わり -->
+            <p ><font size="6">{{ title }}</font></p>
+
+            <form method="post" enctype="multipart/form-data" action="{% url 'items:item_create2' %}">{% csrf_token %} 
+                {% include "items/include/create_edit_item_form.html" %}
+            </form>
+
+
+            {% include "config/include/general/basic_margin.html" %}
+            {% include "config/include/general/basic_margin.html" %}
+            {% include "config/include/general/basic_margin.html" %}
+            {% include "config/include/general/basic_margin.html" %}
+
+
+        </div>
+    </div>            
+</div>
+
+{% include "config/include/general/basic_margin.html" %}
+{% include "config/include/general/basic_margin.html" %}
+{% include "config/include/general/basic_margin.html" %}
+{% include "config/include/general/basic_margin.html" %}
+
+{# vue.js cdn #}
+<script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+{# axios cdn #}
+<script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+
+
+
+{# leafletのセットアップ用のjavascriptコード #}
+{% include "items/include/create_edit/setting_leaflet_map.html" %}
+
+
+{# 選択したオプションによってmunicipioの選択肢が変わる仕組みのjavascriptコード #}
+{% if title == "Crear Articulo" %}
+{# crear articuloの場合のVueをインクルード #}
+{% include "items/include/create_edit/setting_select_departamento.html" %}
+{% include "items/include/create_edit/setting_select_municipio.html" %}
+
+{% elif title == "Editar Articulo" %}
+{# editar articuloの場合のVueをインクルード #}
+{% include "items/include/create_edit/setting_select_departamento_for_edit.html" %}
+{% include "items/include/create_edit/setting_select_municipio_for_edit.html" %}
+
+{% endif %}
+    
+
+
+{% endblock %}

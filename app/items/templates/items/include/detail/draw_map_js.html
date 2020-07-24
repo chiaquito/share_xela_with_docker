@@ -1,0 +1,34 @@
+{% comment %}
+*単一で使うことができず必ずこのファイルとともにdraw_map_template_tag.htmlもincludeも利用すること。
+
+右を利用する  {% include "items/include/detail/draw_map_template_tag.html" %}
+{% endcomment %}
+
+
+
+{% if item_obj.point and item_obj.radius != 0 %}
+<script type="text/javascript">
+    function map_init_basic(map, options) {
+        var lon = "{{ item_obj.point.x }}";
+        var lat = "{{ item_obj.point.y }}";
+        var radius = "{{ item_obj.radius }}"
+
+        map.setView([lat, lon], 12);
+        L.circle([lat, lon], {radius: radius}).addTo(map);
+        
+    }   
+</script>
+
+{% elif item_obj.point and item_obj.radius == 0 %}
+<script type="text/javascript">
+    function map_init_basic(map, options) {
+        var lon = "{{ item_obj.point.x }}";
+        var lat = "{{ item_obj.point.y }}";
+
+        map.setView([lat, lon], 12);
+        L.marker([lat, lon]).addTo(map);
+        
+    }   
+</script>
+{% else %}
+{% endif %}

@@ -1,0 +1,161 @@
+{% extends 'config/base.html' %}
+{% load user_agents %}
+{% load static %}
+
+
+{% block head %}
+    {% if request|is_pc %}
+    <!-- adjusting footer -->
+    {# <link rel="stylesheet" href="{% static 'css/adjusting_footer.css' %}"> #}
+    <link rel="stylesheet" href="{% static 'css/footer_settings.css' %}">
+    {% elif request|is_mobile %}
+    <link rel="stylesheet" href="{% static 'css/footer_settings.css' %}">
+    {% endif %}
+
+
+    <link href="https://fonts.googleapis.com/css?family=Roboto:100,300,400,500,700,900" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/@mdi/font@5.x/css/materialdesignicons.min.css" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/vuetify@2.x/dist/vuetify.min.css" rel="stylesheet">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, minimal-ui">
+
+{% endblock %}
+
+
+{%  block content %}
+{% if request|is_pc %}
+
+
+
+<div class="container-fluid" id="app">
+    <v-app> 
+        <main>    
+           <item_list/>
+        </main>
+    </v-app>    
+</div>
+
+
+
+
+
+
+{% include 'config/include/general/vue_js_script.html' %}
+
+
+<script type="text/x-template" id="item_list">
+
+    <v-container fluid>
+        <v-row>
+          
+        </v-row>
+        <v-row>  
+            <v-card cols=3 class="mt-4 mb-4 ml-4 pa-3" v-for="(item,i) in items" :key="i" >
+              <a v-bind:href="item.href" >
+              <v-layout justify-center>
+                  <v-flex  >
+                      
+                          <v-card-text >
+                        
+                          <img v-bind:src="item.src" width="60%" alt=""/>
+                          
+                          <p v-text="item.title" ></p>
+                          <span v-text="item.category"></span><br />
+                          <span v-text="item.created_at" ></span>
+                          </v-card-text>
+        
+                  </v-flex>
+              </v-layout>
+              </a>
+        </v-card>
+    
+        </v-row>
+    </v-container>
+
+
+
+
+</script>
+
+
+
+
+<script >
+Vue.component("item_list",{
+    template: "#item_list",
+    data: function(){
+      var items = new Array()
+      {% for obj in item_objects %}
+      items.push({
+        src: "{{ obj.image1.url }}",
+        title: "{{ obj.title|truncatechars:38 }}",
+        
+        href: '{% url "items:item_detail" obj.id %}', 
+        created_at: '{{ obj.created_at }}',
+        category: "{{ obj.category }}",
+      })  
+      {% endfor %}
+
+      return { items: items }
+    }
+});
+
+
+
+new Vue({
+      el: '#app',
+      vuetify: new Vuetify(),
+    });    
+</script>
+
+
+
+
+
+
+{% endif %}
+
+
+{% if request|is_mobile %}
+<div class="container">
+    <div class="row">
+      <div class="col-12">
+        <p><br/></p>
+
+        <div class="card-columns">
+        {% for obj in item_objects %}
+        <div class="card my-3">
+            <div class="card-header">
+            <a class="card-title" href="{% url 'items:item_detail' obj.id %}">{{ obj.title }}</a>
+            </div>
+            <div class="card-body  pl-3">
+                <div class="container-fluid">
+                    <div class="row ">
+                        <div class="col-4 pl-0">
+                         <a href="{% url 'items:item_detail' obj.id %}" >
+                            <img src="{{ obj.image1.url }}" class="card-img border" style="width: 5rem;" alt="...">
+                         </a>
+                        </div>
+                        <div class="col-8">
+                        <p class="card-text">{{ obj.description|truncatechars:100 }}</p>
+                        <p class="card-text"><small class="text-muted">{{ obj.category.get_number_display }}<br />
+                        {{ obj.created_at }}</small></p>                        
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+        </div>
+
+        </div>
+    </div>
+</div>
+{% endif %}
+
+
+{% endblock %}
+
+
+
+
+

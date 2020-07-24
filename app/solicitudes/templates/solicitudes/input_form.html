@@ -1,0 +1,67 @@
+{% extends 'config/base.html' %}
+{% load user_agents %}
+{% load static %}
+
+
+{% block head %}
+    {% if request|is_pc %}
+    <!-- adjusting footer -->
+    {# <link rel="stylesheet" href="{% static 'css/adjusting_footer.css' %}"> #}
+    <link rel="stylesheet" href="{% static 'css/footer_settings.css' %}">
+    {% elif request|is_mobile %}
+	{% endif %}
+	{% include 'config/include/general/vue_js_head.html' %}
+{% endblock %}
+
+
+{% block content %}
+<div class="container">
+	<div class="row">
+		<div class="col">
+		<h4>Escribe un mensaje al contribuyente</h4>
+		</div>
+	</div>
+</div>
+<div class="container" id="app">
+	<div class="row">
+		<div class="col-6">
+			
+		<form method="post" action="{% url 'solicitudes:solicitud_input' item_obj.id %}"->
+		
+		<!--form method="post" action="#"-->	
+		{% csrf_token %}
+
+		{# {{ form.item.as_hidden }} #}
+
+
+
+		{{ form.applicant.as_hidden }}
+
+		{{ form.message }}
+		<br />
+
+
+		<!--button class="btn btn-primary" >送信</button-->
+		<v-app>
+			<template>
+		<v-btn block color="primary" dark>Block Button</v-btn>
+	        </template>
+		</v-app>
+		
+		<button class="btn btn-primary btn-block">enviar mensaje</button>
+		</form>
+		</div>
+	</div>
+</div>
+
+
+
+{% include 'config/include/general/vue_js_script.html' %}
+<script>
+new Vue({
+      el: '#app',
+      vuetify: new Vuetify(),
+    });
+    
+</script>
+{% endblock %}

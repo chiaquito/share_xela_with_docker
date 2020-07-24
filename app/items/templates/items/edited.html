@@ -1,0 +1,25 @@
+{% extends 'config/base.html' %}
+{% load user_agents %}
+{% load static %}
+
+
+{% block head %}
+    <!-- adjusting footer -->
+    <link rel="stylesheet" href="{% static 'css/adjusting_footer.css' %}">
+{% endblock %}
+
+
+{% block content %}
+<div class="container">
+	<div class="row">
+		<div class="col">
+
+		{# アイテム情報は変更されました。 #}
+		<p class="mt-4 h4">La información del artículo ha sido modificada.</p>
+		<br />
+		<a class="btn btn-primary" href="{% url 'items:item_detail' item_obj.id %}">{# 変更アイテムを見る。#} Revisar artículo modificado</a>
+
+		</div>
+	</div>
+</div>
+{% endblock %}

@@ -1,0 +1,53 @@
+
+<script type="text/javascript">
+
+var DEPARTAMENTOS     = ['Alta Verapaz',
+                        'Baja Verapaz',
+                        'Chimaltenango',
+                        'Chiquimula',
+                        'El Progreso',
+                        'Escuintla',
+                        'Guatemala',
+                        'Huehuetenango', 
+                        'Izabal', 
+                        'Jalapa',
+                        'Jutiapa',
+                        'Petén', 
+                        'Quetzaltenango', 
+                        'Quiché', 
+                        'Retalhuleu',
+                        'Sacatepéquez', 
+                        'San Marcos',
+                        'Santa Rosa', 
+                        'Sololá', 
+                        'Suchitepéquez',
+                        'Totonicapán',
+                        'Zacapa'
+                        ]
+
+
+var dList = new Array()
+for (let i = 0; i < DEPARTAMENTOS.length; i++){
+    dList.push({name: DEPARTAMENTOS[i]})
+}
+
+
+
+
+var app = new Vue({
+    el: "#select_departamento",
+    data: {
+        lst:dList,
+        selected:"{{ item_obj.adm1 }}"
+    },
+    delimiters: ["**","**"],
+    watch:{
+        selected:function(newData, oldData){
+            console.log(newData, oldData)
+            muni.parent = newData
+
+        }
+    }
+});
+
+</script>

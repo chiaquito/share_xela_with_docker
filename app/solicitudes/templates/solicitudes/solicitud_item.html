@@ -1,0 +1,47 @@
+{% extends 'config/base.html' %}
+
+
+
+{% block content %}
+
+<div class="container-fluid">
+	<div class="row">
+		<div class='col'>
+        <!--p class="h2">申請アイテムリスト</p-->
+        <p class="h2">Mostrar lista de solicitudes</p>
+        <p class="h4">{{ item_obj }}</p>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-2">
+    {% include 'config/include/avisos_menu.html' %} 
+    </div>
+
+    <div class="col-10">
+      <br />
+<table class="table">
+  <thead>
+    <tr>
+      <th scope="col">#</th>
+      <th scope="col">Articlos</th>
+      <th scope="col">申請数</th>
+      <th scope="col">Handle</th>
+    </tr>
+  </thead>
+  <tbody>
+  {% for obj in item_qs %}	
+    <tr>
+      <th scope="row">1</th>
+      <td><a href="{% url 'solicitudes:solicitud_decision' obj.id %}">{{ obj }}</a></td>
+      <td>{{ obj.count }}</td>
+      <td>ふふふふう</td>
+    </tr>
+   {% endfor %}
+
+  </tbody>
+</table>
+
+		</div>
+	</div>
+</div>
+{% endblock %}

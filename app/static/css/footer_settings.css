@@ -1,0 +1,26 @@
+
+
+
+
+
+.test {
+	display: flex;
+	flex-flow: column;
+	min-height: 100vh;
+
+}
+
+
+
+
+.espacio{
+	flex: 1;
+}
+	
+
+footer {
+
+    background: #333333;
+    color: #ffffff;
+    height: 80px;
+}

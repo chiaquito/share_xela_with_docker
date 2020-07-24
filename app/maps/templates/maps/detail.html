@@ -1,0 +1,21 @@
+{% load leaflet_tags %}
+{% leaflet_css %}
+{% leaflet_js %}
+
+
+<h1>detail</h1>
+{{ object.point.x }}<br />
+{{ object.point.y }}<br />
+{% leaflet_map "main" callback="map_init_basic" %}
+
+
+<script type="text/javascript">
+    function map_init_basic(map, options) {
+        var lon = "{{ object.point.x }}";
+        var lat = "{{ object.point.y }}";
+
+        map.setView([lat, lon], 18);
+        L.marker([lat, lon]).addTo(map);
+        
+    }	
+</script>

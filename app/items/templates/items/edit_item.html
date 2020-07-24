@@ -1,0 +1,51 @@
+{% extends 'config/base.html' %}
+{% load user_agents %}
+{% load static %}
+
+{% block head %}
+
+<link rel="stylesheet" href="{% static 'css/footer_settings.css' %}"> 
+<title>ShareXela : Editar Articulo</title>
+{% endblock %}
+
+{%  block content %}
+
+
+{% comment  %} --------------------           pc            -------------------------- {% endcomment %}     
+
+
+{% if request|is_pc %}
+<div class="container">
+	<p ><font size="6">Editar Articulo</font></p>
+
+
+
+<form method="post" enctype="multipart/form-data" action="{% url 'items:item_edit' item_obj.id  %}">{% csrf_token %} 
+	{% include "items/include/create_edit_item_form.html" %}	
+</form>
+
+
+</div>
+</div>
+
+
+{% endif %}
+{% comment  %} --------------------           pc 終わり           ------------------------- {% endcomment %} 
+{% comment  %}　-------------------           mobile          ---------------------------　{% endcomment %} 
+{% if request|is_mobile %}
+
+<div class="container">
+	
+	<p class="my-1"><font size="5">Editar Articulo</font></p>
+<form method="post" enctype="multipart/form-data" action="{% url 'items:item_edit' item_obj.id  %}">{% csrf_token %} 
+	{% include "items/include/create_edit_item_form.html" %}
+</form>
+
+
+</div>
+</div>
+
+
+{% endif %}
+{# <------------------------------------             mobile終わり      -------------------------------------------------> #}
+{% endblock %}
