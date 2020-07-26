@@ -14,6 +14,9 @@ django-geojson==2.12.0
 django-phonenumber-field==3.0.1
 django-tempus-dominus==5.1.2.9
 djangorestframework==3.11.0 # https://github.com/encode/django-rest-framework
+django-geojson==2.12.0
+django-leaflet==0.25.0
+leaflet==0.0.3
 docutils==0.15.2
 firebase-admin==4.3.0
 phonenumbers==8.10.21

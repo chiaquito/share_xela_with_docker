@@ -12,8 +12,8 @@ env.use_ssh_config = False
 env.user = 'chiaki'
 env.port = '21345'
 
-#env.key_filename = '~/.ssh/id_rsa'
-env.key_filename = '~/.ssh/circle_ci'
+env.key_filename = '~/.ssh/id_rsa'
+#env.key_filename = '~/.ssh/circle_ci'
 
 
 
@@ -27,18 +27,11 @@ class DeployHandler(object):
 
     def make_app_dir(self):
         with cd(env.pull_dir):
-            #os.path.isdir("/home/chiaki/test_dir")
-            #run("""python3 -c 'import os.path;print(os.path.isdir("/home/chiaki"))'""")
             run("MYDIR='/home/chiaki/test_dir'")
-            #run("WOOD='myname'")
-
-
-            run("if [ -e $MYDIR  ]; then echo 'すでに存在する' else echo '存在しない' fi ")
-            
-            
-
-            #run("if [ -d / ]; then echo 'すでに存在する' else echo '存在しない' fi ", warn_only=True)
-            run("echo '動いてる？？'")
+            if exists('/home/chiaki/tet_dir'):
+                print("存在する")
+            else:
+                print("存在しない")
 
 
     #gitで指定するリポジトリからデータを取得する。
@@ -46,26 +39,26 @@ class DeployHandler(object):
         with cd(PULL_DIR):
             #run("git remote -v")
             #run("git remote add origin chiaki@github.com:chiaki1990/share_xela_with_docker")
-            run("git pull origin master")#, warn_only=True
+            run("git pull origin master")
             #run("git clone https://github.com/chiaki1990/share_xela_with_docker.git")
 
 
     def install_dependencies(self):
         with cd(APP_PATH):
-            run("python3 -m pip install -r requirements.txt") #, warn_only=True
+            run("python3 -m pip install -r requirements.txt")
 
 
     def makemigrations(self):
         with cd(APP_PATH):
-            run("python3 manage.py makemigrations --settings=config.settings.prod_settings") #, warn_only=True
+            run("python3 manage.py makemigrations --settings=config.settings.prod_settings")
 
     def migrate(self):
         with cd(APP_PATH):
-            run("python3 manage.py migrate --settings=config.settings.prod_settings", warn_only=True)
+            run("python3 manage.py migrate --settings=config.settings.prod_settings")
 
     def collectstatic(self):
         with cd(APP_PATH):
-            run("python3 manage.py collectstatic --no-input --settings=config.settings.prod_settings", warn_only=True)
+            run("python3 manage.py collectstatic --no-input --settings=config.settings.prod_settings")
 
 
     def command_ls(self):
@@ -74,17 +67,17 @@ class DeployHandler(object):
 
     def kill_process(self):
         with cd(APP_PATH):
-            run("pkill gunicorn") #, warn_only=True
+            run("pkill gunicorn") 
 
     def restart(self):
         with cd(APP_PATH):
-            run("gunicorn --daemon --bind 127.0.0.1:8000 --env DJANGO_SETTINGS_MODULE=config.settings.prod_settings config.wsgi:application") #, warn_only=Trues
+            run("gunicorn --daemon --bind 127.0.0.1:8000 --env DJANGO_SETTINGS_MODULE=config.settings.prod_settings config.wsgi:application")
         
 
 
 
 
-#@taskを使う理由が分かっていない
+
 @task
 def deploy():
     dh = DeployHandler()

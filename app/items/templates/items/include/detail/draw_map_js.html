@@ -6,29 +6,66 @@
 
 
 
+{# leafletのCDN #}
+<script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.6.0/leaflet.js"></script>
+<link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.6.0/leaflet.css">
+
+
 {% if item_obj.point and item_obj.radius != 0 %}
 <script type="text/javascript">
-    function map_init_basic(map, options) {
+
+var map = new Vue({
+    el: "#map",
+    data: {
+        isShowMap: false,
+        geo_object: null,
+        radius: null,
+        width: "100%",
+        height:"300px",
+
+    },
+
+    mounted:function(){
         var lon = "{{ item_obj.point.x }}";
         var lat = "{{ item_obj.point.y }}";
         var radius = "{{ item_obj.radius }}"
-
-        map.setView([lat, lon], 12);
+        var map = L.map('map_leaflet', { center: [lat, lon],zoom: 13})
+                        .addLayer(L.tileLayer('http://{s}.tile.osm.org/{z}/{x}/{y}.png'));
+        //map.setView([lat, lon], 12);
         L.circle([lat, lon], {radius: radius}).addTo(map);
-        
-    }   
+    }
+
+});
+
+
 </script>
 
 {% elif item_obj.point and item_obj.radius == 0 %}
-<script type="text/javascript">
-    function map_init_basic(map, options) {
-        var lon = "{{ item_obj.point.x }}";
-        var lat = "{{ item_obj.point.y }}";
 
-        map.setView([lat, lon], 12);
-        L.marker([lat, lon]).addTo(map);
-        
-    }   
-</script>
+<script type="text/javascript">
+
+    var map = new Vue({
+        el: "#map",
+        data: {
+            isShowMap: false,
+            geo_object: null,
+            radius: null,
+            width: "100%",
+            height:"300px",
+    
+        },
+    
+        mounted:function(){
+            var lon = "{{ item_obj.point.x }}";
+            var lat = "{{ item_obj.point.y }}";
+            var radius = "{{ item_obj.radius }}"
+            var map = L.map('map_leaflet', { center: [lat, lon],zoom: 13})
+                            .addLayer(L.tileLayer('http://{s}.tile.osm.org/{z}/{x}/{y}.png'));
+            //map.setView([lat, lon], 12);
+            L.marker([lat, lon]).addTo(map);
+        }
+    
+    });
+    </script>
 {% else %}
 {% endif %}

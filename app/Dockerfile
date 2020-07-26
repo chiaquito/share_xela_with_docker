@@ -26,6 +26,8 @@ ENV DEBIAN_FRONTEND=noninteractive
 # pipとその他依存関係のインストール
 RUN apt-get install -y curl \
     && curl https://bootstrap.pypa.io/get-pip.py -o get-pip.py \
+    #追加
+    #&& apt-get install -y apt-utils \
     && apt-get install -y python3.8-distutils \
     && apt-get install -y python3-distutils \
     && python3.8 get-pip.py \

@@ -6,20 +6,26 @@
 {% endcomment %}
 
 
-{% load leaflet_tags %}
-{% leaflet_css %}
-{% leaflet_js %}
 
 
-<div class="container">
+
+
+<div class="container" id="map">
     <div class="row">
         <div class="col-12">
             
             {% if item_obj.point %}
-            {% leaflet_map "main" callback="map_init_basic" %}
+            
+            <div class="container" id="map_leaflet" v-bind:style="{ width: width, height: height }"></div>
+
             {% else %}
             {% endif %}
             
         </div>
     </div>
 </div>
+
+
+
+
+
