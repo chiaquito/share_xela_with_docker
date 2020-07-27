@@ -5,28 +5,26 @@
 
 {% block head %}
 
-
-  {# vuetify cdn #}
-  <link href="https://fonts.googleapis.com/css?family=Roboto:100,300,400,500,700,900" rel="stylesheet">
-  <link href="https://cdn.jsdelivr.net/npm/@mdi/font@5.x/css/materialdesignicons.min.css" rel="stylesheet">
-  <link href="https://cdn.jsdelivr.net/npm/vuetify@2.x/dist/vuetify.min.css" rel="stylesheet">
-  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, minimal-ui">
-
-
-
-
-  <link rel="stylesheet" href="{% static 'css/footer_settings.css' %}"> 
-
-  {# vuetify #}
-  {% comment %}
-  <!--link href="https://fonts.googleapis.com/css?family=Roboto:100,300,400,500,700,900" rel="stylesheet">
-  <link href="https://cdn.jsdelivr.net/npm/@mdi/font@5.x/css/materialdesignicons.min.css" rel="stylesheet">
-  <link href="https://cdn.jsdelivr.net/npm/vuetify@2.x/dist/vuetify.min.css" rel="stylesheet"-->
+    {# vuetify cdn #}
     <link href="https://fonts.googleapis.com/css?family=Roboto:100,300,400,500,700,900" rel="stylesheet">
-  <link href="https://cdn.jsdelivr.net/npm/@mdi/font@5.x/css/materialdesignicons.min.css" rel="stylesheet">
-  <link href="https://cdn.jsdelivr.net/npm/vuetify@2.x/dist/vuetify.min.css" rel="stylesheet">
-  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, minimal-ui">
-  {% endcomment %}
+    <link href="https://cdn.jsdelivr.net/npm/@mdi/font@5.x/css/materialdesignicons.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/vuetify@2.x/dist/vuetify.min.css" rel="stylesheet">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, minimal-ui">
+
+    {# 自作cssファイルの読み込み #}
+    <link rel="stylesheet" href="{% static 'css/footer_settings.css' %}"> 
+    <link rel="stylesheet" href="{% static 'css/general.css' %}"> 
+
+    {# vuetify #}
+    {% comment %}
+    <!--link href="https://fonts.googleapis.com/css?family=Roboto:100,300,400,500,700,900" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/@mdi/font@5.x/css/materialdesignicons.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/vuetify@2.x/dist/vuetify.min.css" rel="stylesheet"-->
+      <link href="https://fonts.googleapis.com/css?family=Roboto:100,300,400,500,700,900" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/@mdi/font@5.x/css/materialdesignicons.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/vuetify@2.x/dist/vuetify.min.css" rel="stylesheet">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, minimal-ui">
+    {% endcomment %}
 
 {% endblock %}
 
@@ -37,23 +35,19 @@
 {% block content %}
 
 
-
-
-{# pc/mobile共通 メッセージフレームワーク #}          
+{# pc/mobile共通                    メッセージフレームワーク                                    #}          
 {% include "config/include/message_and_delete.html" %}
-{# メッセージフレームワーク終わり #}
+{# pc/mobile共通                    メッセージフレームワーク                              終わり #}
 
 
 
-{% comment %}               pc                  {% endcomment %}
 
+
+{#　　　　　　　　　　　　　　　　　　　　　 pc  の場合のテンプレート　　　　　　　　　　　　　　　　　　　 #}                            
 {% if request|is_pc %}
 
 
 <img src="{% static 'Xela_.jpg' %}" />
-
-{# vuetify cdn #}
-
 <div id="app">
         <v-app>            
             <main>
@@ -68,12 +62,14 @@
 
 
 
-  <!--script src="https://cdn.jsdelivr.net/npm/vue@2.x/dist/vue.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/vuetify@2.x/dist/vuetify.js"></script-->
-  {% include 'config/include/general/vue_js_script.html' %}
 
 
-  
+{# 以下javascript #}
+
+
+{% include 'config/include/general/vue_js_script.html' %}
+
+
 <script type="text/x-template" id="gallery-sec">
   
 
@@ -85,9 +81,9 @@
       
       <p class="h6 ml-4 pb-0 mb-0">
         <a class="h5 pb-0 mb-0" href="#category">&nbsp;&nbsp;buscar mas... </a>
-        <a href="#">quiere donar o vender</a>,
-        <a href="#">busca donante</a>, 
-        <a href="#">quiere avisar</a> 
+        <a href="{% url 'items:ItemCategoryListView' 1 %}">quiere donar o vender</a>,
+        <a href="{% url 'items:ItemCategoryListView' 2 %}">busca donante</a>, 
+        <a href="{% url 'items:ItemCategoryListView' 3 %}">quiere avisar</a> 
       </p>
       
     </v-row>
@@ -98,7 +94,7 @@
               <v-flex  >
                   
                       <v-card-text >
-                      <img v-bind:src="item.src" width="60%"   alt=""/>
+                      <img v-bind:src="item.src" class="centerCrop" alt=""/>
                       
                       <p v-text="item.title"></p>
                       <p v-text="item.created_at" ></p>
@@ -116,10 +112,10 @@
       <h2 class=" my-0 ml-8">HABITACION</h2> 
       <p class="h6 ml-4 pb-0 mb-0">
       <a class="h5 pb-0 mb-0" href="#category">&nbsp;&nbsp;buscar mas...</a>
-      <a href="#">busca una habitación</a>, 
-      <a href="#">alquila una habitación</a>, 
-      <a href="#">busca pensionado</a>, 
-      <a href="#">busca pensionista</a>
+      <a href="{% url 'items:ItemCategoryListView' 4 %}">busca una habitación</a>, 
+      <a href="{% url 'items:ItemCategoryListView' 5 %}">alquila una habitación</a>, 
+      <a href="{% url 'items:ItemCategoryListView' 6 %}">busca pensionado</a>, 
+      <a href="{% url 'items:ItemCategoryListView' 7 %}">busca pensionista</a>
     </p>
     </v-row>  
     <v-row>
@@ -130,7 +126,7 @@
             <v-flex  >
                 
                     <v-card-text >
-                    <img v-bind:src="item.src" width="60%"   alt=""/>
+                    <img  v-bind:src="item.src" class="centerCrop"  alt=""/>
                     
                     <p v-text="item.title"></p>
                     <p v-text="item.created_at" ></p>
@@ -153,8 +149,8 @@
 
     <p class="h6 ml-4 pb-0 mb-0">
        <a class="h5 pb-0 mb-0" href="#category">&nbsp;&nbsp;buscar mas...</a>
-       <a href="#">busca empleado</a>, 
-       <a href="#">busca trabajador</a>
+       <a href="{% url 'items:ItemCategoryListView' 8 %}">busca empleado</a>, 
+       <a href="{% url 'items:ItemCategoryListView' 9 %}">busca trabajador</a>
     </p>
   </v-row>  
   <v-row>
@@ -165,7 +161,7 @@
           <v-flex  >
               
                   <v-card-text >
-                  <img v-bind:src="item.src" width="60%"   alt=""/>
+                  <img v-bind:src="item.src" class="centerCrop"   alt=""/>
                   
                   <p v-text="item.title"></p>
                   <p v-text="item.created_at" ></p>
@@ -185,7 +181,7 @@
   <h2 class="h2 my-0 ml-8">Enpresas</h2>
   <p class="h6 ml-4 pb-0 mb-0"> 
   <a class="h5 pb-0 mb-0" href="#category">&nbsp;&nbsp;buscar mas...</a>
-  <a href="#">publicidad de Enpresas y Servicios</a>
+  <a href="{% url 'items:ItemCategoryListView' 10 %}">publicidad de Enpresas y Servicios</a>
   </p>
 </v-row>  
 <v-row>
@@ -196,7 +192,7 @@
         <v-flex  >
             
                 <v-card-text >
-                <img v-bind:src="item.src" width="60%"   alt=""/>
+                <img v-bind:src="item.src" class="centerCrop"   alt=""/>
                 
                 <p v-text="item.title"></p>
                 <p v-text="item.created_at" ></p>

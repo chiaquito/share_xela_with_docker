@@ -44,7 +44,7 @@
 
 		<div class="col-12">
 
-			<p class="h2">TU PERFIL INFORMACION</p>
+			<p class="h2">TU PERFIL INFORMACION </p>
 
 
 			<form method="POST" enctype="multipart/form-data" action="{% url 'profiles:profile' %}" >{%csrf_token%}
@@ -118,9 +118,32 @@
 			<button class="btn btn-primary btn-block mb-3" >Cambiar Prefil</button>
 			</form>
 
+
+			{# 試験的にココにformを追加する #}
+			{% include "items/include/create_edit/select_departamento.html" %}
+			{% include "items/include/create_edit/select_municipio.html" %}
+
+
+
 		</div>
 </div>
 </div>
+
+
+{# vue.js cdn #}
+<script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+{# axios cdn #}
+<script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+
+
+
+{# 地理情報のセレクトを動的に変更するためのVueをインクルード #}
+{% include "items/include/create_edit/setting_select_departamento_for_edit.html" %}
+{% include "items/include/create_edit/setting_select_municipio_for_edit.html" %}
+
+
+
+
 {% endif %}
 {# <---------------------------------------------- pc終わり --------------------------------------------------> #}
 

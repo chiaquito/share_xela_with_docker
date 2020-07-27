@@ -4,13 +4,11 @@
 
 
 {% block head %}
-    {% if request|is_pc %}
-    <!-- adjusting footer -->
-    {# <link rel="stylesheet" href="{% static 'css/adjusting_footer.css' %}"> #}
-    <link rel="stylesheet" href="{% static 'css/footer_settings.css' %}">
-    {% elif request|is_mobile %}
-    <link rel="stylesheet" href="{% static 'css/footer_settings.css' %}">
-    {% endif %}
+
+    {# 自作cssファイルの読み込み #}
+    <link rel="stylesheet" href="{% static 'css/footer_settings.css' %}"> 
+    <link rel="stylesheet" href="{% static 'css/general.css' %}"> 
+
 
 
     <link href="https://fonts.googleapis.com/css?family=Roboto:100,300,400,500,700,900" rel="stylesheet">
@@ -56,7 +54,7 @@
                       
                           <v-card-text >
                         
-                          <img v-bind:src="item.src" width="60%" alt=""/>
+                          <img v-bind:src="item.src" class="centerCrop" alt=""/>
                           
                           <p v-text="item.title" ></p>
                           <span v-text="item.category"></span><br />

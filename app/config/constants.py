@@ -33,7 +33,8 @@ class TemplateName(object):
     HOME        = "config/home_kaizen.html"
     ITEM_DETAIL = "items/detail_item2.html"
     ITEM_LIST   = "items/list_items.html"
-    NO_ITEMS    = "items/no_item.html" 
+    NO_ITEMS    = "items/no_item.html"
+    USER_ITEM_LIST = "items/item_user_list/list.html"
     DIRECT_MESSAGE_DETAIL = "direct_messages/dm_detail.html"
     SOLICITUD_INPUT = "solicitudes/input_form.html"
     SOLICITUD_LIST  = 'solicitudes/solicitud_decision.html'
@@ -49,6 +50,7 @@ class ViewName(object):
     ITEM_LIST_BY_FAVORITE = 'items:item_list_by_favorite'
     ITEM_CONTACT     = 'item_contacts:ItemContactView'
     ITEM_CREATE = "items:item_create2"
+    ITEM_EDIT   = "items:item_edit"
 
     DIRECT_MESSAGE_DETAIL = 'direct_messages:dm_detail'
     FEEDBACK_CREATE  = 'feedback:feedback'

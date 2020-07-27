@@ -3,7 +3,7 @@ from .base import *
 
 DEBUG = True
 
-ALLOWED_HOSTS = ['sharexela.ga','153.126.194.171','144.202.23.188', '127.0.0.1']
+ALLOWED_HOSTS = ['sharexela.ga','153.126.194.171','144.202.23.188',"192.168.1.6", '127.0.0.1']
 
 
 DATABASES = {
@@ -13,6 +13,7 @@ DATABASES = {
         'PORT': '5432',
         'USER': 'geodjango_user',
         'PASSWORD': 'geodjango1990',
+        'HOST': os.environ.get('DATABASE_HOST', default=''),
     }
 }
 

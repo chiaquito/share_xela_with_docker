@@ -15,7 +15,7 @@ from favorite.models        import Favorite
 from profiles.models        import Profile
 from solicitudes.models     import Solicitud
 
-
+from config.tests.utils import *
 from config.constants import ViewName
 from config.constants import TemplateName
 from config.constants import ContextKey
@@ -773,6 +773,102 @@ class ItemCreateViewKaizenPOSTTest(TestCase):
         self.assertEqual(item_obj.image1, "images/default_item.png")  
 
     
+
+
+
+
+
+class ItemCreateEditTemplateTest(TestCase):
+    """テスト目的
+    ItemCreateとItemEditでは同一のテンプレートが使用される。しかし表示される内容が変わる部分がある。
+    Viewごとに表示内容が適切に表示されているかをテストする
+    """
+    """テスト対象
+    items/views.py ItemCreateview#GET
+    endpoint:"items/create2/"
+    name: "items:item_create"
+
+
+    items/views.py ItemEditview#GET
+    endpoint:"items/<int:pk>/edit/"
+    name: "items:item_edit"
+    """
+    """テスト項目
+    ItemCreateview経由の表示の場合formタグのactionの値はitems_create2である
+    ItemEditview経由の表示の場合formタグのactionの値はitems_<int:pk>_editである
+    """
+
+
+
+    def test_ItemCreateview経由の表示の場合formタグのactionの値はitems_create2である(self):
+        category_obj = pickUp_category_obj_for_test()
+        user_obj, profile_obj = create_user_for_test(create_user_data("test1"))
+        self.client = Client()
+        login_status = self.client.login(username="test1", password="1234tweet")
+        self.assertTrue(login_status)
+        response = self.client.get(reverse_lazy(ViewName.ITEM_CREATE))
+        self.assertContains( response, 'action="/items/create2/"', status_code=200 )
+        self.assertNotContains( response, '/edit/', status_code=200 )
+
+
+
+    def test_ItemEditView経由の表示の場合formタグのactionの値にはeditが含まれる(self):
+        category_obj = pickUp_category_obj_for_test()
+        user_obj, profile_obj = create_user_for_test(create_user_data("test1"))
+        item_obj = create_item_for_test(user_obj, create_item_data(category_obj))
+        self.client = Client()
+        login_status = self.client.login(username="test1", password="1234tweet")
+        self.assertTrue(login_status)
+        response = self.client.get(reverse_lazy(ViewName.ITEM_EDIT, args=(str(item_obj.id),)))
+        self.assertNotContains( response, 'action="/items/create2/"', status_code=200 )
+        self.assertContains( response, '/edit/', status_code=200 )
+
+
+
+
+
+
+class ItemEditViewPOSTTest(TestCase):
+    """テスト目的
+    一定の条件下でのみItemオブジェクトが変更されることを担保する
+    """
+    """テスト対象
+    items/views.py ItemEditview#POST
+    endpoint:"items/<int:pk>/edit/"
+    name: "items:item_edit"
+    """
+    """テスト項目
+    変更した場合新たにItemインスタンスが生成されることはない。
+
+    """
+
+    #def setUp(self):
+    #    category_obj = Category.objects.create(number="1")
+    #    post_user_obj = User.objects.create_user(username="post_user", email="test_post_user@gmail.com", password='12345')
+
+    def test_変更した場合新たにItemインスタンスが生成されることはない(self):
+        item_count = Item.objects.all().count()
+        self.assertEqual(item_count, 0)
+        #Itemオブジェクト作成
+        category_obj = pickUp_category_obj_for_test()
+        user_obj, profile_obj = create_user_for_test(create_user_data("test1"))
+        item_obj = create_item_for_test(user_obj, create_item_data(category_obj))
+        item_count = Item.objects.all().count()
+        self.assertEqual(item_count, 1)
+        #Itemオブジェクトの編集
+        self.client = Client()
+        login_status = self.client.login(username="test1", password="1234tweet")
+        self.assertTrue(login_status)
+        data = create_item_data(category_obj)
+        data["price"] = 1000
+        response = self.client.post(reverse_lazy(ViewName.ITEM_EDIT, args=(str(item_obj.id),)), data)
+        self.assertEqual(response.status_code, 200)
+        item_count = Item.objects.all().count()
+        #編集しただけなのでItemインスタンスは増えることはない。
+        self.assertEqual(item_count, 1)
+        print("ココ通ってる？？")
+
+
 
 
 

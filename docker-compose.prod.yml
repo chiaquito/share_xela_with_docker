@@ -45,7 +45,6 @@ services:
     nginx:
         container_name: WebServer
         build: 
-            #context: .
             context: ./nginx
             dockerfile: Dockerfile
         volumes: 

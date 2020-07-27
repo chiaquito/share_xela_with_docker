@@ -22,7 +22,7 @@ from solicitudes.models         import Solicitud
 from direct_messages.models     import DirectMessage
 from django.db.models import Q
 
-# Create your views here.
+
 
 
 
@@ -66,7 +66,8 @@ class ItemListByFavoriteView(View):
 class ItemUserListView(View):
 	"""
 	usernameアンカーからuserの投稿記事をリスト表示する。
-	sessionを使って表示する仕組みを用いる。
+	sessionを使って表示する仕組みを用いている。
+	TemplateKey.ITEM_LISTをincludeとして相手のプロフィールデータも表示する。
 	"""
 	def get(self, request, *args, **kwargs):
 		context = {}
@@ -75,8 +76,10 @@ class ItemUserListView(View):
 		#print(user_obj)
 		item_objects = Item.objects.filter(user=user_obj).order_by("-created_at")
 		context['user_obj'] = user_obj
+		context['profile_obj'] = Profile.objects.get(user=user_obj)
 		context[ ContextKey.ITEM_OBJECTS ] = item_objects
-		return render(request, TemplateKey.ITEM_LIST, context)
+		#return render(request, TemplateKey.ITEM_LIST, context)
+		return render(request, TemplateName.USER_ITEM_LIST, context)
 
 
 
@@ -653,6 +656,12 @@ class ItemEditView(View):
 		endpoint: "items/<int:pk>/edit/"
 		name: "items:'item_edit'"
 		"""
+		"""注意点
+		Vueのスクリプトにprofile_objがあるかないかで挙動が変わるロジックがある。
+		Profileの編集にも同じスクリプトを使いまわしているからであり、このViewの
+		contextにはprofile_objが存在しないことを前提とする。
+		したがってcontextにprofile_objを加えないように注意すること。
+		"""
 
 		#アクセス制限(未認証ユーザー)
 		if request.user.is_anonymous:
@@ -690,6 +699,7 @@ class ItemEditView(View):
 		context["form"] = form
 		context["item_obj"] = item_obj
 		context["title"] = "Editar Articulo"
+		context["CASE"] = "EDIT"
 		return render(request, "items/create_item_k.html", context)
 
 
@@ -713,17 +723,17 @@ class ItemEditView(View):
 			
 			adm1 = request.POST["adm1"]
 			adm2 = request.POST["adm2"]
-			obj.adm1 = adm1
-			obj.adm2 = adm2	
+			item_obj.adm1 = adm1
+			item_obj.adm2 = adm2	
 					
 			try:
 				wkt = request.POST["point"]
 				point = GEOSGeometry(wkt)
-				obj.point = point 
+				item_obj.point = point 
 			except:
 				pass
 			try:
-				obj.radius = int(request.POST["radius"])
+				item_obj.radius = int(request.POST["radius"])
 			except:
 				pass
 
@@ -914,6 +924,7 @@ class ItemCreateViewKaizen(View):
 		#form = ItemModelForm()
 		context["form"] = form
 		context["title"] = "Crear Articulo"
+		context["CASE"] = "CREATE"
 
 		return render(request, 'items/create_item_k.html', context)
 

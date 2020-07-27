@@ -1,3 +1,4 @@
+{# crearとeditで違いがある。それはcrearの場合はquetzaltengoがデフォルトであるのに対し、editは編集前の地理情報を表示する違いである #}
 
 <script type="text/javascript">
 //AltaVerapazList
@@ -187,7 +188,7 @@ for (let i=0; i<MUNICIPIOS12.length; i++){
 
 
 var muni = new Vue({
-    el:"#select_municipio",
+    el: "#select_municipio",
     data:{
         mList:muni13,
         parent: app.selected,
@@ -245,6 +246,8 @@ var muni = new Vue({
         }
     },
     created: function(){
+
+
             if (app.selected       == "Alta Verapaz"){
                 this.mList = muni1
             }else if (app.selected == "Baja Verapaz"){
@@ -290,6 +293,9 @@ var muni = new Vue({
             }else if (app.selected == "Zacapa"){
                 this.mList = muni22
             }
+
+
+    
 
     }
 });

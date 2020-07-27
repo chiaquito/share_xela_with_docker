@@ -1,3 +1,5 @@
+{# Itemのcreateとedit両方の場合にこのテンプレートが使われる。 #}
+
 {% extends 'config/base.html' %}
 {% load user_agents %}
 {% load static %}
@@ -8,8 +10,6 @@
 
 
     {% if request|is_pc %}
-
-
      <link rel="stylesheet" href="{% static 'css/footer_settings.css' %}"> 
     {% elif request|is_mobile %}
     {% endif %}
@@ -29,10 +29,16 @@
             <!-- メッセージフレームワーク終わり -->
             <p ><font size="6">{{ title }}</font></p>
 
+
+            {% if CASE == "CREATE" %}
             <form method="post" enctype="multipart/form-data" action="{% url 'items:item_create2' %}">{% csrf_token %} 
                 {% include "items/include/create_edit_item_form.html" %}
             </form>
-
+            {% elif CASE == "EDIT" %}
+            <form method="post" enctype="multipart/form-data" action="{% url 'items:item_edit' item_obj.id %}">{% csrf_token %} 
+                {% include "items/include/create_edit_item_form.html" %}
+            </form>
+            {% endif %}
 
             {% include "config/include/general/basic_margin.html" %}
             {% include "config/include/general/basic_margin.html" %}
@@ -48,6 +54,8 @@
 {% include "config/include/general/basic_margin.html" %}
 {% include "config/include/general/basic_margin.html" %}
 {% include "config/include/general/basic_margin.html" %}
+
+
 
 {# vue.js cdn #}
 <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
