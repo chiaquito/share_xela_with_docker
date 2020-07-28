@@ -4,12 +4,9 @@
 
 
 {% block head %}
-
-    {% if request|is_pc %}
+    
     <link rel="stylesheet" href="{% static 'css/footer_settings.css' %}"> 
-    {% elif request|is_mobile %}
-    <link rel="stylesheet" href="{% static 'css/footer_settings.css' %}">
-    {% endif %}
+
 
     {% include 'items/include/detail/meta_ogp.html' %}
 
@@ -161,8 +158,6 @@
 
 
 
-
-
 			{# 取引エリア情報の挿入 #}
 			{% include "items/include/detail/item_area.html" %}
 			{# 取引エリア情報の挿入終わり #}
@@ -310,15 +305,12 @@
 
 
 {# Favボタンの表示 #}
-{% include 'items/include/detail/fav_btn.html' %}
+{% include 'items/include/detail/fav_btn_with_vue.html' %}
 {# Favボタンの表示 終わり #}
 
 
 {% include "config/include/general/basic_margin.html" %}
 {% include "config/include/general/basic_margin.html" %}
-
-
-
 
 
 

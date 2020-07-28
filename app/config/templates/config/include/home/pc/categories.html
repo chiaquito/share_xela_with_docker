@@ -5,7 +5,7 @@
   <div class="row">
       <div class="col-6">
 
-          <div  class="card">
+          <div  class="card shadow-sm">
           <h5 id="title_guatemala" class="card-header"><img style="width: 4rem;" src="{% static 'guatemala_icon.png' %}">&nbsp;&nbsp;Gente de Guatemala&nbsp;<br /></h5>
           <div id="menu_guatemala" class="card-body">
           <h5 class="card-title"><a class="h3" href="{% url 'items:ItemCategoryListView' 1 %}"><img style="width: 2rem;" src="{% static 'libro_icon.jpeg' %}">&nbsp;quiere donar o vender</a></h5>
@@ -27,7 +27,7 @@
 
       <div class="col-6">
 
-          <div class="card">
+          <div class="card shadow-sm">
     <h5 id="title_local" class="card-header"><img style="width: 3rem;" src="{% static 'gps_icon.png' %}"/>&nbsp;&nbsp;Gente de Tu departamento</h5>
     <div id="menu_local" class="card-body">
     <h5 class="card-title"><a id="donarVender" class="h3" href="{% url 'items:ItemCategoryLocalListView' 1 %}"><img style="width: 2rem;" src="{% static 'libro_icon.jpeg' %}">&nbsp;quiere donar o vender</a></h5>

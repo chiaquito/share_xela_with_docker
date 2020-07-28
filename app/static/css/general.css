@@ -24,10 +24,17 @@ margin-top: 20px;
 
 
 /* フォント */
-
+/*
+@import url('https://fonts.googleapis.com/css?family=M+PLUS+Rounded+1c');
+body {
+    font-family: 'M PLUS Rounded 1c', sans-serif;
+    font-weight:  600;
+}
+*/
 @import url('https://fonts.googleapis.com/css?family=Sawarabi+Gothic');
 body{
     font-family: 'Sawarabi Gothic', sans-serif;
+    font-weight:  600;
 }
 
 
@@ -36,4 +43,14 @@ body{
     font-family: 'Sawarabi Mincho', sans-serif;
     font-weight:  bold;
 }
+
+
+@import url('https://fonts.googleapis.com/css?family=Sacramento');
+
+.logo {
+    font-family: 'Sacramento', cursive;
+    font-weight:  900;
+}
+
+
 
