@@ -72,7 +72,7 @@ class DeployHandler(object):
     def restart(self):
         with cd(APP_PATH):
             run("gunicorn --daemon --bind 127.0.0.1:8000 --env DJANGO_SETTINGS_MODULE=config.settings.prod_settings config.wsgi:application")
-        
+            
 
 
 
