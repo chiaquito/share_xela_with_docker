@@ -135,26 +135,7 @@
 </div>
 
 
-{# vue.js cdn #}
-<script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
-{# axios cdn #}
-<script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
 
-
-
-{# 地理情報のセレクトを動的に変更するためのVueをインクルード #}
-{% include "profiles/include/setting_select_departamento_for_edit.html" %}
-{% include "profiles/include/setting_select_municipio_for_edit.html" %}
-
-
-{% include 'items/include/create_edit/setting_leaflet_map.html' %}
-
-
-
-
-
-
-</script>
 
 
 
@@ -167,13 +148,20 @@
 {% if request|is_mobile %}
 <div class="container">
 	<div class="row">
-		<div class="col">
+		<div class="col-12">
 		{# メッセージフレームワーク #}			
 		{% include "config/include/message_and_delete.html" %}
 
 		{# メッセージフレームワーク終わり #}
 
-		{% include "config/include/general/basic_margin.html" %}		
+		{% include "config/include/general/basic_margin.html" %}
+		</div>
+	</div>
+</div>
+
+<div class="container">
+	<div class="row">
+		<div class="col-12">				
 <p class="h2">TU PERFIL INFORMACION</p>
 {% include "config/include/general/basic_margin.html" %}
 
@@ -210,32 +198,62 @@ Prefil Imagen:<br />
 {{ form.image.label }}:
 {{ form.image }}
 <br />
-
-<!-- エリア情報 -->
-<p class="h4 bg-light  p-3" >Area Information</p>
-<p class="mb-1">{# ＊投稿する記事のエリアのデフォルト、または投稿記事の検索エリアの設定になります。#}
-<p>＊Es el valor predeterminado del área del artículo que se publicará, o la configuración del área de búsqueda del artículo publicado.</p></p>
-
-<div class="col-12 px-0 mb-3">
-Pais :
-{{ form.adm0 }}
-
-Departamento :
-{{ form.adm1 }}
-
-Municipio :
-{{ form.adm2 }}
 </div>
-<!-- エリア情報終わり -->
 </div>
+</div>
+
+<div class="container">
+	<div class="row">
+		<div class="col-12">	
+
+			<!-- エリア情報 -->
+			<p class="h4 bg-light  p-3" >Area Information</p>
+			<p class="mb-1">{# ＊投稿する記事のエリアのデフォルト、または投稿記事の検索エリアの設定になります。#}
+			<p>＊Es el valor predeterminado del área del artículo que se publicará, o la configuración del área de búsqueda del artículo publicado.</p></p>
+
+			<div class="col-12 px-0 mb-3">
+				<div class="col-md-4">
+					Pais :
+				{{ form.adm0 }}
+				</div>
+
+				{# Departamento : #}
+				{# {{ form.adm1 }} #}
+				{% include "items/include/create_edit/select_departamento.html" %}
+
+				{# Municipio : #}
+				{# {{ form.adm2 }} #}
+				{% include "items/include/create_edit/select_municipio.html" %}
+
+			</div>
+				{# leafletのマップを描画する #}
+				{% include 'items/include/create_edit/leaflet_map.html' %}
+
+			<!-- エリア情報終わり -->
+		</div>
+	</div>
+</div>
+			
+
+
+
+{% include "config/include/general/basic_margin.html" %}
+{% include "config/include/general/basic_margin.html" %}
+
+
+<div class="container">
+	<div class="row">
+		<div class="col-12">	
 
 {{ form.user.as_hidden }}
-</div>
+
 <p class="h4 bg-light  p-3">Personal Information</p>
 <p>{# ＊Personal Information は相手に表示されることはありません。#}
 ＊ La información personal no se mostrará a la otra parte.</p>
+{% comment %}
 {{ form.phonenumber.label }}:
 {{ form.phonenumber }}<br />
+{% endcomment %}
 {{ form.birthday.label }}:
 {{ form.birthday }}<br /><br />
 
@@ -248,11 +266,44 @@ Municipio :
 </div>
 </div>
 </div>
+</div>
+</div>
+</div>
+{% include "config/include/general/basic_margin.html" %}
+{% include "config/include/general/basic_margin.html" %}
 {% endif %}
 
 {# ---------------------------------------      mobile終わり    --------------------------------------------- #}
 
 
+
+
+{# PC mobile共通事項 #}
 {% include 'config/include/message_and_delete_jquery.html' %}
+
+
+{# vue.js cdn #}
+<script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+{# axios cdn #}
+<script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+
+
+
+{# 地理情報のセレクトを動的に変更するためのVueをインクルード #}
+{% include "profiles/include/setting_select_departamento_for_edit.html" %}
+{% include "profiles/include/setting_select_municipio_for_edit.html" %}
+
+
+{% include 'items/include/create_edit/setting_leaflet_map.html' %}
+
+
+
+
+
+
+</script>
+
+
+
 
 {% endblock %}

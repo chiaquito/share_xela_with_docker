@@ -1,6 +1,10 @@
 
 
 
+
+
+
+
 /* 各ページの隙間の調整をこれを使う */
 .basicMargin {
 margin-top: 20px;
@@ -15,5 +19,21 @@ margin-top: 20px;
 
 .mySize{
     width: 220px;
+}
+
+
+
+/* フォント */
+
+@import url('https://fonts.googleapis.com/css?family=Sawarabi+Gothic');
+body{
+    font-family: 'Sawarabi Gothic', sans-serif;
+}
+
+
+@import url('https://fonts.googleapis.com/css?family=Sawarabi+Mincho');
+.android {
+    font-family: 'Sawarabi Mincho', sans-serif;
+    font-weight:  bold;
 }
 

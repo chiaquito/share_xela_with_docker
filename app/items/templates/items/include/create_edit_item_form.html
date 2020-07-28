@@ -1,4 +1,4 @@
-
+{% load user_agents %}
 
 
 <div class="form-row">
@@ -51,6 +51,10 @@
     <div class="form-row">
         {# mapのタグを設置 #}
         {% include "items/include/create_edit/leaflet_map.html" %}
+        {% if request|is_mobile %}
+        {% include "config/include/general/basic_margin.html" %}
+        {% include "config/include/general/basic_margin.html" %}
+        {% endif %}
     </div>
 
     <div class="form-row">
