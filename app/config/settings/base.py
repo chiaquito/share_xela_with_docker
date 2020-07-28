@@ -52,7 +52,6 @@ INSTALLED_APPS = [
     'django_user_agents',
     'rest_framework',
     'rest_framework.authtoken',
-    #'leaflet',
     'rest_auth',
     'corsheaders',    
     'django.contrib.gis',

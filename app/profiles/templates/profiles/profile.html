@@ -43,8 +43,10 @@
 		</div>
 
 		<div class="col-12">
-
+			{% include "config/include/general/basic_margin.html" %}
 			<p class="h2">TU PERFIL INFORMACION </p>
+			{% include "config/include/general/basic_margin.html" %}
+			{% include "config/include/general/basic_margin.html" %}
 
 
 			<form method="POST" enctype="multipart/form-data" action="{% url 'profiles:profile' %}" >{%csrf_token%}
@@ -63,7 +65,7 @@
 			Nombre de usuario:<br/>
 			<input type="text" class="form-control m-1" value="{{ user_obj.username }}" readonly/>
 			{#  <span class="m-1"></span><a href="{% url 'username_change' %}">Usernameを変更する</a>  #}
-			<span class="m-1"></span><a href="{% url 'username_change' %}">{# Cambiar Username #}Cambiar Nombre de usuario</a>
+			<span class="m-1"></span><a href="{% url 'username_change' %}">Cambiar Nombre de usuario</a>
 			<br /><br />
 
 			{# Email Adress: #}Dirección de correo electrónico:<br />
@@ -73,12 +75,11 @@
 			<br /><br />
 
 
-			{# Image: #}Imagen:<br />
-			<img width="120" src="{{ profile_obj.image.url }}"/><br /><br />
 
+			{# Image: #}Imagen:<br />
+			<img width="120" src="{{ profile_obj.image.url }}"/><br /><br />			
 			{{ form.image.label }}:
-			{{ form.image }}
-			<button class="btn btn-primary m-3" >cambiar tu image</button>
+			{{ form.image }} 
 			<br />
 
 			<!-- エリア情報 -->
@@ -88,19 +89,32 @@
 			<p>＊Es el valor predeterminado del área del artículo que se publicará, o la configuración del área de búsqueda del artículo publicado.</p>
 			<div class="form-row">
 			<div class="form-group col-md-3">
-			Pais :
-			{{ form.adm0 }}<br /><br />
+			<span >Pais</span> 
+			{{ form.adm0 }}<br />
 			</div>
+
+			{% comment %}
 			<div class="form-group col-md-4">
 			Departamento :
 			{{ form.adm1 }}<br /><br />
 			</div>
+			{% endcomment %}
+
+			{% include "items/include/create_edit/select_departamento.html" %}
+
+			{% comment %}
 			<div class="form-group col-md-5">
 			Municipio :
 			{{ form.adm2 }}<br /><br />
 			</div>
+			{% endcomment %}
+			{% include "items/include/create_edit/select_municipio.html" %}
 			<!-- エリア情報終わり -->
 			</div>
+
+			{# leafletのマップを描画する #}
+			{% include 'items/include/create_edit/leaflet_map.html' %}
+
 
 			{{ form.user.as_hidden }}
 
@@ -114,17 +128,8 @@
 			{{ form.birthday }}<br /><br />
 
 
-
 			<button class="btn btn-primary btn-block mb-3" >Cambiar Prefil</button>
 			</form>
-
-
-			{# 試験的にココにformを追加する #}
-			{% include "items/include/create_edit/select_departamento.html" %}
-			{% include "items/include/create_edit/select_municipio.html" %}
-
-
-
 		</div>
 </div>
 </div>
@@ -138,16 +143,26 @@
 
 
 {# 地理情報のセレクトを動的に変更するためのVueをインクルード #}
-{% include "items/include/create_edit/setting_select_departamento_for_edit.html" %}
-{% include "items/include/create_edit/setting_select_municipio_for_edit.html" %}
+{% include "profiles/include/setting_select_departamento_for_edit.html" %}
+{% include "profiles/include/setting_select_municipio_for_edit.html" %}
+
+
+{% include 'items/include/create_edit/setting_leaflet_map.html' %}
+
+
+
+
+
+
+</script>
 
 
 
 
 {% endif %}
-{# <---------------------------------------------- pc終わり --------------------------------------------------> #}
+{# ---------------------------------------------- pc終わり -------------------------------------------------- #}
 
-{# <---------------------------------------        mobile        --------------------------------------------> #}
+{# ---------------------------------------        mobile        -------------------------------------------- #}
 
 {% if request|is_mobile %}
 <div class="container">
@@ -158,8 +173,9 @@
 
 		{# メッセージフレームワーク終わり #}
 
+		{% include "config/include/general/basic_margin.html" %}		
 <p class="h2">TU PERFIL INFORMACION</p>
-
+{% include "config/include/general/basic_margin.html" %}
 
 <form method="POST" enctype="multipart/form-data" action="{% url 'profiles:profile' %}" >{%csrf_token%}
 
@@ -193,8 +209,6 @@ Prefil Imagen:<br />
 
 {{ form.image.label }}:
 {{ form.image }}
-<button class="btn btn-primary m-3" >cambiar tu imagen</button>
-{# <p>画像を変更する場合には最下位のボタンを押してください。</p> #}
 <br />
 
 <!-- エリア情報 -->
@@ -236,7 +250,7 @@ Municipio :
 </div>
 {% endif %}
 
-{# <---------------------------------------      mobile終わり    ---------------------------------------------> #}
+{# ---------------------------------------      mobile終わり    --------------------------------------------- #}
 
 
 {% include 'config/include/message_and_delete_jquery.html' %}

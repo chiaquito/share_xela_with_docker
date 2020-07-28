@@ -11,9 +11,15 @@
 {% if request|is_pc %}
 <div class="container">
 	<div class="row justify-content-md-center">
-		<div class="col-5 ">
+		<div class="col-6 ">
+			{% include "config/include/general/basic_margin.html" %}
 			<p class="h2">Cambiar Nombre de Usuario</p>
-			<form method="post" action="#">{% csrf_token %}
+
+			{% include "config/include/general/basic_margin.html" %}
+			{% include "config/include/general/basic_margin.html" %}
+			{% include "config/include/general/basic_margin.html" %}
+
+			<form method="post" action="{% url 'username_change' %}">{% csrf_token %}
 			
 			<label>Nombre de usuario que quieres cambiar:</label>
 			{{ form.username }}
@@ -24,8 +30,8 @@
 
 			{% endif %}
 
-
-			{% comment %}<button class="btn btn-block btn-primary">変更する</button>{% endcomment %}
+			{% include "config/include/general/basic_margin.html" %}	
+			{# <button class="btn btn-block btn-primary">変更する</button> #}
 			<button class="btn btn-block btn-primary mt-2">Cambiar</button>
 			</form>
 		</div>
@@ -39,7 +45,7 @@
 			<p class="h5 mt-3 pb-0">Cambiar Nombre de Usuario</p>
 			<hr class="mt-1 mb-4"/>
 
-			<form method="post" action="#">{% csrf_token %}
+			<form method="post" action="{% url 'username_change' %}">{% csrf_token %}
 			
 			<label>Nombre de usuario que quieres cambiar:</label>
 			{{ form.username }}
@@ -51,7 +57,7 @@
 			{% endif %}
 
 
-			{% comment %}<button class="btn btn-block btn-primary">変更する</button>{% endcomment %}
+			{# <button class="btn btn-block btn-primary">変更する</button> #}
 			<button class="btn btn-block btn-primary mt-2">Cambiar</button>
 			</form>
 		</div>

@@ -1,13 +1,14 @@
 from django.shortcuts import render, redirect
 from django.contrib import messages
 from django.contrib.auth.models import User
+from django.contrib.gis.geos import GEOSGeometry
 from allauth.account.models import EmailAddress
 from django.views.generic import View
 from .models import Profile
 from .forms  import ProfileForm
 from .forms  import CreatingProfileForm
 from items.models import Item
-
+from django.http import JsonResponse
 from .strings import warningSettingAreaMessage, successEditProfileMessage
 
 
@@ -77,8 +78,8 @@ class ProfileView(View):
 
 	"""
 	def get(self, request, *args, **kwargs):
+		
 		"""機能
-
 		endpoint: 'my_account/'
 		name: 'profiles:profile'
 		"""
@@ -118,7 +119,7 @@ class ProfileView(View):
 			form = ProfileForm(data, initial=data)			
 			context["form"] = form
 			#データとテンプレートのレンダリング
-			return render(request, 'profiles/profile.html',context)
+			return render(request, 'profiles/profile.html', context)
 
 
 		#contextにデータ格納
@@ -144,10 +145,8 @@ class ProfileView(View):
 			email_obj = EmailAddress.objects.get(user=user_obj)
 			context["email_obj"] = email_obj
 		
-		
 		#データとテンプレートのレンダリング
-		return render(request, 'profiles/profile.html',context)
-
+		return render(request, 'profiles/profile.html', context)
 
 
 
@@ -159,6 +158,8 @@ class ProfileView(View):
 		新たにprofileオブジェクトを生成する場合には、生成後products:item_createにリダイレクトする
 
 		"""
+		print("ここをとおる？？")
+		print(request.POST)
 		context = {}
 		form = ProfileForm(request.POST, request.FILES)
 
@@ -184,11 +185,10 @@ class ProfileView(View):
 				return redirect('profiles:profile')
 
 
-
-
 		elif Profile.objects.filter(user=request.user).exists() == True :
 
 			if form.is_valid() == True:
+				print("IS_VALIDがTRUE")
 
 				adm0 = form.cleaned_data["adm0"]
 				adm1 = form.cleaned_data["adm1"]
@@ -204,6 +204,21 @@ class ProfileView(View):
 				profile_obj.birthday = birthday
 				profile_obj.phonenumber = phonenumber
 
+
+				try:
+					wkt = request.POST["point"]
+					point = GEOSGeometry(wkt)
+					profile_obj.point = point 
+					#print("pointのチェック")
+					#print(wkt)
+				except:
+					pass
+				try:
+					profile_obj.radius = int(request.POST["radius"])
+				except:
+					pass
+
+
 				#画像が送信された場合画像データをprofileオブジェクトに登録する
 				if "image" in request.FILES.keys():
 					profile_obj.image = request.FILES["image"]
@@ -214,6 +229,9 @@ class ProfileView(View):
 				
 			else:
 				return redirect('profiles:profile')
+
+
+
 
 
 

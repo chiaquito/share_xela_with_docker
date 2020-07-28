@@ -43,20 +43,22 @@ class TemplateName(object):
 
 ## ViewName ##
 class ViewName(object):
-    HOME        = "home"
-    SIGN_UP     = "account_signup" # https://django-allauth.readthedocs.io/en/latest/views.html
-    ITEM_DETAIL = 'items:item_detail'
+    HOME          = "home"
+    EDIT_USERNAME = "username_change"
+    SIGN_UP       = "account_signup" # https://django-allauth.readthedocs.io/en/latest/views.html
+    ITEM_DETAIL   = 'items:item_detail'
     ITEM_FAVORITE = 'items:item_favorite'
     ITEM_LIST_BY_FAVORITE = 'items:item_list_by_favorite'
-    ITEM_CONTACT     = 'item_contacts:ItemContactView'
-    ITEM_CREATE = "items:item_create2"
-    ITEM_EDIT   = "items:item_edit"
+    ITEM_CONTACT  = 'item_contacts:ItemContactView'
+    ITEM_CREATE   = "items:item_create2"
+    ITEM_EDIT     = "items:item_edit"
 
     DIRECT_MESSAGE_DETAIL = 'direct_messages:dm_detail'
     FEEDBACK_CREATE  = 'feedback:feedback'
     SOLICITUD_INPUT  = "solicitudes:solicitud_input"
     SOLICITUD_LIST   = "solicitudes:solicitud_list"
     SOLICITUD_SELECT = "solicitudes:solicitud_decision"
+    PROFILE_EDIT     = "profiles:profile"
 
     ItemContactListByContactObjPKAPIView = "api:ItemContactListByContactObjPKAPIView"
 

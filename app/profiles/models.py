@@ -43,8 +43,6 @@ from .strings import DEFAULT_PROFILE_DESCRIPTION, DEFAULT_PROFILE_IMAGE
 SEX_CHOICES =((0, "NotSet"),(1, "Hombre"),(2, "Mujer"))
 
 
- 
-
 
 class Profile(models.Model):
 	user         = models.ForeignKey(User, on_delete=models.PROTECT, null=True)

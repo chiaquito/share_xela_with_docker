@@ -1,5 +1,6 @@
 from django.shortcuts import render, redirect
 from django.contrib import messages
+from django.contrib.gis.geos import GEOSGeometry
 from django.views.generic import View, DeleteView
 from django.views.generic import CreateView
 from django.db.models import Avg, Sum
@@ -80,9 +81,6 @@ class ItemUserListView(View):
 		context[ ContextKey.ITEM_OBJECTS ] = item_objects
 		#return render(request, TemplateKey.ITEM_LIST, context)
 		return render(request, TemplateName.USER_ITEM_LIST, context)
-
-
-
 
 
 
@@ -885,7 +883,7 @@ class ItemCreateView(View):
 
 
 
-from django.contrib.gis.geos import GEOSGeometry
+
 
 class ItemCreateViewKaizen(View):
 	"""
@@ -939,8 +937,7 @@ class ItemCreateViewKaizen(View):
 		categoryを選択しない場合にはItemオブジェクトが作られない
 		"""
 
-
-		print(request.POST)
+		#print(request.POST)
 
 		form = ItemModelForm(request.POST, request.FILES)
 		if form.is_valid():
