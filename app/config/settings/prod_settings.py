@@ -1,7 +1,7 @@
 import os
 from .base import *
 
-DEBUG = True
+DEBUG = False
 
 ALLOWED_HOSTS = ['sharexela.ga','153.126.194.171','144.202.23.188',"192.168.1.6", '127.0.0.1']
 
