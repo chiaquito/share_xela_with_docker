@@ -72,14 +72,14 @@ class DeployHandler(object):
         with cd(APP_PATH):
             pass
             #run("pkill gunicorn")
-            run('cat .circleci/gunicorn.pid')
-            run('kill `cat .circleci/gunicorn.pid`')
+            result = run('cat .circleci/gunicorn.pid')
+            if result != "":
+                run('kill `cat .circleci/gunicorn.pid`')
 
     def restart(self):
         with cd(APP_PATH):
             #run("gunicorn --daemon --bind 127.0.0.1:8000 --env DJANGO_SETTINGS_MODULE=config.settings.prod_settings config.wsgi:application")
-            #--daemon
-            run("gunicorn config.wsgi:application -c {}".format(GUNICORN_CONF))
+            run("gunicorn --env DJANGO_SETTINGS_MODULE=config.settings.prod_settings config.wsgi:application -c {}".format(GUNICORN_CONF))
 
 
 
