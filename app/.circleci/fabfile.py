@@ -95,5 +95,5 @@ def deploy():
     dh.makemigrations()
     dh.migrate()
     dh.collectstatic()
-    #dh.kill_process()
+    dh.kill_process()
     dh.restart()
