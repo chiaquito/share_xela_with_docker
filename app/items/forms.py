@@ -33,7 +33,7 @@ class ItemModelForm(forms.ModelForm):
 
 		self.fields["title"].widget.attrs["class"] = "form-control"
 		self.fields["description"].widget.attrs["class"] = "form-control "#h-25rows="4"
-		self.fields["description"].widget.attrs["rows"]  = "6"
+		self.fields["description"].widget.attrs["rows"]  = "8"
 		self.fields["title"].widget.attrs["size"] = "5"
 		self.fields["price"].widget.attrs["class"] = "form-control"
 
