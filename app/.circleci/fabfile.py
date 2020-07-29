@@ -71,9 +71,10 @@ class DeployHandler(object):
 
     def kill_process(self):
         with cd(APP_PATH):
-            result = run('cat .circleci/gunicorn.pid')
-            if result != "":
-                run('kill `cat .circleci/gunicorn.pid`')
+            #result = run('cat .circleci/gunicorn.pid')
+            #if result != "":
+            #    run('kill `cat .circleci/gunicorn.pid`')
+            run('kill `cat .circleci/gunicorn.pid`')
 
 
     def restart(self):
