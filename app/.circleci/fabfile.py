@@ -1,5 +1,6 @@
 from fabric.api import env, run, cd, task, sudo
 import os.path
+import os
 
 
 #host = 'share_xela.ga'
@@ -16,7 +17,7 @@ env.key_filename = '~/.ssh/id_rsa'
 #env.key_filename = '~/.ssh/circle_ci'
 
 GUNICORN_CONF = APP_PATH + "/.circleci/" + "gunicorn_conf.py"
-
+os.environ.setdefault("DJANGO_SETTINGS_MODULE", "config.settings.prod_settings")
 
 
 def test():
