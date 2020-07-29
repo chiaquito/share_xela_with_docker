@@ -15,6 +15,8 @@ env.port = '21345'
 env.key_filename = '~/.ssh/id_rsa'
 #env.key_filename = '~/.ssh/circle_ci'
 
+GUNICORN_CONF = APP_PATH + "/.circleci/" + "gunicorn_conf.py"
+
 
 
 def test():
@@ -67,12 +69,14 @@ class DeployHandler(object):
 
     def kill_process(self):
         with cd(APP_PATH):
-            run("pkill gunicorn") 
+            pass
+            #run("pkill gunicorn") 
 
     def restart(self):
         with cd(APP_PATH):
-            run("gunicorn --daemon --bind 127.0.0.1:8000 --env DJANGO_SETTINGS_MODULE=config.settings.prod_settings config.wsgi:application")
-            
+            #run("gunicorn --daemon --bind 127.0.0.1:8000 --env DJANGO_SETTINGS_MODULE=config.settings.prod_settings config.wsgi:application")
+            #--daemon
+            run("gunicorn --env DJANGO_SETTINGS_MODULE=config.settings.prod_settings config.wsgi:application -c {}".format(GUNICORN_CONF))
 
 
 
