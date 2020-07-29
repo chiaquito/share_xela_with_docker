@@ -70,11 +70,11 @@ class DeployHandler(object):
 
 
     def kill_process(self):
+        """
+        gunicorn実行時にオプションとしてpidfileを追加しないと、プロセスを切るときにエラーが生じる.
+        """
         with cd(APP_PATH):
-            #result = run('cat .circleci/gunicorn.pid')
-            #if result != "":
-            #    run('kill `cat .circleci/gunicorn.pid`')
-            run('kill `cat .circleci/gunicorn.pid`')
+            run('kill `cat .circleci/gunicorn.pid`', warn_only=True)
 
 
     def restart(self):
