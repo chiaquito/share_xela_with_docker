@@ -59,3 +59,39 @@ STATICFILES_DIRS = [ os.path.join(BASE_DIR, 'static'),]
 
 EMAIL_BACKEND = 'sendgrid_backend.SendgridBackend'
 
+
+
+
+
+###########################
+## LOGGING              ###
+###########################
+
+LOGGING = {
+    'version': 1,
+    'disable_existing_loggers': False,
+    'formatters': {
+        'standard': {
+            'format': "[%(asctime)s] %(levelname)s [%(name)s:%(lineno)s] %(message)s",
+            'datefmt': "%d/%b/%Y %H:%M:%S"
+
+        },
+    },
+    'handlers': {
+        'file': {
+            'class': 'logging.FileHandler',
+            'filename': '/var/log/sharexela.log',
+            'formatter':'standard',
+        },
+    },
+    'loggers': {
+        'django': {
+            'handlers': ['file'],
+            'level': 'ERROR',
+        },
+        'blog': {
+            'handlers': ['file'],
+            'level': 'DEBUG',
+        },
+    },
+}
