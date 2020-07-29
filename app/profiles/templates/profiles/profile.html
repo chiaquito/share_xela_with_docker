@@ -10,7 +10,8 @@
 {% block head %}
 <!-- Font Awesome -->
 
-    <link rel="stylesheet" href="https://netdna.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.css">
+<link rel="stylesheet" href="https://netdna.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.css">
+
 
 <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
 <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
@@ -20,11 +21,8 @@
 {{ form.media }}
 
 
-{% if request|is_pc %}
-
 <link rel="stylesheet" href="{% static 'css/footer_settings.css' %}"> 
-{% elif request|is_mobile %}
-{% endif %}
+
 
 <title>Editar Profile</title>
 {% endblock %}
@@ -68,7 +66,7 @@
 			<span class="m-1"></span><a href="{% url 'username_change' %}">Cambiar Nombre de usuario</a>
 			<br /><br />
 
-			{# Email Adress: #}Dirección de correo electrónico:<br />
+			Dirección de correo electrónico:<br />
 			<input type="text" class="form-control m-1" value="{{ user_obj.email }}" readonly/>
 			{#  <span class="m-1"></span><a href="{% url 'email_change' %}">Email Addressを変更する</a>  #}
 			<span class="m-1"></span><a href="{% url 'email_change' %}">{# Cambiar Email Address #}Cambiar Dirección de correo electrónico </a>
@@ -76,7 +74,7 @@
 
 
 
-			{# Image: #}Imagen:<br />
+			Imagen:<br />
 			<img width="120" src="{{ profile_obj.image.url }}"/><br /><br />			
 			{{ form.image.label }}:
 			{{ form.image }} 
@@ -124,7 +122,7 @@
 			<p>＊ La información personal no se mostrará a la otra parte.</p>
 			{{ form.phonenumber.label.as_hidden }}<!--:-->
 			{{ form.phonenumber.as_hidden }}<br />
-			{{ form.birthday.label }}:
+			Cumpleaños :
 			{{ form.birthday }}<br /><br />
 
 
@@ -133,9 +131,6 @@
 		</div>
 </div>
 </div>
-
-
-
 
 
 
@@ -254,7 +249,7 @@ Prefil Imagen:<br />
 {{ form.phonenumber.label }}:
 {{ form.phonenumber }}<br />
 {% endcomment %}
-{{ form.birthday.label }}:
+Cumpleaños :
 {{ form.birthday }}<br /><br />
 
 
@@ -279,6 +274,8 @@ Prefil Imagen:<br />
 
 
 {# PC mobile共通事項 #}
+
+{# messageフレームワークの表示と削除機能の追加 #}
 {% include 'config/include/message_and_delete_jquery.html' %}
 
 
@@ -299,9 +296,6 @@ Prefil Imagen:<br />
 
 
 
-
-
-</script>
 
 
 

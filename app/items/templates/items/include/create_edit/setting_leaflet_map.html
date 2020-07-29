@@ -124,6 +124,13 @@ var map_value = new Vue({
         width: "100%",
         height:"30px",
     },
+    mounted: function(){
+        if("{{ profile_obj.radius }}" != ""){
+            this.radius = "{{ profile_obj.radius }}"
+        }else if("{{ item_obj.radius }}" != ""){
+            this.radius = "{{ item_obj.radius }}"
+        }
+    },
     methods:{
         updateArea: function(){
         // Guatemalaの地域ではない場合nullが返ってしまうのでその時はアラートでユーザーに返答する
