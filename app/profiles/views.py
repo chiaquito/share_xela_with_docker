@@ -235,39 +235,6 @@ class ProfileView(View):
 
 
 
-
-
-class ProfileShowToOthersView(View):
-	"""
-	html上のuserをクリックしたときに表示されるuser情報を表示する	
-	記事作成者はユーザー認証しているのが前提で、ユーザ登録していることはほぼ100%Profileオブジェクトが生成されている。
-
-	"""
-	def get(self, request, *args, **kwargs):
-		"""機能
-
-
-		endpoint: "/profiles/user/<int:pk>/profile/"
-		name: "profiles:profile_show"
-		"""
-		"""テスト項目
-		済 記事作成者のProfileオブジェクトが存在する場合においてアクセスユーザーがアクセスする時にはprofiles/profile_for_others.htmlテンプレートが使われる
-		済 記事作成者のProfileオブジェクトが存在する場合において記事作成者がアクセスする時にはprofiles/profile_for_others.htmlテンプレートが使われる
-		済 記事作成者のProfileオブジェクトが存在する場合においてAnonymous_userがアクセスする時にはprofiles/profile_for_others.htmlテンプレートが使われる
-		済 記事作成者のProfileオブジェクトが存在しない場合はhomeへリダイレクトが実行される
-		済 記事作成者のProfileオブジェクトが存在しない場合はリダイレクトされ、home用のテンプレートが使用される
-		"""
-		context = {}
-		user_obj_pk = self.kwargs["pk"]
-		if Profile.objects.filter(user__id=user_obj_pk).exists():
-			profile_obj = Profile.objects.get(user__id=user_obj_pk)
-			context['profile_obj'] = profile_obj
-			return render(request, 'profiles/profile_for_others.html', context)
-
-		return redirect('home')
-
-
-
 class ItemUserListView(View):
 	"""
 	usernameアンカーからuserの投稿記事をリスト表示する。
