@@ -449,7 +449,7 @@ class ItemDetailTemplatesTest(TestCase):
         self.assertTrue('items/detail_item2.html' in templates)
         self.assertTrue('config/base.html' in templates)
         self.assertTrue('config/include/navbar.html' in templates)
-        self.assertTrue('config/include/bottom.html' in templates) 
+        self.assertTrue('config/include/general/bottom_with_vuetify.html' in templates) 
 
 
 
@@ -469,7 +469,7 @@ class ItemDetailTemplatesTest(TestCase):
         self.assertTrue('items/detail_item2.html' in templates)
         self.assertTrue('config/base.html' in templates)
         self.assertTrue('config/include/navbar.html' in templates)
-        self.assertTrue('config/include/bottom.html' in templates)
+        self.assertTrue('config/include/general/bottom_with_vuetify.html' in templates)
 
 
     def test_templates_by_authentication_no_post_user(self):
@@ -488,7 +488,7 @@ class ItemDetailTemplatesTest(TestCase):
         self.assertTrue('items/detail_item2.html' in templates)
         self.assertTrue('config/base.html' in templates)
         self.assertTrue('config/include/navbar.html' in templates)
-        self.assertTrue('config/include/bottom.html' in templates)
+        self.assertTrue('config/include/general/bottom_with_vuetify.html' in templates)
 
 
 
