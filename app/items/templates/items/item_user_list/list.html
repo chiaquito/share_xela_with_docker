@@ -137,7 +137,7 @@
               <v-col cols="8" class="mt-0 ml-5">
                 <v-subheader class="">Descripcion</v-subheader>
                 <v-card-text class="grey--text pt-0" v-text="description"></v-card-text> 
-                <v-subheader class="">reputación</v-subheader>
+                <v-subheader class="">Reputación</v-subheader>
                 
                 <v-rating
                   v-bind:value="ave_rep"
@@ -284,6 +284,8 @@ new Vue({
       data:{ width: "100%",
              height: "240px"},  
       mounted: function(){
+        if("{{ profile_obj.point.x }}"==""||"{{ profile_obj.point.x }}"==null){
+          return this.height = "0px"}
         console.log("{{ profile_obj.point.x }}")
         var lon = "{{ profile_obj.point.x }}";
         var lat = "{{ profile_obj.point.y }}";
@@ -298,18 +300,62 @@ new Vue({
 </script>
 
 
-
-
-
-
 {% endif %}
 
 
 
-
-
-
 {% if request|is_mobile %}
+
+
+{# 追加 #}
+<div class="container my-0 py-0" >
+  <div class="row">
+
+    <class class="col">
+      <p class="my-0 py-3 font-weight-normal">usuario informacion</p>
+      <div class="card shadow-sm">
+        <div class="container">
+          <div class="row">
+            
+            <div class="col">
+              
+              <div id="profile" class="col-12">
+                <profile-data class="p-0"></profile-data>
+              
+              
+
+
+              <ul class="nav nav-pills mb-3" id="pills-tab" role="tablist">
+                <li class="nav-item">
+                  <a class="nav-link active" id="pills-home-tab" data-toggle="pill" href="#pills-area" role="tab" aria-controls="pills-home" aria-selected="true">area de entrega</a>
+                </li>
+                <li class="nav-item">
+                  <a class="nav-link" id="pills-profile-tab" data-toggle="pill" href="#pills-fb" role="tab" aria-controls="pills-profile" aria-selected="false">reputación</a>
+                </li>
+                
+              </ul>
+              <div class="tab-content" id="pills-tabContent">
+                <div class="tab-pane fade show active" id="pills-area" role="tabpanel" aria-labelledby="pills-home-tab">
+                  <div class="container" v-bind:style="{width:width, height:height}" id="map_leaflet"></div>
+                </div>  
+                <div class="tab-pane fade" id="pills-fb" role="tabpanel" aria-labelledby="pills-profile-tab"> <feedback-tab/> </div>
+                
+              </div>
+
+
+            </div>
+          </div>
+        </div>
+
+      </div>
+      </div>
+
+      
+</div>
+</div>
+
+
+
 <div class="container">
     <div class="row">
       <div class="col-12">
@@ -326,7 +372,7 @@ new Vue({
                     <div class="row ">
                         <div class="col-4 pl-0">
                          <a href="{% url 'items:item_detail' obj.id %}" >
-                            <img src="{{ obj.image1.url }}" class="card-img border" style="width: 5rem;" alt="...">
+                            <img src="{{ obj.image1.url }}" class="card-img border centerCropSmallMobile"  alt="...">
                          </a>
                         </div>
                         <div class="col-8">
@@ -344,123 +390,29 @@ new Vue({
         </div>
     </div>
 </div>
+
+
+
+{% include 'items/item_user_list/vuetify_mobile.html' %}
+
+
+
 {% endif %}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 {% endblock %}
 
-
-
-<v-container fluid>
-  <v-row justify="center">
-    <v-subheader>Informacion de Usuario</v-subheader>
-
-    <v-expansion-panels popout>
-      <v-expansion-panel        
-        hide-actions>
-
-        <v-expansion-panel-header>
-            <v-container >
-              <v-row  class="spacer" no-gutters >
-
-                <v-col cols="2" class="ml-0 mr-0">
-                  <v-container >
-                    <v-row>
-                      <v-col>
-                          <v-avatar size="80px" class="my-3">
-                          <img alt="Avatar" v-bind:src="profile_img_url" >
-                          </v-avatar>
-                          <br/>
-                          <span class="grey--text mt-5 ml-0" v-text="user_name" ></span>
-                        </v-col>
-                    </v-row>
-                  </v-container>      
-                </v-col>
-
-                <v-col cols="10" class="ml-0 mr-0">
-                  <v-container >
-                    <v-row>
-                      <v-col col="12" class="text-no-wrap">
-                        <v-chip class="ml-4 mr-0 black--text" label small>departamento: {{ profile_obj.adm1 }}</v-chip>
-                      </v-col> 
-                      <v-col col="12" class="text-no-wrap">
-                        <v-chip class="ml-2 mr-2 black--text" label small>municipio: {{ profile_obj.adm2 }}</v-chip> 
-                      </v-col>  
-                      
-                      <v-col cols="12" class="mt-5">
-                        <span class="grey--text" v-text="description"></span>
-                      </v-col>
-
-                    </v-row>
-                  </v-container>
-                </v-col>        
-              </v-row>      
-            </v-container>
-
-        </v-expansion-panel-header>
-
-        <v-expansion-panel-content>
-          <v-divider></v-divider>
-          
-
-          <l-map v-bind:zoom="zoom" v-bind:center="center" ref="mymap">
-            <l-tile-layer :url="url" :attribution="attribution"/>
-          </l-map>
-        
-
-          <v-card-text >{# フィードバックの一覧を作成し挿入する #}</v-card-text>
-
-
-
-        {# 　feedbackを追加する 　　　#}
-
-
-        <v-list three-line>
-          <v-list-item-group>
-            <template v-for="(item, index) in feedback">
-              <v-list-item v-bind:key="item.title">
-                <template v-slot:default="{ active, toggle }">
-                  <v-list-item-content>
-                    <v-list-item-title v-text="item.evaluator"></v-list-item-title>
-                    <v-list-item-subtitle class="text--primary" v-text="item.content"></v-list-item-subtitle>
-                    <!--v-list-item-subtitle v-text="item.content"></!--v-list-item-subtitle-->
-                  </v-list-item-content>
-    
-                  <v-list-item-action>
-                    <v-list-item-action-text >
-                      
-                    {# レーティングをstarで表示させる #}
-                    
-                    <template>
-                      <div class="text-center mt-0 pt-0">
-                        <v-rating
-                        v-bind:value="parseInt(item.level)"
-                        background-color="#FFC400"
-                        color="#FFC400"
-                        readonly
-                        small
-                        dense
-                        ></v-rating>
-                      </div>
-                    </template>
-
-                </v-list-item-action-text>
-
-                  </v-list-item-action>
-                </template>
-              </v-list-item>
-    
-              <v-divider
-                v-if="index + 1 < feedback.length"
-                :key="index"
-              ></v-divider>
-            </template>
-          </v-list-item-group>
-        </v-list>
-        
-
-        </v-expansion-panel-content>
-      </v-expansion-panel>
-    </v-expansion-panels>
-  </v-row>
-</v-container>

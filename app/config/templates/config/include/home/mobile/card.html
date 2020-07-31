@@ -1,4 +1,4 @@
-
+{% load static %}
         
         <div class="card my-3">
             <div class="card-header">
@@ -15,7 +15,11 @@
                         <div class="col-8">
                         <p class="card-text">{{ obj.description|truncatechars:20 }}</p>
                         <p class="card-text"><small class="text-muted">{{ obj.category.get_number_display }}<br />
-                        {{ obj.created_at }}</small></p>                        
+                        {{ obj.created_at }}</small>
+                        {% if obj.deadline %}
+                        <img src="{% static 'twotone_block_black_36dp.png' %}" class="material-icons ml-4" />
+                        {% endif %}
+                        </p>                        
                         </div>
                     </div>
                 </div>
