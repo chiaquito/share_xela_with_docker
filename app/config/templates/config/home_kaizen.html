@@ -79,10 +79,10 @@
               <v-flex  >
                   
                       <v-card-text >
-                      <img v-bind:src="item.src" class="centerCrop" alt=""/>
-                      
+                      <img v-bind:src="item.src" class="centerCrop" alt=""/>                      
                       <p v-text="item.title"></p>
-                      <p v-text="item.created_at" ></p>
+                      <span v-text="item.created_at" ></span>
+                      <img class="material-icons ml-5" v-if="item.deadline" v-bind:src="item.deadline_image">
                       </v-card-text>
   
                   
@@ -111,10 +111,10 @@
             <v-flex  >
                 
                     <v-card-text >
-                    <img  v-bind:src="item.src" class="centerCrop"  alt=""/>
-                    
+                    <img  v-bind:src="item.src" class="centerCrop"  alt=""/>                    
                     <p v-text="item.title"></p>
-                    <p v-text="item.created_at" ></p>
+                    <span v-text="item.created_at" ></span>
+                    <img class="material-icons ml-5" v-if="item.deadline" v-bind:src="item.deadline_image">
                     </v-card-text>
 
                 
@@ -149,7 +149,8 @@
                   <img v-bind:src="item.src" class="centerCrop"   alt=""/>
                   
                   <p v-text="item.title"></p>
-                  <p v-text="item.created_at" ></p>
+                  <span v-text="item.created_at" ></span>
+                  <img class="material-icons ml-5" v-if="item.deadline" v-bind:src="item.deadline_image">
                   </v-card-text>
 
               
@@ -177,10 +178,10 @@
         <v-flex  >
             
                 <v-card-text >
-                <img v-bind:src="item.src" class="centerCrop"   alt=""/>
-                
+                <img v-bind:src="item.src" class="centerCrop" alt=""/>                
                 <p v-text="item.title"></p>
-                <p v-text="item.created_at" ></p>
+                <span v-text="item.created_at" ></span>
+                <img class="material-icons ml-5" v-if="item.deadline" v-bind:src="item.deadline_image">
                 </v-card-text>
 
             
@@ -203,37 +204,46 @@
 Vue.component('gallery-sec', {
   template: '#gallery-sec',
   data: function(){
-    console.log("とおるのcosas??")
+    //console.log("とおるのcosas??")
     var items_cosas = new Array()
     {% for obj in ITEM_OBJECTS_COSAS %}
-      console.log("test111")
+    var bool = "{{ obj.deadline }}"=="True"?true:false
+      //console.log("test111")
       items_cosas.push({
         src: "{{ obj.image1.url }}",
         title: "{{ obj.title|truncatechars:38 }}",
         href: '{% url "items:item_detail" obj.id %}', 
-        created_at: '{{ obj.created_at }}'
+        created_at: '{{ obj.created_at }}',
+        deadline: bool,
+        deadline_image: "{% static 'twotone_block_black_36dp.png' %}"
       })
     {% endfor %}
     var items_habitaciones = new Array()
     {% for obj in ITEM_OBJECTS_HABITACION %}
-      console.log("test")
-      console.log("{{ obj.title }}")
+    var bool = "{{ obj.deadline }}"=="True"?true:false
+      //console.log("test")
+      //console.log("{{ obj.title }}")
       items_habitaciones.push({
         src: "{{ obj.image1.url }}",
         title: "{{ obj.title|truncatechars:38 }}",
         href: '{% url "items:item_detail" obj.id %}', 
-        created_at: '{{ obj.created_at }}'
+        created_at: '{{ obj.created_at }}',
+        deadline: bool,
+        deadline_image: "{% static 'twotone_block_black_36dp.png' %}"
       })
     {% endfor %}
     var items_trabajo = new Array()
     {% for obj in ITEM_OBJECTS_TRABAJO %}
+    var bool = "{{ obj.deadline }}"=="True"?true:false
       console.log("test")
       console.log("{{ obj.title }}")
       items_trabajo.push({
         src: "{{ obj.image1.url }}",
         title: "{{ obj.title|truncatechars:38 }}",
         href: '{% url "items:item_detail" obj.id %}', 
-        created_at: '{{ obj.created_at }}'
+        created_at: '{{ obj.created_at }}',
+        deadline: bool,
+        deadline_image: "{% static 'twotone_block_black_36dp.png' %}"
       })
     {% endfor %}    
 

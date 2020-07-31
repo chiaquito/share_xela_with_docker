@@ -59,6 +59,7 @@
                           <p v-text="item.title" ></p>
                           <span v-text="item.category"></span><br />
                           <span v-text="item.created_at" ></span>
+                          <img class="material-icons ml-5" v-if="item.deadline" v-bind:src="item.deadline_image">
                           </v-card-text>
         
                   </v-flex>
@@ -83,6 +84,8 @@ Vue.component("item_list",{
     data: function(){
       var items = new Array()
       {% for obj in item_objects %}
+      //console.log("{{ obj.deadline }}")
+      var bool = "{{ obj.deadline }}"=="True"?true:false
       items.push({
         src: "{{ obj.image1.url }}",
         title: "{{ obj.title|truncatechars:38 }}",
@@ -90,6 +93,8 @@ Vue.component("item_list",{
         href: '{% url "items:item_detail" obj.id %}', 
         created_at: '{{ obj.created_at }}',
         category: "{{ obj.category }}",
+        deadline: bool,
+        deadline_image: "{% static 'twotone_block_black_36dp.png' %}"
       })  
       {% endfor %}
 
