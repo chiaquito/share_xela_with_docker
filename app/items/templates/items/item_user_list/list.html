@@ -4,39 +4,75 @@
 
 
 {% block head %}
-
-    {# 自作cssファイルの読み込み #}
-    <link rel="stylesheet" href="{% static 'css/footer_settings.css' %}"> 
-    <link rel="stylesheet" href="{% static 'css/general.css' %}"> 
-
-
-
-    <link href="https://fonts.googleapis.com/css?family=Roboto:100,300,400,500,700,900" rel="stylesheet">
+  <title>Mis Articulos</title>
+  <link href="https://fonts.googleapis.com/css?family=Roboto:100,300,400,500,700,900" rel="stylesheet">
   <link href="https://cdn.jsdelivr.net/npm/@mdi/font@5.x/css/materialdesignicons.min.css" rel="stylesheet">
   <link href="https://cdn.jsdelivr.net/npm/vuetify@2.x/dist/vuetify.min.css" rel="stylesheet">
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, minimal-ui">
-
 {% endblock %}
 
 
 {%  block content %}
+
 {% if request|is_pc %}
 
 
 
 
-{# PC テンプレート #}
+{# 　　　　　　　　　　　　PC テンプレート　　　　　　　　　　　　　 #}
 
-<div class="container" id="profile">
+<div class="container my-0 py-0" >
     <div class="row">
-        <div class="col-12">
 
-            <profile_data/>
+      <class class="col">
+        <p class="my-0 py-3 font-weight-normal">usuario informacion</p>
+        <div class="card shadow-sm">
+          <div class="container">
+            <div class="row">
+              
+              <div class="col">
+                
+                <div id="profile" class="col-12">
+                  <profile-data class="p-0"></profile-data>
+                
+                
+
+
+                <ul class="nav nav-pills mb-3" id="pills-tab" role="tablist">
+                  <li class="nav-item">
+                    <a class="nav-link active" id="pills-home-tab" data-toggle="pill" href="#pills-area" role="tab" aria-controls="pills-home" aria-selected="true">area de entrega</a>
+                  </li>
+                  <li class="nav-item">
+                    <a class="nav-link" id="pills-profile-tab" data-toggle="pill" href="#pills-fb" role="tab" aria-controls="pills-profile" aria-selected="false">reputación</a>
+                  </li>
+                  <!--li class="nav-item">
+                    <a class="nav-link" id="pills-contact-tab" data-toggle="pill" href="#pills-contact" role="tab" aria-controls="pills-contact" aria-selected="false">Contact</a>
+                  </!--li-->
+                </ul>
+                <div class="tab-content" id="pills-tabContent">
+                  <div class="tab-pane fade show active" id="pills-area" role="tabpanel" aria-labelledby="pills-home-tab">
+                    <div class="container" v-bind:style="{width:width, height:height}" id="map_leaflet"></div>
+                  </div>  
+                  <div class="tab-pane fade" id="pills-fb" role="tabpanel" aria-labelledby="pills-profile-tab"> <feedback-tab/> </div>
+                  <!--div class="tab-pane fade" id="pills-contact" role="tabpanel" aria-labelledby="pills-contact-tab">！！！！</!--div-->
+                </div>
+
+
+              </div>
+            </div>
+          </div>
+
         </div>
-    </div>
+        </div>
+
+        
+ </div>
 </div>
 
+
+
 <div class="container-fluid" id="app">
+  
     <v-app> 
         <main>    
            <item_list/>
@@ -44,174 +80,224 @@
     </v-app>    
 </div>
 
-{# PC テンプレート 終わり #}
 
 
-{# 以下jacascript #}
+
+{#　　　　　　　　　　　 PC テンプレート 終わり 　　　　　　　#}
 
 
-{# leaflet cdn読み込み #}
+{#                     以下jacascript                 #}
+
+
+{# vue leafletの読み込み #}
+<link rel="stylesheet" href="//unpkg.com/leaflet/dist/leaflet.css" />
+<script src="//unpkg.com/leaflet/dist/leaflet.js"></script>
+<script src="//unpkg.com/vue2-leaflet"></script>
+
+
+{#                                         leaflet cdn読み込み                                             #}
 <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.6.0/leaflet.js"></script>
 <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.6.0/leaflet.css">
 
-{# vue cdn読み込み #}
+
+{#                   vue cdn読み込み                    #}
 {% include 'config/include/general/vue_js_script.html' %}
 
 
-{# vuetfy テンプレート アイテム一覧 #}
-<script type="text/x-template" id="item_list">
 
-    <v-container fluid>
-        <v-row>
-        </v-row>
-        <v-row>  
-            <v-card cols=3 class="mt-4 mb-4 ml-4 pa-3" v-for="(item,i) in items" :key="i" >
-              <a v-bind:href="item.href" >
-              <v-layout justify-center>
-                  <v-flex  >
-                      
-                          <v-card-text >
-                        
-                          <img v-bind:src="item.src" class="centerCrop" alt=""/>
-                          
-                          <p v-text="item.title" ></p>
-                          <span v-text="item.category"></span>
-                          <br />
-                          <span v-text="item.created_at" ></span>
-                          </v-card-text>
-        
-                  </v-flex>
-              </v-layout>
-              </a>
-        </v-card>
-    
-        </v-row>
-    </v-container>
-
-
-</script>
-
-
-<script >
-Vue.component("item_list",{
-    template: "#item_list",
-    data: function(){
-      var items = new Array()
-      {% for obj in item_objects %}
-      items.push({
-        src: "{{ obj.image1.url }}",
-        title: "{{ obj.title|truncatechars:38 }}",
-        
-        href: '{% url "items:item_detail" obj.id %}', 
-        created_at: '{{ obj.created_at }}',
-        category: "{{ obj.category }}",
-      })  
-      {% endfor %}
-
-      return { items: items }
-    }
-});
-
-
-new Vue({
-      el: '#app',
-      vuetify: new Vuetify(),
-    });    
-</script>
+ {% include 'items/item_user_list/items.html' %} 
 
 
 
 
 {# vuetfy テンプレート プロフィールデータ表示 #}
 
-<script type="text/x-template" id="profile_data">
-    <v-container fluid>
-      <v-row justify="center">
-        <v-subheader>Informacion de Usuario</v-subheader>
-  
-        <v-expansion-panels popout>
-          <v-expansion-panel
-            
-            hide-actions
-          >
-            <v-expansion-panel-header>
-                <v-container >
-              <v-row align="center" class="spacer" no-gutters >
+<script type="text/x-template" id="profile-data">
 
-                <v-col cols="2" class="ml-0 mr-0">
-                  <v-avatar size="80px" class="my-3">
-                    <img alt="Avatar" v-bind:src="profile_img_url" >
-                  </v-avatar>
-                  <br/>
-                  <span class="grey--text mt-5" v-text="user_name" ></span>
-                </v-col>
-  
-  
-                <v-col cols="5" class="text-no-wrap" >
-                  <v-chip class="ml-0 mr-2 black--text" label small>departamento: {{ profile_obj.adm1 }}</v-chip>
-                </v-col>
-  
-                <v-col cols="5" class="text-no-wrap" >
-                    <v-chip class="ml-0 mr-2 black--text" label small>municipio: {{ profile_obj.adm2 }}</v-chip>                  
-                </v-col>
-              </v-row>
+    {# 追加する #}
+    <v-container class="py-0">
+      <v-row  class="spacer py-0" no-gutters >
 
-              <v-row >
-                <v-col cols="12">
-                    <span class="grey--text" v-text="description"></span>
+        <v-col cols="2" class="mx-0 pb-0">
+          <v-container class="text-center justify-center my-0 py-0">
+            <v-row>
+              <v-col>
+                  <v-avatar size="120px" class="mt-3">
+                  <img alt="Avatar" v-bind:src="profile_img_url" >
+                  </v-avatar>                  
+                  <v-card-text class="grey--text mt-2 ml-0" v-text="user_name" ></v-card-text>
                 </v-col>
-              </v-row>
-            </v-container>
+            </v-row>
+          </v-container>      
+        </v-col>
 
-            </v-expansion-panel-header>
-  
-            <v-expansion-panel-content>
-              <v-divider></v-divider>
-              <v-card-text >マップを挿入する</v-card-text>
-              <span id="map_leaflet" class="container"></span>
-            </v-expansion-panel-content>
-          </v-expansion-panel>
-        </v-expansion-panels>
-      </v-row>
+        <v-col cols="10" class="mx-0">
+          <v-container >
+            <v-row>                
+              <v-col cols="8" class="mt-0 ml-5">
+                <v-subheader class="">Descripcion</v-subheader>
+                <v-card-text class="grey--text pt-0" v-text="description"></v-card-text> 
+                <v-subheader class="">reputación</v-subheader>
+                
+                <v-rating
+                  v-bind:value="ave_rep"
+                  background-color="#FFC400"
+                  color="#FFC400"
+                  readonly
+                  small
+                  dense
+                  half-increments
+                  class="pl-2 pt-0 mt-0"
+                  ></v-rating> 
+                                                  
+              </v-col>
+            </v-row>
+          </v-container>
+        </v-col>        
+      </v-row>      
     </v-container>
-</script> 
-    
+
+
+</script>    
+
+
+<script type="text/x-template" id="feedback">
+  
+  <v-list three-line>
+    <v-list-item-group>
+      <template v-for="(item, index) in feedback">
+        <v-list-item v-bind:key="item.title">
+          <template v-slot:default="{ active, toggle }">
+            <v-list-item-content>
+              <v-list-item-title v-text="item.evaluator"></v-list-item-title>
+              <v-list-item-subtitle class="text--primary" v-text="item.content"></v-list-item-subtitle>
+              <!--v-list-item-subtitle v-text="item.content"></!--v-list-item-subtitle-->
+            </v-list-item-content>
+
+            <v-list-item-action>
+              <v-list-item-action-text >
+                
+              {# レーティングをstarで表示させる #}
+              
+              <template>
+                <div class="text-center mt-0 pt-0">
+                  <v-rating
+                  v-bind:value="parseInt(item.level)"
+                  background-color="#FFC400"
+                  color="#FFC400"
+                  readonly
+                  small
+                  dense
+                  ></v-rating>
+                </div>
+              </template>
+
+          </v-list-item-action-text>
+
+            </v-list-item-action>
+          </template>
+        </v-list-item>
+
+        <v-divider
+          v-if="index + 1 < feedback.length"
+          :key="index"
+        ></v-divider>
+      </template>
+    </v-list-item-group>
+  </v-list>
+
+</script>
+
+
+
+
+
+
+
 
 <script >
 
-Vue.component("profile_data",{
-    template: "#profile_data",
+
+
+
+Vue.component("profile-data",{
+    template: "#profile-data",
     data: function(){
+      console.log("test")
       var profile_img_url = "{{ profile_obj.image.url }}" 
       var user_name       = "{{ profile_obj }}"
       var description     = "{{ profile_obj.description }}"
-      var exist_point     = "{{ profile_obj.point }}" == null? false: true ;
+      var rep_count = parseInt("{{ profile_obj.feedback.all.count }}")
+      //console.log(rep_count)
+      var total_rep = 0
+      //var total_rep = new Array()
+      {% for fb in profile_obj.feedback.all %}
+      total_rep += parseInt("{{ fb.level }}") 
+      //total_rep.push(parseInt("{{ fb.level }}"))
+      {% endfor %}
+      console.log(total_rep)
+      var ave_rep = total_rep/rep_count
+      console.log("imakara_ave")
+      console.log(ave_rep)
+      //var rep_count = total_rep.length
+      //console.log(rep_count)
+      
+
       //var exist_radius    = "{{ profile_obj.radius }}" == 0? false: true ;  
       return { profile_img_url: profile_img_url,
                user_name: user_name, 
                description: description,
-               exist_point: exist_point}
+               ave_rep: ave_rep                     
+              }
+    },
+});
+
+
+
+
+Vue.component("feedback-tab",{
+  template: "#feedback",
+  data: function(){
+    console.log("feedが出てる？")
+    var feedback = new Array();
+    {% for obj in profile_obj.feedback.all %}
+
+        console.log("{{ obj.evaluator }}")
+        //データを格納する
+        feedback.push({ 
+          evaluator: "{{ obj.evaluator }}",
+          level: "{{ obj.level }}",
+          content: "{{ obj.content|safe }}" })
+      {% endfor %}
+
+    return { feedback: feedback }
     }
 });
+
+
 
 
 new Vue({
       el: '#profile',
       vuetify: new Vuetify(),
       delimiters: ["**","**"],
+      data:{ width: "100%",
+             height: "240px"},  
       mounted: function(){
-        console.log("地図を描画する")
+        console.log("{{ profile_obj.point.x }}")
         var lon = "{{ profile_obj.point.x }}";
         var lat = "{{ profile_obj.point.y }}";
         var radius = "{{ profile_obj.radius }}";
-        var map = L.map('map_leaflet', { center: [lat, lon],zoom: 13})
+        var map = L.map('map_leaflet', { center: [lat, lon],zoom: 10})
                         .addLayer(L.tileLayer('http://{s}.tile.osm.org/{z}/{x}/{y}.png'));
-        //map.setView([lat, lon], 12);
         L.marker([lat, lon]).addTo(map);
-      }
+        L.circle([lat, lon], {radius: radius}).addTo(map)
+      }    
+    });
 
-    }); 
 </script>
+
+
 
 
 
@@ -262,3 +348,119 @@ new Vue({
 
 
 {% endblock %}
+
+
+
+<v-container fluid>
+  <v-row justify="center">
+    <v-subheader>Informacion de Usuario</v-subheader>
+
+    <v-expansion-panels popout>
+      <v-expansion-panel        
+        hide-actions>
+
+        <v-expansion-panel-header>
+            <v-container >
+              <v-row  class="spacer" no-gutters >
+
+                <v-col cols="2" class="ml-0 mr-0">
+                  <v-container >
+                    <v-row>
+                      <v-col>
+                          <v-avatar size="80px" class="my-3">
+                          <img alt="Avatar" v-bind:src="profile_img_url" >
+                          </v-avatar>
+                          <br/>
+                          <span class="grey--text mt-5 ml-0" v-text="user_name" ></span>
+                        </v-col>
+                    </v-row>
+                  </v-container>      
+                </v-col>
+
+                <v-col cols="10" class="ml-0 mr-0">
+                  <v-container >
+                    <v-row>
+                      <v-col col="12" class="text-no-wrap">
+                        <v-chip class="ml-4 mr-0 black--text" label small>departamento: {{ profile_obj.adm1 }}</v-chip>
+                      </v-col> 
+                      <v-col col="12" class="text-no-wrap">
+                        <v-chip class="ml-2 mr-2 black--text" label small>municipio: {{ profile_obj.adm2 }}</v-chip> 
+                      </v-col>  
+                      
+                      <v-col cols="12" class="mt-5">
+                        <span class="grey--text" v-text="description"></span>
+                      </v-col>
+
+                    </v-row>
+                  </v-container>
+                </v-col>        
+              </v-row>      
+            </v-container>
+
+        </v-expansion-panel-header>
+
+        <v-expansion-panel-content>
+          <v-divider></v-divider>
+          
+
+          <l-map v-bind:zoom="zoom" v-bind:center="center" ref="mymap">
+            <l-tile-layer :url="url" :attribution="attribution"/>
+          </l-map>
+        
+
+          <v-card-text >{# フィードバックの一覧を作成し挿入する #}</v-card-text>
+
+
+
+        {# 　feedbackを追加する 　　　#}
+
+
+        <v-list three-line>
+          <v-list-item-group>
+            <template v-for="(item, index) in feedback">
+              <v-list-item v-bind:key="item.title">
+                <template v-slot:default="{ active, toggle }">
+                  <v-list-item-content>
+                    <v-list-item-title v-text="item.evaluator"></v-list-item-title>
+                    <v-list-item-subtitle class="text--primary" v-text="item.content"></v-list-item-subtitle>
+                    <!--v-list-item-subtitle v-text="item.content"></!--v-list-item-subtitle-->
+                  </v-list-item-content>
+    
+                  <v-list-item-action>
+                    <v-list-item-action-text >
+                      
+                    {# レーティングをstarで表示させる #}
+                    
+                    <template>
+                      <div class="text-center mt-0 pt-0">
+                        <v-rating
+                        v-bind:value="parseInt(item.level)"
+                        background-color="#FFC400"
+                        color="#FFC400"
+                        readonly
+                        small
+                        dense
+                        ></v-rating>
+                      </div>
+                    </template>
+
+                </v-list-item-action-text>
+
+                  </v-list-item-action>
+                </template>
+              </v-list-item>
+    
+              <v-divider
+                v-if="index + 1 < feedback.length"
+                :key="index"
+              ></v-divider>
+            </template>
+          </v-list-item-group>
+        </v-list>
+        
+
+        </v-expansion-panel-content>
+      </v-expansion-panel>
+    </v-expansion-panels>
+  </v-row>
+</v-container>

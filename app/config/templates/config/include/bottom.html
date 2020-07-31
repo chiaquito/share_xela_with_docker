@@ -1,15 +1,17 @@
 {% load static %}
 
 
-<footer class="container-fluid footer my-5 py-5" style="background-color: #DDDDDD;">
-  <div class="row justify-content-md-center" >
-    <div class="col-12" style="background-color: #DDDDDD;"> 
+
+
+<footer class="container-fluid my-5 py-5 shadow footer_" style="background-color: #dadada;" >
+  <div class="row justify-content-md-center my-5 py-5" >
+    <div class="col-12 mx-0 px-0"  > 
 
       {% include "config/include/AndroidAppAds/ads.html" %}
       
 
         <ul class="text-center ">
-        {% comment %}<li style="display: inline-block;"><a href="">利用規約</a>&nbsp;|</li>{% endcomment %}
+        {# <li style="display: inline-block;"><a href="">利用規約</a>&nbsp;|</li> #}
         <li style="display: inline-block;"><a href="{% url 'home' %}">Home</a>&nbsp;|</li>
         <li style="display: inline-block;"><a href="{% url 'privacy' %}">Política de privacidad</a>&nbsp;|</li>
         <li style="display: inline-block;"><a href="{% url 'contacts:inquiries' %}">Contáctanos</a></li>

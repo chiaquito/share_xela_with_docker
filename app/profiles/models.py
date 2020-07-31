@@ -17,27 +17,10 @@ from .strings import DEFAULT_PROFILE_DESCRIPTION, DEFAULT_PROFILE_IMAGE
 #############
 ## 参考情報 ##
 #############
-# 1.
+
 #https://btj0.com/blog/django/choices/
 # (DB値, 読みやすい値)
 
-
-#adm0_CHOICES = [("GUATEMALA", "GUATEMALA"), ("OTROS", "OTROS")]
-#prefecturas_obj = Prefectura.objects.all()
-#adm1_CHOICES    = []
-#adm1_obj = prefecturas_obj.distinct("adm1_es")
-#for ele in adm1_obj:
-#	adm1_CHOICES.append((ele.adm1_es,ele.adm1_es))
-#DEPARTAMENTO_CHOICES = [(obj.adm1_es,obj.adm1_es) for obj in Departamento.objects.all()]
-#DEPARTAMENTO_CHOICES = []
-
-
-#adm2_CHOICES    = []
-#adm2_obj = prefecturas_obj.distinct("adm2_es")
-#for ele in adm2_obj:
-#	adm2_CHOICES.append((ele.adm2_es,ele.adm2_es))
-#MUNICIPIO_CHOICES = [(obj.adm2_es,obj.adm2_es) for obj in Municipio.objects.all()]
-#MUNICIPIO_CHOICES = []
 
 
 SEX_CHOICES =((0, "NotSet"),(1, "Hombre"),(2, "Mujer"))

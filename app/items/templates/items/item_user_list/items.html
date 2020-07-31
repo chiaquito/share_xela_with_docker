@@ -1,0 +1,56 @@
+{# vuetfy テンプレート アイテム一覧 #}
+<script type="text/x-template" id="item_list">
+
+    <v-container fluid>
+        <v-row>
+          <p class="mt-4 mb-0 py-0 ml-3 font-weight-normal">ariticulos</p>
+        </v-row>
+        <v-row>  
+            <v-card cols=3 class="my-5  ml-5 p-3" v-for="(item,i) in items" :key="i" >
+              <a v-bind:href="item.href" >
+              <v-layout justify-center>
+                  <v-flex  >
+                      
+                          <v-card-text >
+                          <img v-bind:src="item.src" class="centerCrop" alt=""/>
+                          <p v-text="item.title" ></p>
+                          <span v-text="item.category"></span>
+                          <br />
+                          <span v-text="item.created_at" ></span>
+                          </v-card-text>
+        
+                  </v-flex>
+              </v-layout>
+              </a>
+        </v-card>    
+        </v-row>
+    </v-container>
+</script>
+
+
+<script >
+Vue.component("item_list",{
+    template: "#item_list",
+    data: function(){
+      var items = new Array()
+      {% for obj in item_objects %}
+      items.push({
+        src: "{{ obj.image1.url }}",
+        title: "{{ obj.title|truncatechars:38 }}",
+        
+        href: '{% url "items:item_detail" obj.id %}', 
+        created_at: '{{ obj.created_at }}',
+        category: "{{ obj.category }}",
+      })  
+      {% endfor %}
+
+      return { items: items }
+    }
+});
+
+
+new Vue({
+      el: '#app',
+      vuetify: new Vuetify(),
+    });    
+</script>

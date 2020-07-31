@@ -9,7 +9,7 @@
 {% endblock %}
 
 {% block content %}
-{% include 'config/include/message_and_delete.html' %}
+
 
 {% if request|is_pc %}
 <div class="container">
@@ -65,7 +65,4 @@
 {% endif %}
 
 
-<!-- メッセージフレームワークによるメッセージの削除 -->
-{% include 'config/include/message_and_delete_jquery.html' %}
-<!-- メッセージフレームワークによるメッセージの削除  終わり-->
 {% endblock %}

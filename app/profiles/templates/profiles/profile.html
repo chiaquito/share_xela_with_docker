@@ -35,10 +35,6 @@
 {% if request|is_pc %}
 <div class="container">
 	<div class="row">
-		<div class="col-12">
-			{#    メッセージフレームワーク挿入      #}			
-			{% include "config/include/message_and_delete.html" %}
-		</div>
 
 		<div class="col-12">
 			{% include "config/include/general/basic_margin.html" %}
@@ -57,7 +53,7 @@
 
 
 			<!-- Basic Information -->
-			<p class="h4 bg-light  p-3">Basic Information</p>
+			<p class="h4 bg-light  p-3 shadow-sm">Basic Information</p>
 
 
 			Nombre de usuario:<br/>
@@ -82,7 +78,7 @@
 
 			<!-- エリア情報 -->
 
-			<p class="h4 bg-light  p-3" >Area Information</p>
+			<p class="h4 bg-light  p-3 shadow-sm">Area Information</p>
 			{# <p>＊投稿する記事のエリアのデフォルト、または投稿記事の検索エリアの設定になります。</p> #}
 			<p>＊Es el valor predeterminado del área del artículo que se publicará, o la configuración del área de búsqueda del artículo publicado.</p>
 			<div class="form-row">
@@ -116,9 +112,9 @@
 
 			{{ form.user.as_hidden }}
 
-			{# <p class="h4 bg-light  p-3">Personal Information</p> #}
+			{# <p class="h4 bg-light  p-3 ">Personal Information</p> #}
 			{# <p>＊Personal Information は相手に表示されることはありません。</p> #}
-			<p class="h4 bg-light  p-3">La información personal</p> 
+			<p class="h4 bg-light  p-3 shadow-sm">La información personal</p> 
 			<p>＊ La información personal no se mostrará a la otra parte.</p>
 			{{ form.phonenumber.label.as_hidden }}<!--:-->
 			{{ form.phonenumber.as_hidden }}<br />
@@ -141,18 +137,6 @@
 {# ---------------------------------------        mobile        -------------------------------------------- #}
 
 {% if request|is_mobile %}
-<div class="container">
-	<div class="row">
-		<div class="col-12">
-		{# メッセージフレームワーク #}			
-		{% include "config/include/message_and_delete.html" %}
-
-		{# メッセージフレームワーク終わり #}
-
-		{% include "config/include/general/basic_margin.html" %}
-		</div>
-	</div>
-</div>
 
 <div class="container">
 	<div class="row">
@@ -274,9 +258,6 @@ Cumpleaños :
 
 
 {# PC mobile共通事項 #}
-
-{# messageフレームワークの表示と削除機能の追加 #}
-{% include 'config/include/message_and_delete_jquery.html' %}
 
 
 {# vue.js cdn #}

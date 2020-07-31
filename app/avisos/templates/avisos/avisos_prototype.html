@@ -4,13 +4,9 @@
 
 
 {% block head %}
-    {% if request|is_pc %}
-
-
-     <link rel="stylesheet" href="{% static 'css/footer_settings.css' %}"> 
-    {% elif request|is_mobile %}
-    <link rel="stylesheet" href="{% static 'css/footer_settings.css' %}"> 
-    {% endif %}
+<title>Aviso</title>
+<link href="https://fonts.googleapis.com/icon?family=Material+Icons"
+      rel="stylesheet">
 {% endblock %}
 
 
@@ -21,58 +17,42 @@
 		<div class="col-3">
 
 			<p class="mt-0 pb-0"><font size="6">Avisos</font></p>
-			<hr class="pt-0 mt-o" />	
+			<hr class="pt-0 mt-o" />
+			
 		</div>
 		<div class="col-9 mt-4">
-			
-
-			<ul class="nav nav-tabs">
 			{% if type == "ALL" %}
-			<li class="nav-item">
-			<a class="nav-link active" href="#">Todo de Aviso</a>
-			</li>
-			<li class="nav-item">
-			<a class="nav-link" href="{% url 'avisos:avisos_list' %}">Solo Avisos no leído</a>
-			</li>
-			<!--
-
-			<li class="nav-item">
-			<a class="nav-link" href="#">Link</a>
-			</li>
-			<li class="nav-item">
-			<a class="nav-link disabled" href="#" tabindex="-1" aria-disabled="true">Disabled</a>
-			</li>
-			
-			-->
+			<ul class="nav nav-tabs">
+				<li class="nav-item">
+				<a class="nav-link active" href="#">Todo de Aviso</a>
+				</li>
+				<li class="nav-item">
+				<a class="nav-link" href="{% url 'avisos:avisos_list' %}">Solo Avisos no leído</a>
+				</li>
 			</ul>
 			{% elif type == "FILETERED" %}
-			<li class="nav-item">
-			<a class="nav-link" href="{% url 'avisos:avisos_alllist' %}">Todo de Aviso</a>
-			</li>
-			<li class="nav-item">
-			<a class="nav-link active" href="#">Solo Avisos no leído</a>
-			</li>			
+			<ul class="nav nav-tabs">
+				<li class="nav-item">
+				<a class="nav-link" href="{% url 'avisos:avisos_alllist' %}">Todo de Aviso</a>
+				</li>
+				<li class="nav-item">
+				<a class="nav-link active" href="#">Solo Avisos no leído</a>
+				</li>			
 			</ul>
 			{% endif %}
 		</div>	
 	</div>
 
 	<div class="row">
-
-
-
 	</div>
 	<div class="row">
 		<div class="col">
-
-		
 				<table class="table table-striped mt-5">
 				<thead>
 				<tr>
-				<th scope="col">Estado</th>
+				<th scope="col" >Estado</th>
 				<th scope="col">Fecha</th>
-				<th scope="col">Tipo de aviso</th>
-				<th scope="col">Articulo</th>
+				<th scope="col">Aviso</th>
 				</tr>
 				</thead>
 				<tbody>
@@ -80,62 +60,62 @@
 				<tr>
 				<th scope="row">
 					{% if obj.checked == False %}
-					{# 未読 #} No leído
+					{# 未読 #} 
 					{% elif obj.checked == True %}
 					{# 既読 #} &nbsp;&nbsp;&nbsp;
+					<span class="material-icons">
+						check_circle_outline
+						</span>	
 					{% endif %}					
 				</th>
-				<td>
+				<td >
 					{{ obj.created_at }}
 				</td>
-				<td>
-					{% if obj.content_type.model == "solicitud" %}
+				{% if obj.content_type.model == "solicitud" %}
+				<td >
+					
 
 					{#  <a href="{% url 'solicitudes:get_solicitud' obj.object_id %}">アイテムの取引申請が来ています</a> #}
 					{#  <a href="{% url 'avisos:aviso_check' obj.id %}">アイテムの取引申請が来ています</a> #}
 					<a href="{% url 'avisos:aviso_check' obj.id %}">Hay Solicitud de transacción</a>
 				</td>
-				<td>	
-					{{ obj.content_object.item }}<br/>
-				</td>
+				{% elif obj.content_type.model == "directmessage" %}
 				<td>
-					{% elif obj.content_type.model == "directmessage" %}
+					
 
 					{# <a href="{% url 'direct_messages:get_dm' obj.object_id  %}">あなたが取引相手として決まりました</a> #}
 					<a href="{% url 'avisos:aviso_check' obj.id %}">Usted ha sido decidido como socio comercial</a>
 				</td>	
-				<td>	
-					{{ obj.content_object.item }}<br/>
-				</td>				
+				{% elif obj.content_type.model == "directmessagecontent" %}				
 				<td>
-					{% elif obj.content_type.model == "directmessagecontent" %}
-
+					
 					{# <a href="{% url 'direct_messages:get_dm' obj.object_id  %}">メッセージが来ました</a> #}
 					<a href="{% url 'avisos:aviso_check' obj.id %}">Hay mensaje</a>
 				</td>
-				<td>
-					{{ obj.content_object.dm.item }}<br/>
-				</td>	
-				<td>
-					{% elif obj.content_type.model == 'itemcontact' %}
+				{% elif obj.content_type.model == 'itemcontact' %}
+				<td >
+					
 
 					{# <a href="{% url 'item_contacts:item_itemcontact' obj.object_id %}">アイテムにコメントが付きました。</a> #}
 					{# <a href="{% url 'avisos:aviso_check' obj.id %}">アイテムにコメントが付きました。</a> #}
 					<a href="{% url 'avisos:aviso_check' obj.id %}">Hay commentarios del articulo</a>
-
+					
 				</td>
-				<td>
-					{{ obj.content_object.item }}<br/>
-				</td>
-
-					{% endif %}					
-
-				</td>
+				{% endif %}	
 				
+
 				</tr>
 				{% endfor %}
 				</tbody>
 				</table>
+
+				{% if aviso_objects.count <= 4 %}
+				{% include "config/include/general/basic_margin.html" %}
+				{% include "config/include/general/basic_margin.html" %}
+				{% include "config/include/general/basic_margin.html" %}
+				{% include "config/include/general/basic_margin.html" %}
+				{% include "config/include/general/basic_margin.html" %}
+				{% endif %}
 			
 		</div>
 	</div>
@@ -197,9 +177,12 @@
 				<tr>
 				<th scope="row">
 					{% if obj.checked == False %}
-					{# 未読 #} No leído
+					{# 未読 #}
 					{% elif obj.checked == True %}
 					{# 既読 #} &nbsp;&nbsp;&nbsp;
+					<span class="material-icons">
+						check_circle_outline
+						</span>	
 					{% endif %}					
 				</th>
 				<td>

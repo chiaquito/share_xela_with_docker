@@ -219,7 +219,8 @@ class SolicitudSelectView(View):
 
 		#post_save()のシグナルでDirectMessageオブジェクトを生成する
 
-		messages.info(request, "取引相手を決定しました。メッセージで詳細を決めてください。")
+		#messages.info(request, "取引相手を決定しました。メッセージで詳細を決めてください。")
+		messages.info(request, "Ha decidido con quién hacer negocios. Por favor, decida los detalles en su mensaje.")
 		return redirect("solicitudes:solicitud_list", item_obj.id)
 
 

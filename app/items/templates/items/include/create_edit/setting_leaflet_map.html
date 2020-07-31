@@ -50,27 +50,27 @@ var map = new Vue({
         } 
  
         
-        if(lng != null && radius != 0 ){　
+        if(lng != null && lng != "" && radius != 0 ){　
         
             //console.log(lng, lat);
             //marker = L.marker([lat, lng], {draggable:true});
-            
+            console.log("１番手")
             var map = L.map('map', { center: [lat, lng],zoom: 13})
                         .addLayer(L.tileLayer('http://{s}.tile.osm.org/{z}/{x}/{y}.png'));
             var x = L.circle([lat, lng], {radius:radius}).addTo(map); 
             geo_object_first = x; 
 
                       
-        }else if(lng != null && radius == 0 ){ 
-            
-            console.log(lng, lat);
-            
+        }else if(lng != null && lng != "" && radius == 0 ){ 
+            console.log("２番手")
+            console.log(lng, lat);            
             var map = L.map('map', { center: [lat, lng],zoom: 13})
                         .addLayer(L.tileLayer('http://{s}.tile.osm.org/{z}/{x}/{y}.png'));
             var x = L.marker([lat, lng], {draggable:true}).addTo(map);
             geo_object_first = x;      
 
         }else {
+            console.log("ココで良いか")
             var map = L.map('map', { center: [14.843755528223957, -91.51963233947755],zoom: 12})
                         .addLayer(L.tileLayer('http://{s}.tile.osm.org/{z}/{x}/{y}.png'));
         }

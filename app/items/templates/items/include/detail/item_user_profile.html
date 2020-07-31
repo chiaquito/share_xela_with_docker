@@ -2,21 +2,69 @@
 <div class="container-fluid">
     <div class="row">
         <div class="col-12">
-            <p class="h4 p-2 bg-light">Usario Info</p>
+            <p class="h4 p-2 bg-light shadow-sm">Usuario Info</p>
                 <div class="container">
                     <div class="row">
                         <div class="col-4">
                             <img class="img-thumbnail" src="{{ profile_obj.image.url }}" style="width: 5rem;"/>
+                            
                         </div>
                         <div class="col-8">
-                            <p><a href="{% url 'items:itemuser_list' %}">{{ profile_obj.user }}</a><br/>
+                            <p><a href="{% url 'items:itemuser_list' %}">{{ profile_obj.user }}<br/>
+                                su articulos otros</a><br/>
+                            </p>    
                             {# retroalimentación: {{ feedback_sum }}　promedio: {{ feedback_ave }}<br /> #}
-                            
-                            {# &emsp;<a href="{% url 'items:itemuser_list' %}">他の出品</a> #}
-                            <a href="{% url 'items:itemuser_list' %}">su articulos otros</a></p>
+                            <p id="app" ><feedback-show/></p> 
+                                                        
                         </div>
                     </div>
                 </div>
         </div>
     </div>
 </div>
+
+
+
+{# 　　　　　　　　　　　vuejs CDNの読み込み                #}
+{% include 'config/include/general/vue_js_script.html' %}
+
+<script type="text/x-template" id="feedback">
+
+  <div >
+    <v-rating
+      v-bind:value="rating"
+      background-color="#FFC400"
+      color="#FFC400"
+      dense
+      small
+      half-increments
+      readonly
+      class="pl-0 pt-0 mt-0 ml-0"
+    ></v-rating>
+  </div>  
+
+</script>
+
+<script>
+
+
+Vue.component("feedback-show",{
+    template: "#feedback",
+    data: function(){  
+      return { rating: parseFloat("{{ feedback_ave }}") }
+    },
+});
+
+
+
+
+new Vue({
+      el: '#app',
+      vuetify: new Vuetify(),
+      delimiters: ["**","**"],
+      data:{ width: "100%",
+             height: "240px"},  
+    });
+
+
+</script>

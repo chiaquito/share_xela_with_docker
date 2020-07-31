@@ -4,7 +4,8 @@
 
 
 {% block head %}
-    
+	
+	<title>Articlo</title>
     <link rel="stylesheet" href="{% static 'css/footer_settings.css' %}"> 
 
 
@@ -24,12 +25,6 @@
 {% comment %}                pc                 {% endcomment %}        
 
 {% if request|is_pc %}
-
-
-		
-<!-- メッセージフレームワーク -->			
-{% include "config/include/message_and_delete.html" %}
-<!-- メッセージフレームワーク終わり -->	
 
 
 
@@ -123,8 +118,8 @@
 			
 
 			{% include "config/include/general/basic_margin.html" %}
-			{% include "config/include/general/basic_margin.html" %}
-			{% include "config/include/general/basic_margin.html" %}
+			
+			
 
 
 
@@ -174,10 +169,6 @@
 
 
 
-
-<!-- メッセージフレームワークによるメッセージの削除 -->
-{% include 'config/include/message_and_delete_jquery.html' %}
-<!-- メッセージフレームワークによるメッセージの削除  終わり-->
 {% endif %}
 
 
@@ -190,11 +181,6 @@
 {% if request|is_mobile %}
 
 
-
-
-<!-- メッセージフレームワーク -->			
-{% include "config/include/message_and_delete.html" %}
-<!-- メッセージフレームワーク終わり -->
 
 
 {# title情報の挿入 #}
@@ -351,12 +337,6 @@
 {% include 'items/include/detail/item_ask_form.html' %}
 {#        "質問フォーム挿入終わり"      #}
 
-
-
-
-{#    メッセージフレームワークによるメッセージの削除    #}
-{% include 'config/include/message_and_delete_jquery.html' %}
-{#    メッセージフレームワークによるメッセージの削除  終わり  #}
 
 
 

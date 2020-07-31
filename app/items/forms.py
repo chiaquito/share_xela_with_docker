@@ -26,19 +26,19 @@ class ItemModelForm(forms.ModelForm):
 		#self.fields["user"].widget.attrs["class"] = "form-control"
 		#self.fields["user"].required = False
 
-		self.fields["category"].widget.attrs["class"] = "form-control"
+		self.fields["category"].widget.attrs["class"] = "form-control select_height"
 		#self.fields["category"].widget.attrs["size"] = "7"
 		#self.fields["category"].required = False
 
 
-		self.fields["title"].widget.attrs["class"] = "form-control"
+		self.fields["title"].widget.attrs["class"] = "form-control select_height"
 		self.fields["description"].widget.attrs["class"] = "form-control "#h-25rows="4"
-		self.fields["description"].widget.attrs["rows"]  = "8"
+		self.fields["description"].widget.attrs["rows"]  = "9"
 		self.fields["title"].widget.attrs["size"] = "5"
 		self.fields["price"].widget.attrs["class"] = "form-control"
 
 
-		self.fields["adm0"].widget.attrs["class"] = "form-control"
+		self.fields["adm0"].widget.attrs["class"] = "form-control select_height"
 		#self.fields["adm1"].widget.attrs["class"] = "form-control"
 		#self.fields["adm2"].widget.attrs["class"] = "form-control"
 		self.fields["image1"].widget.attrs["class"] = "form-control"

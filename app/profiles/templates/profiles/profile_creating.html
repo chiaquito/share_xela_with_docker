@@ -34,12 +34,6 @@
 {% if request|is_pc %}
 <div class="container">
 	<div class="row">
-		<div class="col-12">
-			{#    メッセージフレームワーク      #}			
-			{% include "config/include/message_and_delete.html" %}
-			{#   メッセージフレームワーク終わり  #}
-		</div>
-
 
 		<div class="col-12">
 			<p class="h2">TU PERFIL INFORMACION</p>
@@ -81,11 +75,6 @@
 {% elif request|is_mobile %}
 <div class="container">
 	<div class="row">
-		<div class="col">
-		{# メッセージフレームワーク #}			
-		{% include "config/include/message_and_delete.html" %}
-
-		</div>
 		<div class="col">
 
 <p class="h2">TU PERFIL INFORMACION</p>
@@ -136,5 +125,5 @@ Municipio :
 {# ---------------------------------------      mobile終わり    --------------------------------------------- #}
 
 
-{% include 'config/include/message_and_delete_jquery.html' %}
+
 {% endblock %}

@@ -1,0 +1,81 @@
+{% load user_agents %}
+
+{% if request|is_pc %}
+<div class="container">
+	<div class="row justify-content-md-center">
+		<div class="col-9">
+				<div class="card mb-5 shadow">
+				<h5 class="card-header shadow-sm">{{ item_obj.title }}</h5>
+				<div class="card-body">
+					<div class="container">
+						<div class="row p-0">
+							<div class="col-6 p-0 m-0">
+								<img class="p-4 centerCropSmall" src="{{ item_obj.image1.url }}">
+							</div>
+
+							{% include 'direct_messages/include/dm_detail/item_user_description.html' %}
+							
+							<div class="col-6">	
+								{% if btn_feedback %}
+								<a class="btn btn-primary" href="{% url 'feedback:create' dm_obj.id  %}">Cierra el trato, escribe su evaluación de la otra parte.</a>
+								{% else %}
+								{% endif %}
+								{% comment %}取引が終わったので感想を書く{% endcomment %}
+							</div>
+						</div>
+					</div>	
+				</div>
+				</div>
+		</div>
+		{% include "config/include/general/basic_margin.html" %}
+		{% include "config/include/general/basic_margin.html" %}			
+	</div>
+</div>
+
+
+
+
+
+
+
+{% elif request|is_mobile %}
+
+<div class="container">
+	<div class="row justify-content-md-center">
+			<div class="col-12">
+				<div class="card mb-5 shadow">
+				<h5 class="card-header shadow-sm">{{ item_obj.title }}</h5>
+				<div class="card-body">
+					<div class="container">
+						<div class="row p-0">
+							<div class="col-6 p-0 m-0">
+								<img class="centerCropSmallMobile"  src="{{ item_obj.image1.url }}">
+							</div>
+
+							{% include 'direct_messages/include/dm_detail/item_user_description.html' %}
+
+							{% include "config/include/general/basic_margin.html" %}
+							{% include "config/include/general/basic_margin.html" %}
+
+							<div class="col-12">
+								{% if btn_feedback %}
+								<a class="btn btn-primary" href="{% url 'feedback:create' dm_obj.id  %}">Cierra el trato, escribe su evaluación de la otra parte.</a>
+								{% else %}
+								{% endif %}
+								{% comment %}取引が終わったので感想を書く{% endcomment %}
+							</div>
+		
+						</div>
+					</div>	
+				</div>
+				</div>
+			</div>
+			
+
+		{% include "config/include/general/basic_margin.html" %}
+		{% include "config/include/general/basic_margin.html" %}			
+	</div>
+</div>
+
+
+{% endif %}

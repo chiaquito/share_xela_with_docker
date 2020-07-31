@@ -12,18 +12,42 @@ margin-top: 20px;
 
 /* 各画像の表示に際しセンタークロップの状態で表示する */
 .centerCrop {
-    width: 220px;
+    width:  220px;
     height: 220px;
     object-fit: cover;
 }
+
+.centerCropSmall {
+    width:  180px;
+    height: 180px;
+    object-fit: cover;
+}
+
+.centerCropSmallMobile {
+    width:  110px;
+    height: 110px;
+    object-fit: cover;
+}
+
+
 
 .mySize{
     width: 220px;
 }
 
+.select_height{
+    height:45px;
+}
+
+.material-icons{
+    height:20px;
+}
 
 
-/* フォント */
+
+
+/* フォント　ファミリー */
+
 /*
 @import url('https://fonts.googleapis.com/css?family=M+PLUS+Rounded+1c');
 body {
@@ -52,5 +76,7 @@ body{
     font-weight:  900;
 }
 
-
-
+/* fontサイズを設定 */
+body{
+    font-size: 0.8rem;
+}

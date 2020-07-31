@@ -2,8 +2,8 @@
 <!--label>{{ form.adm1.label }}</label-->
 <label>Departamento</label>
 <div id="select_departamento">
-    <select v-model="selected" class="col-12 form-control" name="adm1">
-        <option  v-for="ele in lst" v-bind:value="ele.name">**ele.name**</option>
+    <select v-model="selected" class="col-12 form-control select_height"  name="adm1">
+        <option  v-for="ele in lst" v-bind:value="ele.name" font-size="2" >**ele.name**</option>
     </select>
     {# <br><span>Selected: ** selected **</span> #}
 </div>

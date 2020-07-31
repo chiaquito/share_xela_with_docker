@@ -4,39 +4,26 @@
 
 
 {% block head %}
-    {% if request|is_pc %}
-    <!-- adjusting footer -->
-    {# <link rel="stylesheet" href="{% static 'css/adjusting_footer.css' %}"> #}
-    <link rel="stylesheet" href="{% static 'css/footer_settings.css' %}">
-    {% elif request|is_mobile %}
-	{% endif %}
-	{% include 'config/include/general/vue_js_head.html' %}
+	<title>Solicitar</title>
 {% endblock %}
 
 
 {% block content %}
 <div class="container">
-	<div class="row">
+	<div class="row ">
 		<div class="col">
 		<h4>Escribe un mensaje al contribuyente</h4>
 		</div>
 	</div>
 </div>
-<div class="container" id="app">
-	<div class="row">
+<div class="container " id="app">
+	<div class="row ">
 		<div class="col-6">
 			
 		<form method="post" action="{% url 'solicitudes:solicitud_input' item_obj.id %}"->
-		
-		<!--form method="post" action="#"-->	
+			
 		{% csrf_token %}
-
-		{# {{ form.item.as_hidden }} #}
-
-
-
 		{{ form.applicant.as_hidden }}
-
 		{{ form.message }}
 		<br />
 

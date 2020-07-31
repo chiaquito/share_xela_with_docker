@@ -4,17 +4,8 @@
 
 
 {% block head %}
-    {% if request|is_pc %}
-    <!-- adjusting footer -->
-    {# <link rel="stylesheet" href="{% static 'css/adjusting_footer.css' %}"> #}
     <link rel="stylesheet" href="{% static 'css/footer_settings.css' %}">
-    {% elif request|is_mobile %}
-    {% endif %}
 {% endblock %}
-
-
-
-
 
 
 
@@ -36,38 +27,59 @@
 
 <div class="container">
   <div class="row justify-content-md-center">
-    <div class="col-6">
-      {# <p class="h2">申請者リスト</p> #}      
-         <p class="h2">Lista de solicitantes</p>
+    <div class="col-12">
+      {% include "config/include/general/basic_margin.html" %}
 
+      {# <p class="h2">申請者リスト</p> #}      
+         <p class="h2 text-center">Lista de solicitantes</p>
     </div>
   </div>
 </div>
 
 <div class="container mt-3 mb-3">
+
   <div class="row justify-content-md-center">
+    {% if request|is_pc %}
     <div class="col-6">
-
-
-              <div class="card mb-5">
-              <h5 class="card-header">{{ item_obj.title }}</h5>
-              <div class="card-body">
-                <div class="container">
-                  <div class="row p-0">
-                    <div class="col-6 p-0 m-0">
-                      <img style="width:13rem;" class="p-4" src="{{ item_obj.image1.url }}">
-                    </div>
-                    <div class="col-6">
-                      <h5 class="card-title mb-1">Descripsion</h5>
-                      <hr class="mt-0" />
-                      <p class="card-text">{{ item_obj.description }}</p>
-                    </div>
-                  </div>
-                </div>  
+      <div class="card mb-5 shadow-sm">
+          <h5 class="card-header">{{ item_obj.title }}</h5>
+          <div class="card-body">
+          <div class="container">
+              <div class="row p-0">
+              <div class="col-6 p-0 m-0">
+              <img style="width:13rem;" class="p-4" src="{{ item_obj.image1.url }}">
               </div>
-              </div>
+              <div class="col-6">
+              <h5 class="card-title mb-1">Descripsion</h5>
+              <hr class="mt-0" />
+              <p class="card-text">{{ item_obj.description }}</p>
+            </div>
+          </div>
+        </div>  
+      </div>
     </div>
+    {% elif request|is_mobile %}
+    <div class="col-12">
+      <div class="card mb-5 shadow">
+          <h5 class="card-header">{{ item_obj.title }}</h5>
+          <div class="card-body">
+          <div class="container">
+              <div class="row p-0">
+              <div class="col-6 p-0 m-0">
+              <img style="width:13rem;" class="p-4" src="{{ item_obj.image1.url }}">
+              </div>
+              <div class="col-6">
+              <h5 class="card-title mb-1">Descripsion</h5>
+              <hr class="mt-0" />
+              <p class="card-text">{{ item_obj.description }}</p>
+            </div>
+          </div>
+        </div>  
+      </div>
+    </div>
+    {% endif %}
   </div>
+</div>
 
   <div class="row">
     <div class="col">
@@ -105,6 +117,10 @@
 
   </tbody>
 </table>
+
+</div>
+</div>
+</div>
 
 <script>
 	$("#alert-btn").on("click", function(){
