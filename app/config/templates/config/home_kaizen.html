@@ -19,12 +19,10 @@
 <div id="app">
         <v-app>            
             <main>
-              
-              <gallery-sec/>
-                
+              <gallery-sec/>                
             </main>
+            {# カテゴリーメニューの表示 #}
             {% include "config/include/home/pc/categories.html" %}
-            
         </v-app>
 </div>
 
@@ -34,12 +32,11 @@
 
 {#　mobileの場合のcontent template #}{% elif request|is_mobile %}
 
-<img src="{% static 'Xela_.jpg' %}" height="200px" />
 
+<img src="{% static 'Xela_.jpg' %}" height="200px" />
 
 {# 各カテゴリー別記事を表示 #}
 {% include 'config/include/home/mobile/items.html' %}
-
 
 {# カテゴリーメニューの表示 #}
 {% include 'config/include/home/mobile/categories.html' %}
@@ -59,7 +56,7 @@
 
 {% include 'config/include/general/vue_js_script.html' %}
 
-{# gallery-secタグの定義、セットアップ #}
+{# "#app"に対するvueの展開 #}
 {% include 'config/include/home/pc/item_vue_js.html' %}
 
 
@@ -71,8 +68,4 @@
 
 {#  mobile javascriptパート　終わり #} {% endif %}
 {% endblock %}
-
-
-
-
 

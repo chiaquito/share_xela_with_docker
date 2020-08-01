@@ -9,8 +9,7 @@
 
 {% endblock %}
 {% block extra_head %}
-    <!-- adjusting footer -->
-    <link rel="stylesheet" href="{% static 'css/adjusting_footer.css' %}">
+    
 {% endblock %}
 
 
@@ -40,6 +39,15 @@
 		</div>
 	</div>
 </div>
+
+
+{% include "config/include/general/basic_margin.html" %}
+{% include "config/include/general/basic_margin.html" %}
+{% include "config/include/general/basic_margin.html" %}
+{% include "config/include/general/basic_margin.html" %}
+{% include "config/include/general/basic_margin.html" %}
+{% include "config/include/general/basic_margin.html" %}
+
 {% elif request|is_mobile %}
 <div class="container">
   <div class="row justify-content-md-center">

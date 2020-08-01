@@ -4,6 +4,9 @@
 <!DOCTYPE html>
 <html>
   <head>
+    {# faviconのセット #}
+    <link rel="shortcut icon" href="{% static 'favicon.ico' %}">
+
     <!-- Global site tag (gtag.js) - Google Analytics -->
     <script async src="https://www.googletagmanager.com/gtag/js?id=G-FP833KHXRW"></script>
     <script>
@@ -30,11 +33,14 @@
 
     {# footerに関するcss #}
     <link rel="stylesheet" href="{% static 'css/footer_settings.css' %}">
+    {# vuejsの読み込み #}
+    {% include 'config/include/general/vue_js_head.html' %}
     
     <title>{% block head_title %}{% endblock %}</title>
     {% endblock %}
 
 
+    
 
     {% block extra_head %}
     {% endblock %}
@@ -48,6 +54,7 @@
 
 
     {% block body %}
+    <div class="container-fluid mx-0 px-0 test" id="wrapper">
 
 
     {% comment %}
@@ -83,10 +90,11 @@
     {% block extra_body %}
     {% endblock %}
 
-    {% include "config/include/general/basic_margin.html" %}
-    <br /><br />
-    {% include 'config/include/bottom.html' %}
- 
+    
+    
+      {# vuetifyによるfooterの表示 #}
+      <m_footer/>
+    </div>
 
 
 
@@ -97,6 +105,9 @@
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
 
 
-
+    {# vue.js cdnの読み込み #}
+    {% include "config/include/general/vue_js_script.html" %}
+    {# vue.js vuetifyによるfooterコンポーネント定義ファイルの読み込み #}
+    {% include 'config/include/general/bottom_with_vuetify.html' %}
   </body>
 </html>
