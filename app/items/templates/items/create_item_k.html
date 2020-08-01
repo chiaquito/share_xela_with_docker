@@ -40,26 +40,26 @@
 
             {% include "config/include/general/basic_margin.html" %}
             {% include "config/include/general/basic_margin.html" %}
-            {% include "config/include/general/basic_margin.html" %}
-            {% include "config/include/general/basic_margin.html" %}
+            
 
 
         </div>
     </div>            
 </div>
 
-{% include "config/include/general/basic_margin.html" %}
-{% include "config/include/general/basic_margin.html" %}
-{% include "config/include/general/basic_margin.html" %}
-{% include "config/include/general/basic_margin.html" %}
+
+{% endblock %}
 
 
+
+
+{% block javascript %}
 
 {# vue.js cdn #}
-<script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
-{# axios cdn #}
-<script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+{% include 'config/include/general/vue_js_script.html' %}
 
+{# axios cdn #}
+{% include 'config/include/general/axios_script.html' %}
 
 
 {# leafletのセットアップ用のjavascriptコード #}
@@ -78,7 +78,5 @@
 {% include "items/include/create_edit/setting_select_municipio_for_edit.html" %}
 
 {% endif %}
-    
-
 
 {% endblock %}

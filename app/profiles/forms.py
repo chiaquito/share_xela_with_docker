@@ -18,7 +18,7 @@ class ProfileForm(forms.ModelForm):
 		#for field in self.fields.values():
 		self.fields["birthday"].widget = DatePicker()
 
-		self.fields["adm0"].widget.attrs["class"] = "form-control mt-2"
+		self.fields["adm0"].widget.attrs["class"] = "form-control mt-2 select_height"
 		self.fields["adm1"].widget.attrs["class"] = "form-control"
 		self.fields["adm2"].widget.attrs["class"] = "form-control"
 		self.fields["image"].widget.attrs["class"] = "form-control"

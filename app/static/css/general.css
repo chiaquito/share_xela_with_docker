@@ -1,10 +1,5 @@
 
 
-
-
-
-
-
 /* 各ページの隙間の調整をこれを使う */
 .basicMargin {
 margin-top: 20px;
@@ -36,7 +31,7 @@ margin-top: 20px;
 }
 
 .select_height{
-    height:45px;
+    height:50px;
 }
 
 .material-icons{

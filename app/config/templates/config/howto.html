@@ -42,7 +42,7 @@
 		表示される記事はすべて誰かに譲りたいアイテムです。<br />
 		Tu departamentoから探すとあなたの住んでいる地域の記事のみが表示されます。</p-->
 		<p>Seleccione Articulos en la barra de superior.<br />
-		Haga clic en "<a href="{% url 'items:itemdar_list' %}"><img style="width: 1rem;" src="{% static 'libro_icon.jpeg' %}">&nbsp;Donar o vender</a>".<br />
+		Haga clic en "<a href="{% url 'items:ItemCategoryListView' 1 %}"><img style="width: 1rem;" src="{% static 'libro_icon.jpeg' %}">&nbsp;Donar o vender</a>".<br />
 		Cada artículo que aparece es un artículo que quiere darle a alguien.<br />
 		Si busca desde Tu departamento, solo se mostrarán los artículos en su área.
 		</p>
@@ -58,7 +58,7 @@
 		表示される記事はすべて必要としている物事です。<br />
 		Tu departamentoから探すとあなたの住んでいる地域の記事のみが表示されます。</p-->
 		<p>Seleccione Articulos en la barra de superior.<br />
-		Haga clic en "<a href="{% url 'items:itemquerer_list' %}"><img style="width: 1rem;" src="{% static 'corazon_icon1.jpeg' %}">&nbsp;Buscar ayuda</a>".<br />
+		Haga clic en "<a href="{% url 'items:ItemCategoryListView' 2 %}"><img style="width: 1rem;" src="{% static 'corazon_icon1.jpeg' %}">&nbsp;Buscar ayuda</a>".<br />
 		Cada artículo que ves es algo que alguien necesita.<br />
 		Si busca desde Tu departamento, solo se mostrarán los artículos en su área.</p>
 		<br />
@@ -73,7 +73,7 @@
 		表示される記事はすべてanuncioです。<br />
 		Tu departamentoから探すとあなたの住んでいる地域の記事のみが表示されます。</p-->
 		<p>Seleccione Articulos en la barra de superior.<br />
-		Selecciona "<a href="{% url 'items:itemanuncio_list' %}"><img style="width: 1rem;" src="{% static 'pin_icon.jpeg' %}"/>&nbsp;Anunciate</a>".<br />
+		Selecciona "<a href="{% url 'items:ItemCategoryListView' 3 %}"><img style="width: 1rem;" src="{% static 'pin_icon.jpeg' %}"/>&nbsp;Anunciate</a>".<br />
 		Todos los artículos mostrados son anuncio.<br />
 		Si busca desde Tu departamento, solo se mostrarán los artículos en su área.</p>
 		<br />
@@ -127,7 +127,7 @@
 			<div class="card-body">
 			<!--h5 class="card-title">Special title treatment</h5-->
 			<p class="card-text">Seleccione Articulos en la barra de superior.<br />
-		Haga clic en "<a href="{% url 'items:itemdar_list' %}"><img style="width: 1rem;" src="{% static 'libro_icon.jpeg' %}">&nbsp;Donar o vender</a>".<br />
+		Haga clic en "<a href="{% url 'items:ItemCategoryListView' 1 %}"><img style="width: 1rem;" src="{% static 'libro_icon.jpeg' %}">&nbsp;Donar o vender</a>".<br />
 		Cada artículo que aparece es un artículo que quiere darle a alguien.<br />
 		Si busca desde Tu departamento, solo se mostrarán los artículos en su área.</p>
 			<!--a href="#" class="btn btn-primary">Go somewhere</a-->
@@ -143,7 +143,7 @@
 			<div class="card-body">
 			<!--h5 class="card-title">Special title treatment</h5-->
 			<p class="card-text">Seleccione Articulos en la barra de superior.<br />
-				Haga clic en "<a href="{% url 'items:itemquerer_list' %}"><img style="width: 1rem;" src="{% static 'corazon_icon1.jpeg' %}">&nbsp;Buscar ayuda</a>".<br />
+				Haga clic en "<a href="{% url 'items:ItemCategoryListView' 2 %}"><img style="width: 1rem;" src="{% static 'corazon_icon1.jpeg' %}">&nbsp;Buscar ayuda</a>".<br />
 				Cada artículo que ves es algo que alguien necesita.<br />
 			Si busca desde Tu departamento, solo se mostrarán los artículos en su área.</p>
 			<!--a href="#" class="btn btn-primary">Go somewhere</a-->
@@ -158,7 +158,7 @@
 			<div class="card-body">
 			<!--h5 class="card-title">Special title treatment</h5-->
 			<p class="card-text">Seleccione Articulos en la barra de superior.<br />
-			Selecciona "<a href="{% url 'items:itemanuncio_list' %}"><img style="width: 1rem;" src="{% static 'pin_icon.jpeg' %}"/>&nbsp;Anunciate</a>".<br />
+			Selecciona "<a href="{% url 'items:ItemCategoryListView' 3 %}"><img style="width: 1rem;" src="{% static 'pin_icon.jpeg' %}"/>&nbsp;Anunciate</a>".<br />
 			Todos los artículos mostrados son anuncio.<br />
 			Si busca desde Tu departamento, solo se mostrarán los artículos en su área.</p>
 			<!--a href="#" class="btn btn-primary">Go somewhere</a-->
@@ -171,11 +171,9 @@
 			<div class="card">
 			<h5 class="card-header">Presentación del artículo</h5>
 			<div class="card-body">
-			<!--h5 class="card-title">Special title treatment</h5-->
 			<p class="card-text">Si desea hacer un artículo sobre Donar o vender, Buscar ayuda, Anunciate, publique un artículo.<br />
 			Seleccione <a href="{% url 'items:item_create2' %}">"Crear articulo"</a> de "Mi pagina".<br />
 			Seleccione "Donar o vender" cuando quiera donar o vender algo, "Buscar ayuda" cuando necesite algo, "Anunciate" cuando quiera anunciar.</p>
-			<!--a href="#" class="btn btn-primary">Go somewhere</a-->
 			</div>
 			</div>
 		</div>

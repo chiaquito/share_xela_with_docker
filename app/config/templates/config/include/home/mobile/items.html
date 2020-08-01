@@ -1,0 +1,71 @@
+
+<div class="container">
+    <div class="row">
+      <div class="col-12 my-0">
+        <p class="h2 my-0">LAS COSAS <a class="h5" href="#category">&nbsp;&nbsp;buscar mas...</a></p>
+      </div>  
+  
+      <div class="col-12">
+      <div class="card-columns">
+      {% for obj in ITEM_OBJECTS_COSAS %}
+       {% include 'config/include/home/mobile/card.html' %}        
+      {% endfor %}
+      </div>
+    </div>
+  </div>
+  </div>
+  
+  
+  
+  
+  <div class="container">
+    <div class="row">
+      <div class="col-12 my-0">
+        <p class="h2 my-0">HABITACION <a class="h5" href="#category">&nbsp;&nbsp;buscar mas...</a></p>
+      </div>      
+  
+      <div class="col-12">
+      <div class="card-columns">
+      {% for obj in ITEM_OBJECTS_HABITACION %}
+       {% include 'config/include/home/mobile/card.html' %}
+      {% endfor %}
+      </div>    
+      </div>
+    </div>
+  </div>
+  
+  
+  
+  <div class="container">
+    <div class="row">
+      <div class="col-12 my-0">
+        <p class="h2 my-0">TRABAJO <a class="h5" href="#category">&nbsp;&nbsp;buscar mas...</a></p>
+      </div>    
+  
+  
+      <div class="col-12">
+      <div class="card-columns">
+      {% for obj in ITEM_OBJECTS_TRABAJO %}
+       {% include 'config/include/home/mobile/card.html' %}
+      {% endfor %}
+      </div>    
+      </div>
+    </div>  
+  </div>
+  
+  
+  <div class="container">
+    <div class="row">
+      <div class="col-12 my-0">
+        <p class="h2 my-0">EMPRESA Y SERVICIO <a class="h5" href="#category">&nbsp;&nbsp;buscar mas...</a></p>
+      </div>
+  
+      <div class="col-12">
+      <div class="card-columns">     
+      {% for obj in ITEM_OBJECTS_TIENDA %}
+       {% include 'config/include/home/mobile/card.html' %}
+      {% endfor %}
+      </div>    
+      </div>
+    </div>  
+  </div>

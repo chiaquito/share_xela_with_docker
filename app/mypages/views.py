@@ -15,7 +15,7 @@ class MyItemListView(View):
 			#return render(request, 'config/signup.html', context)
 
 		#自分が作成した記事を表示する
-		item_objects = Item.objects.filter(user=request.user).order_by("-created_at")
+		item_objects = Item.objects.filter(user=request.user).order_by("-created_at").filter(active=True)
 		page_obj = paginate_queryset(request, item_objects)
 
 		if item_objects.count() > 0:

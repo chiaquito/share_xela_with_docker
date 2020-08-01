@@ -69,7 +69,7 @@ class ItemListByFavoriteView(View):
 
 class ItemUserListView(View):
 	"""
-	usernameアンカーからuserの投稿記事をリスト表示する。
+	Detailページのusernameアンカーからuserの投稿記事をリスト表示する。
 	sessionを使って表示する仕組みを用いている。
 	TemplateKey.ITEM_LISTをincludeとして相手のプロフィールデータも表示する。
 	"""
@@ -460,107 +460,6 @@ class ItemDeactivateView(View):
 
 
 
-'''
-class ItemCreateView(View):
-	"""
-	Hacer Alticulosボタンを押した時発動する
-	"""
-
-	def get(self, request, *args, **kwargs):
-		context = {}
-		#{ ユーザー認証されていないときは、ログインページにつなぐ }
-		if request.user.is_anonymous == True:
-			return redirect('account_login')
-			
-		profile_obj_count = Profile.objects.filter(user=request.user).count()
-		#{ user認証されているけどまだprofileオブジェクトがない場合は、profileオブジェクトの作成ページにつなぐ }
-		if profile_obj_count == 0:
-			self.request.session["hacer_articulos"] = True
-			return redirect('profiles:profile_creating')
-
-
-		#{ profile:profile_settingからリダイレクトされた場合には、追加でメッセージを表示する }
-		# session "hacer_articulos"
-		if "hacer_articulos" in self.request.session.keys():
-			messages.info(request, 'プロフィール設定ができました。投稿してください。')
-			del self.request.session["hacer_articulos"]
-
-
-		profile_obj = Profile.objects.get(user=request.user)
-		data = { 
-		"price": 0,
-		#"user": profile_obj.user,
-		"adm0": profile_obj.adm0,
-		"adm1": profile_obj.adm1,
-		"adm2": profile_obj.adm2,
-		}
-		form = ItemModelForm(data, initial=data)
-		#form = ItemModelForm()
-		context["form"] = form
-
-		return render(request, 'items/create_item.html', context)
-
-
-
-	def post(self, request, *args, **kwargs):
-		"""
-		endpoint:"items/'create/"
-		name: "items:item_create"
-		"""
-		"""テスト項目
-		categoryを選択しない場合にはItemオブジェクトが作られない
-		"""
-
-
-		print(request.POST)
-
-		form = ItemModelForm(request.POST, request.FILES)
-		if form.is_valid():
-			obj = form.save(commit=False)
-			try:
-				obj.image1 = request.FILES['image1']
-			except:
-				pass
-			try:
-				obj.image2 = request.FILES['image2']
-			except:
-				pass
-			try:
-				obj.image3 = request.FILES['image3']
-			except:
-				pass
-			try:	
-				obj.image4 = request.FILES['image4']
-			except:
-				pass
-			try:
-				obj.image5 = request.FILES['image5']
-			except:
-				pass
-			try:
-				obj.image6 = request.FILES['image6']
-			except:
-				pass
-			obj.user = request.user
-			obj.save()
-
-			context = {}
-			context["item_obj"] = obj
-			#request.session["articulos_id"] = obj.id
-			return render(request, 'items/created.html', context)
-
-		else:
-			for error in form.errors:
-				print(error)
-			
-			context = {}
-			context["form"] = form
-			return render(request, 'items/create_item.html', context)
-
-'''
-
-#from prefecturas.list_data import DEPARTAMENTO_CHOICES
-#import json
 
 
 
@@ -618,8 +517,7 @@ class ItemCreateViewKaizen(View):
 		categoryを選択しない場合にはItemオブジェクトが作られない
 		"""
 
-		#print(request.POST)
-
+		
 		form = ItemModelForm(request.POST, request.FILES)
 		if form.is_valid():
 			obj = form.save(commit=False)

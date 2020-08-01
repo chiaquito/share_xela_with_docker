@@ -33,6 +33,7 @@
         crossorigin="anonymous"></script>
 
 
+
         {# 全体的なcss #}
         <link rel="stylesheet" href="{% static 'css/general.css' %}">
 
@@ -93,10 +94,7 @@
   </div>
 
         {# 主にvue.jsを読み込むときに使用する #}
-        {% block javascript %}
-
-
-        {% endblock %}
+        {% block javascript %}{% endblock %}
 
 
         <!-- Optional JavaScript -->

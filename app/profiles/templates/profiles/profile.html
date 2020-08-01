@@ -8,23 +8,20 @@
 
 
 {% block head %}
-<!-- Font Awesome -->
-
-<link rel="stylesheet" href="https://netdna.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.css">
-
-
-<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
-<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
-
-<!-- jQuery -->
-<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
-{{ form.media }}
+	<!-- Font Awesome -->
+	<link rel="stylesheet" href="https://netdna.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.css">
 
 
-<link rel="stylesheet" href="{% static 'css/footer_settings.css' %}"> 
+	<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
+	<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+
+	<!-- jQuery -->
+	<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+	{{ form.media }}
 
 
-<title>Editar Profile</title>
+
+	<title>Editar Perfil</title>
 {% endblock %}
 
 
@@ -37,10 +34,10 @@
 	<div class="row">
 
 		<div class="col-12">
-			{% include "config/include/general/basic_margin.html" %}
+			
 			<p class="h2">TU PERFIL INFORMACION </p>
 			{% include "config/include/general/basic_margin.html" %}
-			{% include "config/include/general/basic_margin.html" %}
+			
 
 
 			<form method="POST" enctype="multipart/form-data" action="{% url 'profiles:profile' %}" >{%csrf_token%}
@@ -116,7 +113,7 @@
 			{# <p>＊Personal Information は相手に表示されることはありません。</p> #}
 			<p class="h4 bg-light  p-3 shadow-sm">La información personal</p> 
 			<p>＊ La información personal no se mostrará a la otra parte.</p>
-			{{ form.phonenumber.label.as_hidden }}<!--:-->
+			{{ form.phonenumber.label.as_hidden }}
 			{{ form.phonenumber.as_hidden }}<br />
 			Cumpleaños :
 			{{ form.birthday }}<br /><br />
@@ -130,9 +127,9 @@
 
 
 
-
 {% endif %}
 {# ---------------------------------------------- pc終わり -------------------------------------------------- #}
+
 
 {# ---------------------------------------        mobile        -------------------------------------------- #}
 
@@ -141,45 +138,47 @@
 <div class="container">
 	<div class="row">
 		<div class="col-12">				
-<p class="h2">TU PERFIL INFORMACION</p>
-{% include "config/include/general/basic_margin.html" %}
-
-<form method="POST" enctype="multipart/form-data" action="{% url 'profiles:profile' %}" >{%csrf_token%}
-
-{{ form.non_field_errors }}
-{% comment %}
-{{ form.user.label }}:
-{{ form.user }}<br /><br />
-{% endcomment %}
-<!--input type="text" name="test" class="form-control-plaintext" readonly="False" value="testy"-->
-
-
-
-
-<!-- Basic Information -->
-<p class="h4 bg-light  p-3">Basic Information</p>
-
-
-Nombre de usuario:<br/>
-<input type="text" class="form-control m-1" value="{{ user_obj.username }}" readonly/>
-<span class="m-2 mb-4"><a href="{% url 'username_change' %}">{# Usernameを変更する #}Cambiar Nombre de usuario</a></span><br />
-
-
-{# Email Adress: #}Dirección de correo electrónico:<br />
-<input type="text" class="form-control m-1" value="{{ user_obj.email }}" readonly/>
-<span class="m-1"></span><a href="{% url 'email_change' %}">{# Email Addressを変更する #} Cambiar Dirección de correo electrónico</a>
-<br /><br />
-
-
-Prefil Imagen:<br />
-<img width="120" src="{{ profile_obj.image.url }}"/><br /><br />
-
-{{ form.image.label }}:
-{{ form.image }}
-<br />
+			<p class="h2">TU PERFIL INFORMACION</p>
+		</div>
+	</div>
 </div>
+
+<div class="container">
+	<div class="row">
+		<div class="col-12">
+
+			<form method="POST" enctype="multipart/form-data" action="{% url 'profiles:profile' %}" >{%csrf_token%}
+			{{ form.non_field_errors }}
+			{% comment %}
+			{{ form.user.label }}:
+			{{ form.user }}<br /><br />
+			{% endcomment %}
+			<!--input type="text" name="test" class="form-control-plaintext" readonly="False" value="testy"-->
+
+
+			<!-- Basic Information -->
+			<p class="h4 bg-light  p-3">Basic Information</p>
+
+			Nombre de usuario:<br/>
+			<input type="text" class="form-control m-1" value="{{ user_obj.username }}" readonly/>
+			<span class="m-2 mb-4"><a href="{% url 'username_change' %}">{# Usernameを変更する #}Cambiar Nombre de usuario</a></span><br />
+
+
+			{# Email Adress: #}Dirección de correo electrónico:<br />
+			<input type="text" class="form-control m-1" value="{{ user_obj.email }}" readonly/>
+			<span class="m-1"></span><a href="{% url 'email_change' %}">{# Email Addressを変更する #} Cambiar Dirección de correo electrónico</a>
+			<br /><br />
+
+
+			Prefil Imagen:<br />
+			<img width="120" src="{{ profile_obj.image.url }}"/><br /><br />
+
+			{{ form.image.label }}:
+			{{ form.image }}
+		</div>
+	</div>
 </div>
-</div>
+
 
 <div class="container">
 	<div class="row">
@@ -197,11 +196,9 @@ Prefil Imagen:<br />
 				</div>
 
 				{# Departamento : #}
-				{# {{ form.adm1 }} #}
 				{% include "items/include/create_edit/select_departamento.html" %}
 
 				{# Municipio : #}
-				{# {{ form.adm2 }} #}
 				{% include "items/include/create_edit/select_municipio.html" %}
 
 			</div>
@@ -216,54 +213,51 @@ Prefil Imagen:<br />
 
 
 
-{% include "config/include/general/basic_margin.html" %}
-{% include "config/include/general/basic_margin.html" %}
-
 
 <div class="container">
 	<div class="row">
 		<div class="col-12">	
 
-{{ form.user.as_hidden }}
+			{{ form.user.as_hidden }}
 
-<p class="h4 bg-light  p-3">Personal Information</p>
-<p>{# ＊Personal Information は相手に表示されることはありません。#}
-＊ La información personal no se mostrará a la otra parte.</p>
-{% comment %}
-{{ form.phonenumber.label }}:
-{{ form.phonenumber }}<br />
-{% endcomment %}
-Cumpleaños :
-{{ form.birthday }}<br /><br />
-
-
-
-<button class="btn btn-primary btn-block" >Cambiar Prefil</button>
-</form>
+			<p class="h4 bg-light  p-3">Personal Information</p>
+			<p>{# ＊Personal Information は相手に表示されることはありません。#}
+			＊ La información personal no se mostrará a la otra parte.</p>
+			{% comment %}
+			{{ form.phonenumber.label }}:
+			{{ form.phonenumber }}<br />
+			{% endcomment %}
+			Cumpleaños :
+			{{ form.birthday }}<br /><br />
 
 
+
+			<button class="btn btn-primary btn-block" >Cambiar Prefil</button>
+			</form>
+
+
+		</div>
+	</div>
 </div>
-</div>
-</div>
-</div>
-</div>
-</div>
-{% include "config/include/general/basic_margin.html" %}
-{% include "config/include/general/basic_margin.html" %}
+
+
 {% endif %}
+{% endblock %}
 
 {# ---------------------------------------      mobile終わり    --------------------------------------------- #}
 
 
 
 
+{% block javascript %}
 {# PC mobile共通事項 #}
 
 
 {# vue.js cdn #}
-<script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+{% include 'config/include/general/vue_js_script.html' %}
+
 {# axios cdn #}
-<script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+{% include 'config/include/general/axios_script.html' %}
 
 
 
@@ -271,14 +265,8 @@ Cumpleaños :
 {% include "profiles/include/setting_select_departamento_for_edit.html" %}
 {% include "profiles/include/setting_select_municipio_for_edit.html" %}
 
-
+{# leafletをセットアップするスクリプト #}
 {% include 'items/include/create_edit/setting_leaflet_map.html' %}
-
-
-
-
-
-
 
 
 {% endblock %}
