@@ -6,13 +6,8 @@ class ContextKey(object):
     ITEM_OBJECTS = "item_objects"
     BTN_CHOICE   = "btn_choice"
     BTN_FAV      = "btn_fav"
+    PAGE_OBJ     = "page_obj"
 
-
-    
-
-
-class ContextValue(object):
-    pass
 
 
 

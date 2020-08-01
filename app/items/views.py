@@ -8,6 +8,7 @@ from django.http import HttpResponse, JsonResponse
 from config.constants import TemplateKey, TemplateName
 from config.constants import ContextKey
 from config.constants import ViewName
+from config.utils     import paginate_queryset
 from items.models import Item
 from items.forms import ItemModelForm
 from items.forms import ItemFirstModelForm
@@ -55,7 +56,9 @@ class ItemListByFavoriteView(View):
 		context = {}
 		request_user = User.objects.get(username=request.user.username)
 		item_objects = Item.objects.filter(favorite_users=request_user)
-		context[ContextKey.ITEM_OBJECTS] = item_objects
+		page_obj = paginate_queryset(request, item_objects)
+		context[ ContextKey.ITEM_OBJECTS ] = page_obj.object_list
+		context[ ContextKey.PAGE_OBJ ] = page_obj
 		return render(request, TemplateName.ITEM_LIST, context)
 
 
@@ -89,6 +92,9 @@ class ItemCategoryListView(View):
 
 	def get(self, request, *args, **kwargs):
 		"""機能
+		カテゴリーナンバーに従い対応するカテゴリーのリストを返す
+		カテゴリーナンバーはcategories/models.pyを参照
+
 
 		endpoint: 'items/category/<int:pk>/items/list/'
 		name: ItemCategoryListView
@@ -101,13 +107,15 @@ class ItemCategoryListView(View):
 			return redirect('item:item_list')
 
 		item_objects = Item.objects.filter(category__number=category_number).filter(active=True).order_by("-created_at")
+		page_obj = paginate_queryset(request, item_objects)
 		#記事がないときはno_item.htmlを表示する
 		if item_objects.count() == 0:
 			return render(request, "items/no_item.html")
 		else:
 			print(item_objects.count())
 			context = {}
-			context[ ContextKey.ITEM_OBJECTS ] = item_objects
+			context[ ContextKey.ITEM_OBJECTS ] = page_obj.object_list
+			context[ ContextKey.PAGE_OBJ ] = page_obj
 			return render(request, TemplateKey.ITEM_LIST, context)
 
 
@@ -120,6 +128,9 @@ class ItemCategoryLocalListView(View):
 
 	def get(self, request, *args, **kwargs):
 		"""機能
+		カテゴリーナンバーに従い対応するカテゴリーのリストを返す。
+		ただしユーザーの地域情報(Profile.adm1)に限定したリストである。
+		カテゴリーナンバーはcategories/models.pyを参照
 
 		endpoint: 'items/category/<int:pk>/items/list/local/'
 		name: -
@@ -143,9 +154,11 @@ class ItemCategoryLocalListView(View):
 
 		#categoryObj = Category.objects.get(number=category_number)
 		item_objects = Item.objects.filter(category__number=category_number).filter(adm1=profile_obj.adm1).exclude(active=False).order_by("-created_at")
+		page_obj = paginate_queryset(request, item_objects)
 		if item_objects.count() == 0:
 			return render(request, TemplateKey.NO_ITEMS)
-		context[ ContextKey.ITEM_OBJECTS ] = item_objects
+		context[ ContextKey.ITEM_OBJECTS ] = page_obj.object_list
+		context[ ContextKey.PAGE_OBJ ] = page_obj
 		return render(request, TemplateKey.ITEM_LIST, context)		
 
 
@@ -166,11 +179,7 @@ class ItemDarListView(View):
 
 	def get(self,request, *args, **kwargs):
 		
-		#ca_obj = Category.objects.get(name="1")
-		#print(dir(ca_obj))
-		#print(ca_obj.name)
-		#print(ca_obj.get_name_display())
-		#print(dir(ca_obj.serializable_value))
+	
 		item_objects = Item.objects.filter(category__number="1").filter(active=True).order_by("-created_at")
 		#記事がないときはno_item.htmlを表示する
 		if item_objects.count() == 0:

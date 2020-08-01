@@ -75,17 +75,28 @@
     {% include "config/include/general/basic_margin.html" %}
 
 
-    {# {% include 'config/include/bottom.html' %} #}
     
+    
+    
+    
+
+    {# ページネーションがあるときは表示させる  #}
+    {% include 'config/include/general/pagination.html' %}
+
     {% include "config/include/general/basic_margin.html" %}
-    {% include "config/include/general/basic_margin.html" %}
-    {% include "config/include/general/basic_margin.html" %}
+
     {# vuetifyによるfooterの表示 #}
     <m_footer/>
     
 
 
   </div>
+
+        {# 主にvue.jsを読み込むときに使用する #}
+        {% block javascript %}
+
+
+        {% endblock %}
 
 
         <!-- Optional JavaScript -->

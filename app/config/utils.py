@@ -1,18 +1,66 @@
 import platform
 import os
+from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 
+
+
+
+
+################################################
+##   ページネーションに関する関数を設定             ##
+################################################
+# https://docs.djangoproject.com/ja/2.2/topics/pagination/#module-django.core.paginator
+
+def paginate_queryset(request, queryset, count=12):
+    """機能
+    views.py内にPaginatorオブジェクトを組み込むことでページネーションを実装させる。
+    またテンプレートで使用するためのPageオブジェクトを返り値として返す。
+    Pageオブジェクトを返す。
+
+    Args:
+        request:Request... Requestオブジェクト
+        queryset:QuerySet... 分割表示したいオブジェクトの総オブジェクト
+        count: Int... 1ページ当たり表示するオブジェクト数 なければデフォルト値20が使われる
+    Returns:
+        page_obj:Page  https://docs.djangoproject.com/ja/2.2/topics/pagination/#paginator-objects
+
+    使用先：
+        各カテゴリーの結果表示、ユーザー別記事表示、Favorit記事表示、Avisoの各通知リスト
+    
+    ページネーションコンポーネント：
+        {% include '' %}
+
+    """
+    paginator = Paginator(queryset, count)
+    page = request.GET.get('page')
+    try:
+        page_obj = paginator.page(page)
+    except PageNotAnInteger:
+        page_obj = paginator.page(1)
+    except EmptyPage:
+        page_obj = paginator.page(paginator.num_pages)
+    return page_obj
+
+
+
+
+
+
+
+
+################################################
+### runserver の環境変数を自動設定               ##
+################################################
 
 OS = ""
 OS_TYPE = ["OSX", "LINUX"]
-
-
 
 
 def getTypeOS():
     """
     'python manage.py runserver' コマンド実行時のOSを判定する。
 
-    returns:
+    Returns:
         str: OSXまたはLINUXの文字列
     """
 
