@@ -10,6 +10,7 @@ from .forms  import CreatingProfileForm
 from items.models import Item
 from django.http import JsonResponse
 from .strings import warningSettingAreaMessage, successEditProfileMessage
+from config.utils import add_aviso_objects
 
 
 REDIRECT_TO_HOME = 'home'
@@ -139,6 +140,7 @@ class ProfileView(View):
 				}
 		form = ProfileForm(data, initial=data)
 		context["form"] = form
+		context = add_aviso_objects(request, context)
 		
 
 		if request.user.is_superuser != True:
@@ -229,27 +231,4 @@ class ProfileView(View):
 				
 			else:
 				return redirect('profiles:profile')
-
-
-
-
-
-
-class ItemUserListView(View):
-	"""
-	usernameアンカーからuserの投稿記事をリスト表示する。
-	sessionを使って表示する仕組みを用いる。
-	"""
-	def get(self, request, *args, **kwargs):
-		context = {}
-
-		user_obj = request.session["user_obj"]
-		#print(user_obj)
-		item_objects = Item.objects.filter(user=user_obj)
-		context['user_obj'] = user_obj
-		context["item_objects"] = item_objects
-		return render(request, "items/list_items.html", context)
-
-
-
 
