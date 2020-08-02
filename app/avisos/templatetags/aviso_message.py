@@ -16,8 +16,3 @@ def output_obj(content_object, object_id):
 	print(obj)
 	return obj
     
-
-"""
-特定のobjectからmodelを抽出する方法を調べる
-
-"""

@@ -39,6 +39,21 @@ margin-top: 20px;
 }
 
 
+center-foto{
+    width:100%;
+}
+
+/* アンカータグ 下線表示なし
+使えていない？？ */
+a {
+    text-decoration: none;
+  }
+
+/* avisoのカラー変更  */
+.aviso_bg{
+    background: #3A1C71;
+}  
+
 
 
 /* フォント　ファミリー */

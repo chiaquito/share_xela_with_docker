@@ -4,7 +4,7 @@ from .views import ItemListView
 from .views import ItemEditView
 from .views import ItemListByFavoriteView
 from .views import ItemUserListView, ItemSearchView
-from .views import ItemFavoriteView, ItemDeactivateView
+from .views import ItemDeactivateView
 from .views import ItemCategoryListView
 from .views import ItemCategoryLocalListView
 from .views import ItemCreateViewKaizen
@@ -24,7 +24,6 @@ urlpatterns = [
     path('search/', ItemSearchView.as_view(), name='item_search'),
     #path('mylist', MyItemListView.as_view(), name='item_mylist'),
     path('item/<int:pk>/', ItemDetailView.as_view(), name='item_detail'),    
-    #axiosに変更 path('item/<int:pk>/favorite/', ItemFavoriteView.as_view(), name='item_favorite'),
     path('item/<int:pk>/favorite/', ItemFavoriteViewKaizen.as_view(), name='item_favorite'),
     path('<int:pk>/edit/', ItemEditView.as_view(), name='item_edit'),    
 ]

@@ -1,28 +1,27 @@
+from categories.models import Category
+from config.constants  import TemplateName
+from config.constants  import ContextKey
+from config.constants  import ViewName
+from config.utils      import paginate_queryset, add_aviso_objects
 from django.shortcuts import render, redirect
 from django.contrib import messages
+from django.contrib.auth.models import User
 from django.contrib.gis.geos import GEOSGeometry
 from django.views.generic import View, DeleteView
 from django.views.generic import CreateView
-from django.db.models import Avg, Sum
-from django.http import HttpResponse, JsonResponse
-from config.constants import TemplateKey, TemplateName
-from config.constants import ContextKey
-from config.constants import ViewName
-from config.utils     import paginate_queryset
+from django.db.models import Avg, Sum, Q
+from django.http      import HttpResponse, JsonResponse
+from django.urls      import reverse_lazy
+from favorite.models  import Favorite
 from items.models import Item
-from items.forms import ItemModelForm
-from items.forms import ItemFirstModelForm
-from items.utils import addBtnFavToContext
-from item_contacts.forms import ItemContactModelForm
-from django.urls import reverse_lazy
-from django.contrib.auth.models import User
-from favorite.models            import Favorite
-from categories.models          import Category
-from item_contacts.models       import ItemContact
+from items.forms  import ItemModelForm
+from items.forms  import ItemFirstModelForm
+from items.utils  import addBtnFavToContext
+from item_contacts.forms    import ItemContactModelForm
+from item_contacts.models   import ItemContact
 from profiles.models            import Profile
 from solicitudes.models         import Solicitud
 from direct_messages.models     import DirectMessage
-from django.db.models import Q
 
 
 
@@ -35,7 +34,7 @@ class ItemListView(View):
 		context = {}
 		item_objects = Item.objects.all()
 		context[ ContextKey.ITEM_OBJECTS ] = item_objects
-		return render(request, TemplateKey.ITEM_LIST, context)
+		return render(request, TemplateName.ITEM_LIST, context)
 
 
 
@@ -56,6 +55,12 @@ class ItemListByFavoriteView(View):
 		context = {}
 		request_user = User.objects.get(username=request.user.username)
 		item_objects = Item.objects.filter(favorite_users=request_user)
+		#表示するデータがない場合は無い旨を示すテンプレートを返す
+		if item_objects.count() == 0:
+			return render(request, TemplateName.NO_ITEMS)
+
+		#表示するデータをcontextに格納する
+		context = add_aviso_objects(request, context)
 		page_obj = paginate_queryset(request, item_objects)
 		context[ ContextKey.ITEM_OBJECTS ] = page_obj.object_list
 		context[ ContextKey.PAGE_OBJ ] = page_obj
@@ -64,25 +69,22 @@ class ItemListByFavoriteView(View):
 
 
 
-
-
-
 class ItemUserListView(View):
 	"""
 	Detailページのusernameアンカーからuserの投稿記事をリスト表示する。
 	sessionを使って表示する仕組みを用いている。
-	TemplateKey.ITEM_LISTをincludeとして相手のプロフィールデータも表示する。
+	TemplateName.ITEM_LISTをincludeとして相手のプロフィールデータも表示する。
 	"""
 	def get(self, request, *args, **kwargs):
 		context = {}
-
 		user_obj = request.session["user_obj"]
-		#print(user_obj)
 		item_objects = Item.objects.filter(user=user_obj).order_by("-created_at")
+		page_obj = paginate_queryset(request, item_objects)
+		context = add_aviso_objects(request, context)
 		context['user_obj'] = user_obj
 		context['profile_obj'] = Profile.objects.get(user=user_obj)
-		context[ ContextKey.ITEM_OBJECTS ] = item_objects
-		#return render(request, TemplateKey.ITEM_LIST, context)
+		context[ ContextKey.ITEM_OBJECTS ] = page_obj.object_list
+		context[ ContextKey.PAGE_OBJ ] = page_obj
 		return render(request, TemplateName.USER_ITEM_LIST, context)
 
 
@@ -110,13 +112,14 @@ class ItemCategoryListView(View):
 		page_obj = paginate_queryset(request, item_objects)
 		#記事がないときはno_item.htmlを表示する
 		if item_objects.count() == 0:
-			return render(request, "items/no_item.html")
+			return render(request, TemplateName.NO_ITEMS)
 		else:
 			print(item_objects.count())
 			context = {}
+			context = add_aviso_objects(request, context)
 			context[ ContextKey.ITEM_OBJECTS ] = page_obj.object_list
 			context[ ContextKey.PAGE_OBJ ] = page_obj
-			return render(request, TemplateKey.ITEM_LIST, context)
+			return render(request, TemplateName.ITEM_LIST, context)
 
 
 
@@ -156,10 +159,10 @@ class ItemCategoryLocalListView(View):
 		item_objects = Item.objects.filter(category__number=category_number).filter(adm1=profile_obj.adm1).exclude(active=False).order_by("-created_at")
 		page_obj = paginate_queryset(request, item_objects)
 		if item_objects.count() == 0:
-			return render(request, TemplateKey.NO_ITEMS)
+			return render(request, TemplateName.NO_ITEMS)
 		context[ ContextKey.ITEM_OBJECTS ] = page_obj.object_list
 		context[ ContextKey.PAGE_OBJ ] = page_obj
-		return render(request, TemplateKey.ITEM_LIST, context)		
+		return render(request, TemplateName.ITEM_LIST, context)		
 
 
 
@@ -178,8 +181,13 @@ class ItemDetailView(View):
 	"""
 
 	def get(self, request, *args, **kwargs):
-		"""
+		"""		
 		endpoint: items/<int:pk>/
+		name: 'items:item_detail' 
+		
+		備忘:
+		sessionに記事作成者のusernameを登録する。これはdetailページに記事作成者
+		を表示させ、このセッションデータを使って記事作成者ページを表示させる。
 		"""
 
 		context = {}
@@ -194,28 +202,16 @@ class ItemDetailView(View):
 		item_contact_objects    = item_obj.item_contacts.all().order_by('-timestamp')
 		direct_messages_objects = DirectMessage.objects.filter(item=item_obj)
 
-		"""
-		#ココリファクタリングの余地あり
-		if item_obj.direct_message != None:
-			direct_messages_objects = item_obj.direct_message.direct_message_contents.all()
-		else:
-			direct_messages_objects = DirectMessage.objects.filter(item=item_obj)
-		"""
-
-
-
 		# 共通contextを設定
 		context["item_obj"] = item_obj
 		context["profile_obj"] = profile_obj
 		context["solicitudes_objects"] = solicitudes_objects
 		context["item_contact_objects"] = item_contact_objects
 		context["direct_messages_objects"] = direct_messages_objects
-
-
+		context = add_aviso_objects(request, context)
 
 		# context["btn_fav"]を設定
 		context = addBtnFavToContext(request, item_obj ,context)
-
 
 
 		# context["btn_choice"]を設定
@@ -309,17 +305,17 @@ class ItemDetailView(View):
 
 		#テンプレートレンダリング
 		if request.user.is_anonymous:
-			return render(request, TemplateKey.ITEM_DETAIL, context)
+			return render(request, TemplateName.ITEM_DETAIL, context)
 
 		elif request.user == user_obj :
-			return render(request, TemplateKey.ITEM_DETAIL, context)
+			return render(request, TemplateName.ITEM_DETAIL, context)
 
-		#おそらく以下のロジックは通らないと思われる。(安全の為)
+		#おそらく以下のロジックは通らないと思われるが安全の為、記述する
 		elif request.user != user_obj and Profile.objects.filter(user=request.user).count() == 0:
 			return redirect('profiles:profile_creating')
 
 		elif request.user != user_obj :
-			return render(request, TemplateKey.ITEM_DETAIL, context)
+			return render(request, TemplateName.ITEM_DETAIL, context)
 
 
 
@@ -379,6 +375,7 @@ class ItemEditView(View):
 		context["item_obj"] = item_obj
 		context["title"] = "Editar Articulo"
 		context["CASE"] = "EDIT"
+		context = add_aviso_objects(request, context)
 		return render(request, "items/create_item_k.html", context)
 
 
@@ -461,10 +458,6 @@ class ItemDeactivateView(View):
 
 
 
-
-
-
-
 class ItemCreateViewKaizen(View):
 	"""
 	Hacer Alticulosボタンを押した時発動する
@@ -486,7 +479,8 @@ class ItemCreateViewKaizen(View):
 		#{ profile:profile_settingからリダイレクトされた場合には、追加でメッセージを表示する }
 		# session "hacer_articulos"
 		if "hacer_articulos" in self.request.session.keys():
-			messages.info(request, 'プロフィール設定ができました。投稿してください。')
+			#messages.info(request, 'プロフィール設定ができました。投稿してください。')
+			messages.info(request, 'Su perfil está ahora establecido. Por favor, envíalo por correo.')
 			del self.request.session["hacer_articulos"]
 
 
@@ -499,10 +493,10 @@ class ItemCreateViewKaizen(View):
 		"adm2": profile_obj.adm2,
 		}
 		form = ItemModelForm(data, initial=data)
-		#form = ItemModelForm()
 		context["form"] = form
 		context["title"] = "Crear Articulo"
 		context["CASE"] = "CREATE"
+		context = add_aviso_objects(request, context)
 
 		return render(request, 'items/create_item_k.html', context)
 
@@ -588,22 +582,17 @@ class ItemSearchView(View):
 
 	"""
 	def get(self, request, *args, **kwargs):
-		
 		context = {}
 		#print(dir(self.request))
 		if self.request.method == "GET":
-			#print(self.request.GET)
 			q = self.request.GET.get("q")
-			#print(q)
-			#title_query = Item.objects.filter(title__icontains=q)
-			#description_query = Item.objects.filter(description__icontains=q)
 			item_objects = Item.objects.filter(Q(title__icontains=q)|Q(description__icontains=q))
 			context["item_objects"] = item_objects
+			context = add_aviso_objects(request, context)
+			return render(request, TemplateName.ITEM_LIST, context)
 
-			return render(request, TemplateKey.ITEM_LIST, context)
 
-
-
+'''
 
 class ItemFavoriteView(View):
 
@@ -638,7 +627,7 @@ class ItemFavoriteView(View):
 
 		return redirect(ViewName.ITEM_DETAIL, item_obj.id)
 
-
+'''
 
 
 
@@ -650,16 +639,13 @@ class ItemFavoriteViewKaizen(View):
 		name: 'items:item_favorite'
 
 		このViewを通るのはすべて認証ユーザーである。
-		なぜならFavボタンを表示する対象は認証ユーザーのみであるからだ。
-
-		ただし、urlを変更することでアクセスするユーザーの可能性も考えられるのでanonymousははじく。
-
-		コレに関しては、AJAXを使う改善点が挙げられる。優先度は低い。
+		なぜならFavボタンを表示する対象は認証ユーザーのみとテンプレートのロジックが定められているからだ。
+		また、直接エンドポイントにアクセスするユーザーの可能性も考えられるのでanonymousははじく。
+		通信はvueとaxiosによる非同期通信を行う。
 		""" 
 		
 		fav_obj_id = None
 		pk = self.kwargs["pk"]
-
 
 		if request.user.is_anonymous:
 			return JsonResponse({"result":"no_change"})   #テスト実施項目:非認証ユーザーのアクセスはリダイレクトされるか?　リダイレクトされる場所はアイテム詳細ページか？ 同じidのアイテムページにリダイレクト？
@@ -676,7 +662,5 @@ class ItemFavoriteViewKaizen(View):
 			item_obj.favorite_users.remove(user_obj)
 			data = {"result": "removed"}
 		
-
 		return JsonResponse(data)
-
 

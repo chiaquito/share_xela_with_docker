@@ -2,11 +2,11 @@ from django.shortcuts import render, redirect
 from django.views.generic import View
 # Create your views here.
 from .forms import ContactModelForm
+from .strings import emailSubject, content, sender, strMessage
 from django.contrib.auth.models import User
 from django.core.mail import send_mail
 from django.contrib import messages
 
-from .strings import emailSubject, content, sender, strMessage
 
 
 
@@ -16,17 +16,15 @@ from api.firebase_cloud_messaging import FireBaseMassagingDeal
 class ContactView(View):
 	"""
 	非会員でもメッセージを送れる仕組みに変更する
-
 	"""
 
 
 	def get(self, request, *args, **kwargs):
 		"""機能
 
-		endpoint:
-		name:
+		endpoint: "contacts/inquiries/"
+		name: "contacts:inquiries"
 		"""
-
 		context = {}	
 		form = ContactModelForm()
 		context["form"] = form
@@ -36,8 +34,8 @@ class ContactView(View):
 	def post(self, request, *args, **kwargs):
 		"""機能
 		
-		endpoint:
-		name:
+		endpoint: "contacts/inquiries/"
+		name: "contacts:inquiries"
 		"""		
 		context = {}
 		form = ContactModelForm(request.POST)

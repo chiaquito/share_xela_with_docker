@@ -4,13 +4,7 @@
 {% load static %}
 
 {% block head %}
-    {% if request|is_pc %}
-    <!-- adjusting footer -->
-    {# <link rel="stylesheet" href="{% static 'css/adjusting_footer.css' %}"> #}
-    <link rel="stylesheet" href="{% static 'css/footer_settings.css' %}">
-    {% elif request|is_mobile %}
-    <link rel="stylesheet" href="{% static 'css/footer_settings.css' %}">
-    {% endif %}
+    <title>eliminado</title>
 {% endblock %}
 
 
@@ -25,6 +19,13 @@
         </div>
     </div>
 </div>
+{% include "config/include/general/basic_margin.html" %}
+{% include "config/include/general/basic_margin.html" %}
+{% include "config/include/general/basic_margin.html" %}
+{% include "config/include/general/basic_margin.html" %}
+{% include "config/include/general/basic_margin.html" %}
+
+
 
 
 {% endblock %}

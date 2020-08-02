@@ -1,8 +1,8 @@
 import platform
 import os
+from avisos.models import Aviso
+from profiles.models import Profile
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
-
-
 
 
 
@@ -42,6 +42,26 @@ def paginate_queryset(request, queryset, count=12):
     return page_obj
 
 
+
+
+########################################################
+###   navbarに通知を表示させるためのオブジェクトを取得する  ####
+########################################################
+
+
+def add_aviso_objects(request, context):
+    """
+    navbarに表示させるavisoオブジェクトをcontextに追加する
+    
+    """
+    if request.user.is_anonymous == True:
+        return context
+    elif Profile.objects.filter(user=request.user).exists() == False :
+        return context
+    aviso_objects = Aviso.objects.filter(aviso_user=Profile.objects.get(user=request.user)).filter(checked=False)
+    context["aviso_objects"] = aviso_objects
+    context["aviso_count"] = aviso_objects.count()
+    return context
 
 
 

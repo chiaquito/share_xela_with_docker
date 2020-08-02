@@ -1,24 +1,19 @@
-from django.db import models
-
-from django.contrib.auth.models import User
-
-from api.models import DeviceToken
 from api.models import DeviceToken
 from api.firebase_cloud_messaging import FireBaseMassagingDeal
 from api.constants import FirebaseCloudMessagingCase
-
+from django.db import models
+from django.db.models.signals import post_save, m2m_changed
+from django.contrib.auth.models import User
+from django.contrib.contenttypes.fields import GenericForeignKey
+from django.contrib.contenttypes.models import ContentType
+from django.core.mail import send_mail
 from items.models import Item
 from item_contacts.models import ItemContact
 from prefecturas.models import Municipio, Departamento, RegionClassed
 from profiles.models import Profile
 from solicitudes.models import Solicitud
 from direct_messages.models import DirectMessageContent, DirectMessage
-from django.db.models.signals import post_save, m2m_changed
 
-from django.contrib.contenttypes.fields import GenericForeignKey
-from django.contrib.contenttypes.models import ContentType
-
-from django.core.mail import send_mail
 import firebase_admin
 
 

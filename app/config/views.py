@@ -12,6 +12,7 @@ from allauth.account.models import EmailAddress
 from django.contrib import messages
 from api.constants import SerializerContextKey
 from .constants import TemplateName
+from .utils import add_aviso_objects
 
 
 
@@ -56,52 +57,37 @@ class HomeKaizenView(View):
         item_objects_trabajo = Item.objects.filter(Q(category__number="8")|Q(category__number="9")).exclude(active=False).order_by("-id")[:4]
         item_objects_tienda = Item.objects.filter(category__number="10").exclude(active=False).order_by("-id")[:4]        
         
+        # データの格納
         context = {}
         context[SerializerContextKey.ITEM_OBJECTS_COSAS]      = item_objects_cosas
         context[SerializerContextKey.ITEM_OBJECTS_HABITACION] = item_objects_habitacion
         context[SerializerContextKey.ITEM_OBJECTS_TRABAJO]    = item_objects_trabajo
         context[SerializerContextKey.ITEM_OBJECTS_TIENDA]     = item_objects_tienda
 
-        if request.user.is_anonymous == True:
-            return render(request, TemplateName.HOME, context)
+        # avisoオブジェクトデータの格納        
+        context = add_aviso_objects(request, context)
+        return render(request, TemplateName.HOME, context)
 
-        elif request.user.is_authenticated == True and Profile.objects.filter(user=request.user).exists() == True :
-            aviso_objects = Aviso.objects.filter(aviso_user=Profile.objects.get(user=request.user)).filter(checked=False)
-            context["aviso_objects"] = aviso_objects
-            context["aviso_count"] = aviso_objects.count()
-            return render(request, TemplateName.HOME, context)
 
-        elif request.user.is_authenticated == True and Profile.objects.filter(user=request.user).exists() == False :
-            return render(request, TemplateName.HOME)
-
+ 
 
 
 
 
 
 class HowtoView(View):
-	def get(self, request, *args, **kwargs):
-		"""
-		非ログインユーザーの場合、ログインかつプロフィールオブジェクトがある場合、ログインかつプロフィールオブジェクトがない場合に
-		分けている
+    def get(self, request, *args, **kwargs):
+        """
+        非ログインユーザーの場合、ログインかつプロフィールオブジェクトがある場合、ログインかつプロフィールオブジェクトがない場合に
+        分けている
 
         endpoint: howto/
         name:  "howto"
-		"""
+        """
 
-		context = {}
-		if request.user.is_anonymous == True:
-
-			return render(request, 'config/howto.html')
-		elif request.user.is_authenticated == True and Profile.objects.filter(user=request.user).exists() == True:
-
-			aviso_objects = Aviso.objects.filter(aviso_user=Profile.objects.get(user=request.user)).filter(checked=False)
-			context["aviso_objects"] = aviso_objects	
-			context["aviso_count"] = aviso_objects.count()
-			return render(request, 'config/howto.html', context)
-
-		elif request.user.is_authenticated == True and Profile.objects.filter(user=request.user).exists() == False :
-			return render(request, 'config/howto.html')
+        context = {}
+        context = add_aviso_objects(request, context)
+        return render(request, TemplateName.HOWTO, context)
 
 
 
@@ -110,7 +96,7 @@ class CheckProfileView(View):
 	"""
 	サインアップのリダイレクト先としてこちらのViewを通す
 	まず、request.userのProfileオブジェクトが存在しているかをチェックする
-	もし無いなら取引エリアのみのフォームを作る。
+	もし無いなら取引エリアのみのフォームを表示するページにリダイレクトさせる。
 	あるようならhomeページにリダイレクトさせる。
 	"""
 	def get(self, request, *args, **kwargs):
@@ -125,41 +111,38 @@ class CheckProfileView(View):
 
 
 class PrivacyView(View):
-
-	def get(self, request, *args, **kwargs):
-
-		return render(request, 'config/privacy_es.html')
+    def get(self, request, *args, **kwargs):
+        context = {}
+        context = add_aviso_objects(request, context)
+        return render(request, TemplateName.PRIVACY, context)
 
 
 
 class UsernameChangeView(View):
+    def get(self, request, *args, **kwargs):
+        context = {}
+        form = UsernameChangeForm()
+        context["form"] = form
+        context = add_aviso_objects(request, context)
+        return render(request, TemplateName.CHANGE_USERNAME, context)
 
 
-	def get(self, request, *args, **kwargs):
-		context = {}
-		form = UsernameChangeForm()
-		context["form"] = form
-		return render(request, 'config/change_username.html', context)
-
-
-	def post(self, request, *args, **kwargs):
-		context = {}
-		form = UsernameChangeForm(request.POST)
-		#context["form"] = form
-		if form.is_valid():
-			username = form.cleaned_data["username"]
-			#print(username)
-			user_obj = User.objects.get(username=request.user.username)
-			#print(user_obj)
-			user_obj.username = username
-			user_obj.save()
-			#messages.info(request,"usernameを変更しました。")
-			messages.info(request, "Nombre de usuario ha cambiado")
-			return redirect('profiles:profile')
-		else:
-			context["form"] = form
-
-			return render(request, 'config/change_username.html', context)
+    def post(self, request, *args, **kwargs):
+        context = {}
+        form = UsernameChangeForm(request.POST)
+        if form.is_valid():
+            username = form.cleaned_data["username"]
+            #print(username)
+            user_obj = User.objects.get(username=request.user.username)
+            #print(user_obj)
+            user_obj.username = username
+            user_obj.save()
+            #messages.info(request,"usernameを変更しました。")
+            messages.info(request, "Nombre de usuario ha cambiado")
+            return redirect('profiles:profile')
+        else:
+            context["form"] = form
+            return render(request, TemplateName.CHANGE_USERNAME, context)
 
 
 
@@ -174,7 +157,8 @@ class EmailAddressChangeView(View):
         context = {}
         form    = EmailAddressChangeForm()
         context["form"] = form
-        return render(request, 'config/change_emailaddress.html', context)
+        context = add_aviso_objects(request, context)
+        return render(request, TemplateName.CHANGE_EMAIL, context)
 
 
     def post(self, request, *args, **kwargs):
@@ -202,12 +186,18 @@ class EmailAddressChangeView(View):
                 messages.info(request, "La dirección de correo electrónico ya está registrada.")
                 #messages.info(request, "そのメールアドレスはすでに登録されています。")
                 context["form"] = form
-                return render(request, 'config/change_emailaddress.html', context)
+                return render(request, TemplateName.CHANGE_EMAIL, context)
 
         else:
-            #print("FALSE")
             context["form"] = form
-            return render(request, 'config/change_emailaddress.html', context)
+            return render(request, TemplateName.CHANGE_EMAIL, context)
+
+
+
+
+
+
+
 
 
 
@@ -216,8 +206,6 @@ from items.forms import ItemModelForm
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from django.http import HttpResponse
-
-
 
 class ListMyDataView(APIView):
     def post(self, request, *args, **kwargs):
@@ -274,10 +262,4 @@ class ListMyDataView(APIView):
                 pass
             obj.save()
         return HttpResponse("Response")
-
-
-
-
-
-
 
