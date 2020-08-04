@@ -37,15 +37,12 @@
 
 
 
-        {# 全体的なcss #}
-        <link rel="stylesheet" href="{% static 'css/general.css' %}">
-
-        {# footerに関するcss #}
-        <link rel="stylesheet" href="{% static 'css/footer_settings.css' %}">
-
-        {# vuejsの読み込み #}
-        {% include 'config/include/general/vue_js_head.html' %}
+        {# 全体的なcss                    #}<link rel="stylesheet" href="{% static 'css/general.css' %}">
+        {# footerに関するcss              #}<link rel="stylesheet" href="{% static 'css/footer_settings.css' %}">
+        {# vuejsの読み込み                #}{% include 'config/include/general/vue_js_head.html' %}
+        {# bootstrapをオーバーライドするcss #}<link rel="stylesheet" href="{% static 'css/my-bootstrap.css' %}">
         
+
         {% block head %}
 
         {% endblock %}

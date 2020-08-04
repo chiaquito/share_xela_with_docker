@@ -9,6 +9,7 @@
 
 
 {% block content %}
+{% if request|is_pc %}
 <div class="container">
 	<div class="row ">
 		<div class="col">
@@ -16,25 +17,40 @@
 		</div>
 	</div>
 </div>
-<div class="container " id="app">
-	<div class="row ">
+<div class="container">
+	<div class="row">
 		<div class="col-6">
 			
-		<form method="post" action="{% url 'solicitudes:solicitud_input' item_obj.id %}"->
-			
+		<form method="post" action="{% url 'solicitudes:solicitud_input' item_obj.id %}">			
 		{% csrf_token %}
 		{{ form.applicant.as_hidden }}
 		{{ form.message }}
 		<br />
 
+		<button class="btn btn-primary btn-block">enviar mensaje</button>
+		</form>
+		</div>
+	</div>
+</div>
+{% elif request|is_mobile %}
 
-		<!--button class="btn btn-primary" >送信</button-->
-		<v-app>
-			<template>
-		<v-btn block color="primary" dark>Block Button</v-btn>
-	        </template>
-		</v-app>
-		
+<div class="container">
+	<div class="row ">
+		<div class="col-12">
+		<h4>Escribe un mensaje al contribuyente</h4>
+		</div>
+	</div>
+</div>
+<div class="container">
+	<div class="row">
+		<div class="col-12">
+			
+		<form method="post" action="{% url 'solicitudes:solicitud_input' item_obj.id %}">			
+		{% csrf_token %}
+		{{ form.applicant.as_hidden }}
+		{{ form.message }}
+		<br />
+
 		<button class="btn btn-primary btn-block">enviar mensaje</button>
 		</form>
 		</div>
@@ -43,12 +59,8 @@
 
 
 
-{% include 'config/include/general/vue_js_script.html' %}
-<script>
-new Vue({
-      el: '#app',
-      vuetify: new Vuetify(),
-    });
-    
-</script>
+
+
+{% endif %}
 {% endblock %}
+

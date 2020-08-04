@@ -22,8 +22,14 @@
             <a v-bind:href="item.href" >
             <v-layout justify-center>
                 <v-flex  >
-                    
-                        <v-card-text >
+
+                        <v-card-text v-if="!item.deadline" >
+                        <img v-bind:src="item.src" class="centerCrop" alt=""/>                      
+                        <p v-text="item.title"></p>
+                        <span v-text="item.created_at" ></span>
+                        </v-card-text>
+
+                        <v-card-text v-else class="deadline-bg">
                         <img v-bind:src="item.src" class="centerCrop" alt=""/>                      
                         <p v-text="item.title"></p>
                         <span v-text="item.created_at" ></span>
@@ -55,12 +61,18 @@
           <v-layout justify-center>
               <v-flex  >
                   
-                      <v-card-text >
-                      <img  v-bind:src="item.src" class="centerCrop"  alt=""/>                    
-                      <p v-text="item.title"></p>
-                      <span v-text="item.created_at" ></span>
-                      <img class="material-icons ml-5" v-if="item.deadline" v-bind:src="item.deadline_image">
-                      </v-card-text>
+                <v-card-text v-if="!item.deadline" >
+                  <img v-bind:src="item.src" class="centerCrop" alt=""/>                      
+                  <p v-text="item.title"></p>
+                  <span v-text="item.created_at" ></span>
+                  </v-card-text>
+
+                  <v-card-text v-else class="deadline-bg">
+                  <img v-bind:src="item.src" class="centerCrop" alt=""/>                      
+                  <p v-text="item.title"></p>
+                  <span v-text="item.created_at" ></span>
+                  <img class="material-icons ml-5" v-if="item.deadline" v-bind:src="item.deadline_image">
+                  </v-card-text>
   
                   
               </v-flex>
@@ -90,14 +102,18 @@
         <v-layout justify-center>
             <v-flex  >
                 
-                    <v-card-text >
-                    <img v-bind:src="item.src" class="centerCrop"   alt=""/>
-                    
-                    <p v-text="item.title"></p>
-                    <span v-text="item.created_at" ></span>
-                    <img class="material-icons ml-5" v-if="item.deadline" v-bind:src="item.deadline_image">
-                    </v-card-text>
-  
+              <v-card-text v-if="!item.deadline" >
+                <img v-bind:src="item.src" class="centerCrop" alt=""/>                      
+                <p v-text="item.title"></p>
+                <span v-text="item.created_at" ></span>
+                </v-card-text>
+
+                <v-card-text v-else class="deadline-bg">
+                <img v-bind:src="item.src" class="centerCrop" alt=""/>                      
+                <p v-text="item.title"></p>
+                <span v-text="item.created_at" ></span>
+                <img class="material-icons ml-5" v-if="item.deadline" v-bind:src="item.deadline_image">
+                </v-card-text>
                 
             </v-flex>
         </v-layout>
@@ -122,12 +138,18 @@
       <v-layout justify-center>
           <v-flex  >
               
-                  <v-card-text >
-                  <img v-bind:src="item.src" class="centerCrop" alt=""/>                
-                  <p v-text="item.title"></p>
-                  <span v-text="item.created_at" ></span>
-                  <img class="material-icons ml-5" v-if="item.deadline" v-bind:src="item.deadline_image">
-                  </v-card-text>
+            <v-card-text v-if="!item.deadline" >
+              <img v-bind:src="item.src" class="centerCrop" alt=""/>                      
+              <p v-text="item.title"></p>
+              <span v-text="item.created_at" ></span>
+              </v-card-text>
+
+              <v-card-text v-else class="deadline-bg">
+              <img v-bind:src="item.src" class="centerCrop" alt=""/>                      
+              <p v-text="item.title"></p>
+              <span v-text="item.created_at" ></span>
+              <img class="material-icons ml-5" v-if="item.deadline" v-bind:src="item.deadline_image">
+              </v-card-text>
   
               
           </v-flex>

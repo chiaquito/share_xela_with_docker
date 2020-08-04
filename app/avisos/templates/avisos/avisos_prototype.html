@@ -149,13 +149,11 @@
 		>
 	  
 		  <v-list two-line subheader>
-			<v-subheader inset>Folders</v-subheader>
+			{# <v-subheader inset>Folders</v-subheader> #}
 	  
 			<v-list-item
 			  v-for="(item, index) in items"
-			  @click=""
-			  
-			  
+			  @click="send_page"
 			>
 			
 			  <v-list-item-avatar class="mr-3">
@@ -179,7 +177,6 @@
 			
 			  
 			</v-list-item>
-			<v-divider inset></v-divider>
 			
 	  
 		  </v-list>
@@ -195,9 +192,7 @@ const aviso_list = {
 	template: "#aviso_list",
 	data: function(){
 		var items = new Array();
-		
 		{% for obj in aviso_objects %}
-
 		var title = null;
 		var url   = null;
 		var checked = ( "{{obj.checked}}" == "True")?true:false;
@@ -226,11 +221,9 @@ const aviso_list = {
 			checked: checked,
 			date: date
 		})
-
 		{% endfor %}	
-
 		return { items: items }
-	}
+	},
 }
 
 

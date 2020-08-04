@@ -5,7 +5,8 @@
 
 
 {% block head %}
-<title>Como usar</title>
+<title>Cómo usarlo</title>
+<link rel="stylesheet" href="{% static 'css/general.css' %}">
 {% endblock %}
 
 
@@ -20,7 +21,7 @@
 		<!--h2>使い方</h2-->
 		{% include "config/include/general/basic_margin.html" %}
 
-			<p class="mb-0" ><font size="6">Como usar</font></p>
+			<p class="mb-0" ><font size="6">Cómo usarlo</font></p>
 			<hr class="my-0" />
 		</div>
 		
@@ -30,13 +31,13 @@
 		</div>
 		<div class="col-12">
 		<p class="h4">Es posible que no necesites pagar lo que tu quieres porque la cosa seria lo que alguien quiere tirar o dar .
-		Aqui es el lugar donde podemos buscar la gente local.</p><br />
+		Aqui es el lugar donde podemos buscar la gente local.</p>
 		</div> 
 
 		{% include "config/include/general/basic_margin.html" %}
 		<div class="col-12">
 		<!--p class="h5">欲しい物を探す時</p-->
-		<p class="h5 p-2 bg-light shadow-sm"><font size="6">Buscar lo que necesitas</font></p>
+		<p class="h5 p-2 shadow-sm bg-light"><font size="6">Buscar lo que necesitas</font></p>
 		<!--p>上部ナブバーのArticulosを選択する。<br />
 		dar,venderをクリックする。<br />
 		表示される記事はすべて誰かに譲りたいアイテムです。<br />
@@ -46,7 +47,6 @@
 		Cada artículo que aparece es un artículo que quiere darle a alguien.<br />
 		Si busca desde Tu departamento, solo se mostrarán los artículos en su área.
 		</p>
-		<br />
 		</div>
 		<br /><br />
 
@@ -61,7 +61,6 @@
 		Haga clic en "<a href="{% url 'items:ItemCategoryListView' 2 %}"><img style="width: 1rem;" src="{% static 'corazon_icon1.jpeg' %}">&nbsp;Buscar ayuda</a>".<br />
 		Cada artículo que ves es algo que alguien necesita.<br />
 		Si busca desde Tu departamento, solo se mostrarán los artículos en su área.</p>
-		<br />
 		</div>
 		<br /><br />
 
@@ -76,7 +75,6 @@
 		Selecciona "<a href="{% url 'items:ItemCategoryListView' 3 %}"><img style="width: 1rem;" src="{% static 'pin_icon.jpeg' %}"/>&nbsp;Anunciate</a>".<br />
 		Todos los artículos mostrados son anuncio.<br />
 		Si busca desde Tu departamento, solo se mostrarán los artículos en su área.</p>
-		<br />
 		</div>
 		<br /><br />
 		

@@ -20,7 +20,7 @@ class DirectMessageContentModelForm(forms.ModelForm):
 		super().__init__(*args, **kwargs)
 		for field in self.fields.values():
 
-			self.fields["content"].widget.attrs["class"] = "form-control col-auto"
+			self.fields["content"].widget.attrs["class"] = "form-control"
 			self.fields["content"].widget.attrs["rows"]  = "4"
 			#self.fields["content"].widget.attrs["placeholder"]  = "取引の具体的な場所や日時をメッセージでやり取りしてください"
 			self.fields["content"].widget.attrs["placeholder"]  = "Intercambie la fecha, hora y lugar específicos de la transacción en mensajes"

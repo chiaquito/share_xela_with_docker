@@ -27,20 +27,16 @@
 
 <div class="container">
   <div class="row justify-content-md-center">
-    <div class="col-12">
-      {% include "config/include/general/basic_margin.html" %}
-
-      {# <p class="h2">申請者リスト</p> #}      
+    <div class="col-md-12">
          <p class="h2 text-center">Lista de solicitantes</p>
     </div>
   </div>
 </div>
 
 <div class="container mt-3 mb-3">
-
   <div class="row justify-content-md-center">
     {% if request|is_pc %}
-    <div class="col-6">
+    <div class="col-md-6">
       <div class="card mb-5 shadow-sm">
           <h5 class="card-header">{{ item_obj.title }}</h5>
           <div class="card-body">
@@ -50,7 +46,7 @@
               <img style="width:13rem;" class="p-4" src="{{ item_obj.image1.url }}">
               </div>
               <div class="col-6">
-              <h5 class="card-title mb-1">Descripsion</h5>
+              <h5 class="card-title mb-1">Descripcion</h5>
               <hr class="mt-0" />
               <p class="card-text">{{ item_obj.description }}</p>
             </div>
@@ -58,6 +54,7 @@
         </div>  
       </div>
     </div>
+
     {% elif request|is_mobile %}
     <div class="col-12">
       <div class="card mb-5 shadow">
@@ -81,45 +78,41 @@
   </div>
 </div>
 
+<div class="container">
   <div class="row">
-    <div class="col">
+    <div class="col-md-12">
+
+          <table class="table">
+            <thead>
+              <tr>
+                <th  scope="col">#</th>
+                <th  scope="col">Usuario</th>
+                <th  scope="col">Mensaje</th>
+                <th  scope="col"></th>
+              </tr>
+            </thead>
+            <tbody>
+            {% for obj in solicitudes_objects %}	
+              <tr>
+                <th width="10%" scope="row">{{ forloop.counter }}</th>
+                <td width="20%">{{ obj.applicant }}</td>
+                <td width="50%">{{ obj.message }}</td>
+                <td width="20%">
+                  <form method="POST" action="{% url 'solicitudes:solicitud_decision' obj.id %}">{% csrf_token %}
+                  <input type="hidden" name="id" value="{{ obj.id }}">
+                  <button type="submit" class="btn btn-primary" >Decide un socio de negocios</button>
+                  {% comment %} この人と取引する {% endcomment %}
+                  </form>
+                </td>
+              </tr>
+            {% endfor %}
+
+            </tbody>
+          </table>
 
 
-
-
-<table class="table">
-  <thead>
-    <tr>
-      <th scope="col">#</th>
-      <th scope="col">Solicitud</th>
-      <th scope="col">Usario</th>
-      <th scope="col">Mensaje</th>
-      <th scope="col"></th>
-    </tr>
-  </thead>
-  <tbody>
-  {% for obj in solicitudes_objects %}	
-    <tr>
-      <th scope="row">1</th>
-      <!--td><a href="{% url 'solicitudes:solicitud_decision' obj.id %}">{{ obj }}</a></td-->
-      <td>{{ obj }}</td>
-      <td>{{ obj.applicant }}</td>
-      <td>{{ obj.message }}</td>
-      <td>
-      	<form method="POST" action="{% url 'solicitudes:solicitud_decision' obj.id %}">{% csrf_token %}
-      	<input type="hidden" name="id" value="{{ obj.id }}">
-      	<button type="submit" class="btn btn-primary" >Decide un socio de negocios</button>
-        {% comment %} この人と取引する {% endcomment %}
-        </form>
-      </td>
-    </tr>
-   {% endfor %}
-
-  </tbody>
-</table>
-
-</div>
-</div>
+    </div>
+  </div>
 </div>
 
 <script>
