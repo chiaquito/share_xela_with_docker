@@ -62,9 +62,9 @@ margin-top: 2.0rem;
     height:2.0rem;
 }
 
-
-center-foto{
-    width:100%;
+/* homeの画像をレスポンシブに表示する */
+.center-foto{
+    width:100vw;
 }
 
 /* アンカータグ 下線表示なし
