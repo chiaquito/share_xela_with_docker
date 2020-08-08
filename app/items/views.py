@@ -263,8 +263,6 @@ class ItemDetailView(View):
 
 
 
-
-
 		# コメントを記入するための context["form"]を設定
 
 		#ユーザーが未認証の場合 ->
@@ -460,7 +458,9 @@ class ItemDeactivateView(View):
 
 class ItemCreateViewKaizen(View):
 	"""
-	Hacer Alticulosボタンを押した時発動する
+	ドロップダウンのCrear Alticulosボタンを押した時発動する
+	endpoint: "items/create2"
+	name: "items:item_create2"
 	"""
 
 	def get(self, request, *args, **kwargs):
@@ -470,7 +470,8 @@ class ItemCreateViewKaizen(View):
 			return redirect('account_login')
 			
 		profile_obj_count = Profile.objects.filter(user=request.user).count()
-		#{ user認証されているけどまだprofileオブジェクトがない場合は、profileオブジェクトの作成ページにつなぐ }
+		#{ user認証されているけどまだprofileオブジェクトがない場合は、profileオブジェクトの作成ページにつなぐ 
+		# 基本的にココは通ることがない}
 		if profile_obj_count == 0:
 			self.request.session["hacer_articulos"] = True
 			return redirect('profiles:profile_creating')
@@ -486,11 +487,10 @@ class ItemCreateViewKaizen(View):
 
 		profile_obj = Profile.objects.get(user=request.user)
 		data = { 
-		"price": 0,
-		#"user": profile_obj.user,
-		"adm0": profile_obj.adm0,
-		"adm1": profile_obj.adm1,
-		"adm2": profile_obj.adm2,
+			"price": 0,
+			"adm0": profile_obj.adm0,
+			"adm1": profile_obj.adm1,
+			"adm2": profile_obj.adm2,
 		}
 		form = ItemModelForm(data, initial=data)
 		context["form"] = form
@@ -504,7 +504,7 @@ class ItemCreateViewKaizen(View):
 
 	def post(self, request, *args, **kwargs):
 		"""
-		endpoint:"items/'create_k/"
+		endpoint:"items/create2/"
 		name: "items:item_create2"
 		"""
 		"""テスト項目
@@ -543,6 +543,7 @@ class ItemCreateViewKaizen(View):
 				obj.image3 = request.FILES['image3']
 			except:
 				pass
+			# 現状では1つの記事につき画像は3枚まで使う仕様とする
 			#try:	
 			#	obj.image4 = request.FILES['image4']
 			#except:
@@ -560,7 +561,6 @@ class ItemCreateViewKaizen(View):
 
 			context = {}
 			context["item_obj"] = obj
-			#request.session["articulos_id"] = obj.id
 			return render(request, 'items/created.html', context)
 
 		else:

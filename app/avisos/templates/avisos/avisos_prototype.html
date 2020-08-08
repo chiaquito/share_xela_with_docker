@@ -46,7 +46,7 @@
 	<div class="row">
 	</div>
 	{% comment %}
-	<div class="row">
+	<!--div class="row">
 		<div class="col">
 				<table class="table table-striped mt-5">
 				<thead>
@@ -116,22 +116,29 @@
 				{% include "config/include/general/basic_margin.html" %}
 				{% include "config/include/general/basic_margin.html" %}
 				{% include "config/include/general/basic_margin.html" %}
+				{% include "config/include/general/basic_margin.html" %}
+				{% include "config/include/general/basic_margin.html" %}
+				{% include "config/include/general/basic_margin.html" %}
+				{% include "config/include/general/basic_margin.html" %}
 				{% endif %}
 			
 		</div>
-	</div>
+	</div-->
 	{% endcomment %}
 </div>
 <div id="list" class="mt-0 pt-0">
-	<aviso-list/>
+	<!--aviso-list v-show="isShow"/-->
+	<div v-show="isShow">
+		<aviso-list />
+	</div>
+	
 	{% if aviso_objects.count <= 4 %}
 	{% include "config/include/general/basic_margin.html" %}
 	{% include "config/include/general/basic_margin.html" %}
 	{% include "config/include/general/basic_margin.html" %}
 	{% include "config/include/general/basic_margin.html" %}
 	{% include "config/include/general/basic_margin.html" %}
-	{% include "config/include/general/basic_margin.html" %}
-	{% include "config/include/general/basic_margin.html" %}
+	
 	{% endif %}
 </div>
 
@@ -153,8 +160,7 @@
 	  
 			<v-list-item
 			  v-for="(item, index) in items"
-			  @click="send_page"
-			>
+			> {# @click="send_page"#}
 			
 			  <v-list-item-avatar class="mr-3">
 				<span v-show="item.checked" class="material-icons" >
@@ -230,6 +236,11 @@ const aviso_list = {
 new Vue({
 	el:"#list",
 	vuetify: new Vuetify(),
+	data:{ isShow: false },
+	mounted:function(){
+		//console.log("{{ aviso_objects.count }}")
+		this.isShow = ("{{ aviso_objects.count }}" != "0")?true:false
+	},
 	components:{'aviso-list': aviso_list}
 });
 

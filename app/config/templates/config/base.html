@@ -40,7 +40,6 @@
         {# 全体的なcss                    #}<link rel="stylesheet" href="{% static 'css/general.css' %}">
         {# footerに関するcss              #}<link rel="stylesheet" href="{% static 'css/footer_settings.css' %}">
         {# vuejsの読み込み                #}{% include 'config/include/general/vue_js_head.html' %}
-        {# bootstrapをオーバーライドするcss #}<link rel="stylesheet" href="{% static 'css/my-bootstrap.css' %}">
         
 
         {% block head %}
@@ -55,20 +54,12 @@
     <div class="container-fluid mx-0 px-0 test" id="wrapper">
     {% include 'config/include/navbar.html' %}
 
-    {#            メッセージフレームワーク                  #}			
-    {% include "config/include/message_and_delete.html" %}
-    {#            メッセージフレームワーク終わり             #}
+    {#  メッセージフレームワークを挿入  #}{% include "config/include/message_and_delete.html" %}
 
 
 
+    {#　コンテンツを挿入 #}<div id="contents">{%  block content %}{% endblock %}</div>
 
-
-    {#　　　　　　　 コンテンツを挿入 　　　　　　　　　　　　　　#}
-    <div id="contents">
-    {%  block content %}
-    {%  endblock %}
-    </div>
-    {#　　　　　　　 コンテンツを挿入 終わり　　　　　　　　　　　#}
 
 
 
@@ -78,11 +69,8 @@
 
     
     
-    
-    
 
-    {# ページネーションがあるときは表示させる  #}
-    {% include 'config/include/general/pagination.html' %}
+    {# ページネーションがあるときは表示させる  #}{% include 'config/include/general/pagination.html' %}
 
     {% include "config/include/general/basic_margin.html" %}
 

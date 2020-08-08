@@ -17,24 +17,6 @@ from api.constants import SerializerContextKey
 
 
 
-class ItemListAPIContextTest(TestCase):
-    """テスト目的
-    serializerContextにSerializerContextKey.ITEM_OBJECTSキーが含まれているので確認する
-    """
-    """テスト対象
-    api.views.py ItemListAPIView (api:item_list)
-
-    """
-
-    """テスト項目
-
-    認証されていないユーザーに対するserializerContext[SerializerContextKey.ITEM_OBJECTS]は"NO_SHOW"である。
-    認証されたユーザーかつお気に入りを既にしているユーザーに対するcontext["btn_choice"]の値は"RED_HEART"である
-    認証されたユーザーかつお気に入りをしていないユーザーに対するcontext["btn_choice"]の値は"WHITE_HEART"である
-
-    """
-
-
 
 
 class ItemFavoriteAPIViewTest(TestCase):

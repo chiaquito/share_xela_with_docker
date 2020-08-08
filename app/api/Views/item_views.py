@@ -191,7 +191,7 @@ class ItemFavoriteListAPIVIiew(APIView):
     """
     requestUserがのfav記事リスト一覧を表示する
     endpoint: 'items/user/item_favorite_list/'
-    name: -s
+    name: -
     """
 
     def get(self, request, *args, **kwargs):

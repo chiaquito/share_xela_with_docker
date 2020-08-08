@@ -1,21 +1,33 @@
 # coding: utf-8
 
+##########################################################################
+# テスト環境を作る時に頻度が高いテスト環境は関数化してテストコードを書きやすくする    #
+# またandroidに対するapiテストに関するテスト環境構築コードも後半部に記述する       #
+##########################################################################
+
+### スクリプトの種類 ###
+# ユーザー(User)オブジェクト作成
+# 記事作成のためのCategoryオブジェクト作成
+# 記事(Item)オブジェクト作成
+# 取引申請者(Solicitud)オブジェクト作成
+# DirectMessageオブジェクト作成
+
+
+
 from django.test import TestCase
 from django.test import Client
-
 from django.contrib.auth.models import User
 from solicitudes.models import Solicitud
 from profiles.models import Profile
 from items.models import Item
 from items.forms  import ItemModelForm
+from item_contacts.models import ItemContact
 from django.urls import reverse, reverse_lazy
-
 from config.constants import ViewName
 from config.forms import MyCustomSignupForm
 from categories.models import CATEGORY_CHOICE, Category
 from rest_framework.test import APIClient
 from rest_framework.authtoken.models import Token
-
 import json
 
 
@@ -105,6 +117,9 @@ def create_user_for_test(userData):
     Returns:
         user_obj: Userオブジェクト
         profile_obj: Ptofileオブジェクト
+
+    コピペ:
+        user_obj, profile_obj = create_user_for_test(create_user_data(prefix_user_emailaddress="test1"))
     """
 
     CREATE_USER_URL = reverse(ViewName.SIGN_UP)
@@ -189,6 +204,12 @@ def create_item_for_test(user_obj, item_data):
 
     Returns:
         item_obj: Item
+
+    コピペ:
+        記事を作成する場合は以下のコードをコピペする
+        category_obj = pickUp_category_obj_for_test()
+        user_obj, profile_obj = create_user_for_test(create_user_data(prefix_user_emailaddress="test1"))
+        item_obj = create_item_for_test(user_obj, create_item_data(category_obj))
     """
 
     CREATE_ITEM_URL = reverse(ViewName.ITEM_CREATE)
@@ -200,6 +221,33 @@ def create_item_for_test(user_obj, item_data):
     item_obj = Item.objects.get(title=item_data["title"])
     return item_obj
 
+
+
+def create_item_contact_for_test(comment_user_obj, data=None):
+    """
+    コメント作成ユーザーが必要
+    postデータを準備する
+    ItemContactオブジェクトを作成する
+    Args:
+        comment_user_obj:Userオブジェクト
+        data: dict
+
+    Returns:
+        item_contact_obj:ItemContactオブジェクト
+    """
+    item_obj_id = Item.objects.all().last().id
+    CREATE_ITEMCONTACT_URL = reverse(ViewName.ITEM_CONTACT)
+    if data == None:
+        data = {
+            "item_obj_id": item_obj_id,
+            "message": "メッセージ"
+            }
+
+    client = Client()
+    login_status = client.login(username=comment_user_obj.username, password="1234tweet")
+    client.post(CREATE_ITEMCONTACT_URL, data)
+    item_contact_obj = Solicitud.objects.all().last()
+    return item_contact_obj
 
 
 
@@ -217,6 +265,12 @@ def create_solicitud_data(message=None):
 
 
 def create_solicitud_for_test(item_obj, access_user_obj, solicitud_data):
+    """申請者オブジェクトを作成する
+
+    コピペ:
+
+        solicitud_obj = create_solicitud_for_test(item_obj, access_user_obj, create_solicitud_data(message=None))
+    """
 
     #access_userが申請する
     POST_SOLICITUD_URL = reverse(ViewName.SOLICITUD_INPUT, args=(item_obj.id,))

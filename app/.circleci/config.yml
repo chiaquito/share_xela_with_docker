@@ -12,7 +12,6 @@ jobs:
           DATABASE_PASSWORD: geodjango1990
           DATABASE_PORT: 5432
           DATABASE_HOST: localhost
-          #DATABASE_URL: postgis://postgres:@localhost/circle_test
           LAUNCH_ENV: NO_DOCKER
 
       - image: circleci/postgres:10.5-postgis
@@ -59,23 +58,29 @@ jobs:
     steps:
       - add_ssh_keys:
           fingerprints:
-            #- "d8:01:9e:d9:ab:88:54:54:62:78:fd:29:ff:b5:e3:03"
-            - "IcFXfHgh42HvcZiG/zQmle+IjD4lrUu4XV+469JheJE"
+            - "f7:51:92:36:b6:2c:36:53:9d:eb:5a:0f:88:0b:95:66"            
       - checkout
       - run:
           name: Fabricを使ってデプロイを実行する
           # https://pypi.org/project/Fabric3/
           command: |
+            pip install --user --upgrade pip
             pip install --user fabric3 
-            #fab deploy -f .circleci/fabfile.py -i ~/.ssh/id_rsa
-            #fab deploy -f .circleci/fabfile.py
-            ssh -p 21345 -i ~/.ssh/id_rsa chiaki@sharexela.ga 
+            fab deploy -f .circleci/fabfile.py
+            
+            # 
+            #ssh -p 21345 -i ~/.ssh/id_rsa -o 'StrictHostKeyChecking no' chiaki@sharexela.ga
+            
+
+
+
 
 workflows:
   version: 2
   build-deploy:
     jobs:
-      #- build-job
+      - build-job
+      #- deploy-job
       - deploy-job:
-      #   requires:
-      #      - build-job
+         requires:
+            - build-job

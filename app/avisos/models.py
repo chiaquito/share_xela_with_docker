@@ -41,7 +41,9 @@ class Aviso(models.Model):
 
 
 def sendMail(subject, content, message_to):
-
+	"""
+	sendgridによるメールを送信する
+	"""
 	message_from = "from@sharexela.ga"
 	send_mail(subject, content, message_from, message_to)
 

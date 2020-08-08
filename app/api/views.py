@@ -150,7 +150,7 @@ class CheckAuthTokenView(APIView):
 
 #最初に二股に分けるビューを経由させてから以下のビューに連結させる方がビューの役割をシンプルに保つことができるので、時間があったら修正する
 #　というか以下はクラスじゃなくて関数でいい気がする。ただ関数を挟んでリダイレクトするとクエリを増やし、返す結果が遅くなってしまう
-# 仮の案
+
 class SubsolicitudListOrDirectMessageListAPIView(APIView):
 	def get(self, request, *args, **kwargs):
 

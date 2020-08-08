@@ -1,8 +1,13 @@
+####################################################################
+# このtests.pyはavisoに関するテストに加え、シグナルに関するテストを記述する  #
+#                                                                  #
+####################################################################
+
+
 from django.test import TestCase, RequestFactory
 from django.test import Client
 from django.urls import reverse, reverse_lazy
 from django.contrib.contenttypes.models import ContentType
-
 from django.contrib.auth.models import User
 from avisos.models import Aviso
 from categories.models import Category
@@ -10,16 +15,143 @@ from api.models import DeviceToken
 from items.models    import Item
 from item_contacts.models import ItemContact
 from profiles.models import Profile
-
 from item_contacts.forms import ItemContactModelForm
+from config.constants import ViewName, TemplateName, ContextKey
+from config.tests.utils import pickUp_category_obj_for_test, create_item_contact_for_test
+from config.tests.utils import create_user_for_test
+from config.tests.utils import create_user_data
+from config.tests.utils import create_item_for_test
+from config.tests.utils import create_item_data
+#from config.tests.utils import
+#from config.tests.utils import
 
 
-from config.constants import ViewName, TemplateName
+#################################################
+#           1. avisoに関するテスト               ##
+#################################################
+
+class AvisosAllListViewTestCase(TestCase):
+    """テスト目的
+
+    """
+    """テスト対象
+    avisos/views.py AvisosAllListView#get
+    """
+    """テスト項目
+    特定のユーザーに結びつくavisoオブジェクトの表示ですべて表示される
+    特定のユーザーに結びつくavisoオブジェクトが0個の場合aviso-listがテンプレートに描画されない
+    """
+    def setUp(self):
+        """テスト環境
+        特定のユーザーを作成する
+        特定のユーザーに対するavisoオブジェクトを5個作成する
+        """
+        self.category_obj = pickUp_category_obj_for_test()
+        self.user_obj, self.profile_obj = create_user_for_test(create_user_data(prefix_user_emailaddress="test1"))
+        #user_objが記事を作成する
+        item_obj = create_item_for_test(self.user_obj, create_item_data(self.category_obj))
+        
+
+    def test_特定のユーザーに結びつくavisoオブジェクトの表示ですべて表示される(self):
+        
+        comment_user_obj, comment_user_profile_obj = create_user_for_test(create_user_data(prefix_user_emailaddress="comment_user"))
+        
+        # 5個のコメントを付す
+        item_contact_obj = create_item_contact_for_test(comment_user_obj)
+        item_contact_obj = create_item_contact_for_test(comment_user_obj)
+        item_contact_obj = create_item_contact_for_test(comment_user_obj)
+        item_contact_obj = create_item_contact_for_test(comment_user_obj)
+        item_contact_obj = create_item_contact_for_test(comment_user_obj)
+
+        # 全Avisoオブジェクトを取得する
+        aviso_objects = Aviso.objects.filter(aviso_user=self.profile_obj)
+        #print(aviso_objects.count())
+        self.assertEqual(aviso_objects.count(), 5)
+
+        # 記事作成者(user_obj)がAviso一覧ページにアクセスする
+        self.client = Client()
+        login_status = self.client.login(username=self.user_obj.username, password='1234tweet')
+        aviso_all_url = reverse(ViewName.AVISO_ALL)
+        response = self.client.get(aviso_all_url)
+        avisos_response = response.context[ ContextKey.AVISO_OBJECTS ]
+        self.assertEqual(avisos_response.count(), 5)
+
+        # 返されるテンプレートにaviso-listタグが含まれていることを確認する
+        self.assertContains( response, 'v-card', status_code=200 )
+
+
+    
+    def test_avisoオブジェクトが0のときはオブジェクトは0になる(self):
+        # 記事作成者(user_obj)がAviso一覧ページにアクセスする
+        self.client = Client()
+        login_status = self.client.login(username=self.user_obj.username, password='1234tweet')
+        aviso_all_url = reverse(ViewName.AVISO_ALL)
+        response = self.client.get(aviso_all_url)
+        avisos_response = response.context[ ContextKey.AVISO_OBJECTS ]
+        self.assertEqual(avisos_response.count(), 0)
+
+
+        
+
+
+class AvisosListViewTestCase(TestCase):
+    """テスト目的
+
+    """
+    """テスト対象
+    avisos/views.py AvisosListView#get
+    """
+    """テスト項目
+    特定のユーザーに結びつくavisoオブジェクトの表示で未読のみ表示される
+    """
+    def setUp(self):
+        """テスト環境
+        特定のユーザーを作成する
+        特定のユーザーに対するavisoオブジェクトを5個作成する
+        """
+        self.category_obj = pickUp_category_obj_for_test()
+        self.user_obj, self.profile_obj = create_user_for_test(create_user_data(prefix_user_emailaddress="test1"))
+        #user_objが記事を作成する
+        item_obj = create_item_for_test(self.user_obj, create_item_data(self.category_obj))
+        
+
+    def test_特定のユーザーに結びつくavisoオブジェクトの表示で未読のみ表示される(self):
+        
+        comment_user_obj, comment_user_profile_obj = create_user_for_test(create_user_data(prefix_user_emailaddress="comment_user"))
+        
+        # 5個のコメントを付す
+        item_contact_obj = create_item_contact_for_test(comment_user_obj)
+        aviso_obj1 = Aviso.objects.filter(aviso_user=self.profile_obj).last()
+        aviso_obj1.checked = True
+        aviso_obj1.save()
+        item_contact_obj = create_item_contact_for_test(comment_user_obj)
+        item_contact_obj = create_item_contact_for_test(comment_user_obj)
+        item_contact_obj = create_item_contact_for_test(comment_user_obj)
+        item_contact_obj = create_item_contact_for_test(comment_user_obj)
+
+        # 全Avisoオブジェクトを取得する
+        aviso_objects = Aviso.objects.filter(aviso_user=self.profile_obj)
+        #print(aviso_objects.count())
+        self.assertEqual(aviso_objects.count(), 5)
+
+        # 記事作成者(user_obj)がAviso一覧ページにアクセスする
+        self.client = Client()
+        login_status = self.client.login(username=self.user_obj.username, password='1234tweet')
+        aviso_list_url = reverse(ViewName.AVISO_LIST)
+        response = self.client.get(aviso_list_url)
+        avisos_response = response.context[ ContextKey.AVISO_OBJECTS ]
+        self.assertEqual(avisos_response.count(), 4)
 
 
 
 
 
+
+
+
+#################################################
+#           2. シグナルに関するテスト               ##
+#################################################
 
 class ItemContactPostSaveTest(TestCase):
     """テスト目的
@@ -295,7 +427,7 @@ class ItemContactPostSaveTest(TestCase):
         self.assertTrue(form.is_valid()) #データの検証
         response = self.client.post(reverse(ViewName.ITEM_CONTACT), data, follow=True)
         self.assertEqual(Item.objects.get(id=1).item_contacts.all().count(), item_contacts_count+1) #*9
-
+        
         self.assertEqual(Aviso.objects.filter(content_type=ContentType.objects.get(model="itemcontact")).count(), before_aviso_objects_count_of_itemcontact+profiles_count)
         #users = []
         #for aviso_obj in Aviso.objects.filter(content_type=ContentType.objects.get(model="itemcontact"))[before_aviso_objects_count_of_itemcontact+1:]:
