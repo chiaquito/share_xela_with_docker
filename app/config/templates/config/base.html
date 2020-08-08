@@ -41,6 +41,7 @@
         {# footerに関するcss              #}<link rel="stylesheet" href="{% static 'css/footer_settings.css' %}">
         {# vuejsの読み込み                #}{% include 'config/include/general/vue_js_head.html' %}
         
+        
 
         {% block head %}
 
@@ -81,8 +82,7 @@
 
   </div>
 
-        {# 主にvue.jsを読み込むときに使用する #}
-        {% block javascript %}{% endblock %}
+        
 
 
         <!-- Optional JavaScript -->
@@ -100,5 +100,8 @@
         {% include "config/include/general/vue_js_script.html" %}
         {# vue.js vuetifyによるfooterコンポーネント定義ファイルの読み込み #}
         {% include 'config/include/general/bottom_with_vuetify.html' %}
+
+        {# 主にvue.jsを読み込むときに使用する #}
+        {% block javascript %}{% endblock %}
   </body>
 </html>
