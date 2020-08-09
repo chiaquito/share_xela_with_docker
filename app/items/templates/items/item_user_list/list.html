@@ -288,7 +288,7 @@ new Vue({
         var lat = "{{ profile_obj.point.y }}";
         var radius = "{{ profile_obj.radius }}";
         var map = L.map('map_leaflet', { center: [lat, lon],zoom: 10})
-                        .addLayer(L.tileLayer('http://{s}.tile.osm.org/{z}/{x}/{y}.png'));
+                        .addLayer(L.tileLayer('https://{s}.tile.osm.org/{z}/{x}/{y}.png'));
         L.marker([lat, lon]).addTo(map);
         L.circle([lat, lon], {radius: radius}).addTo(map)
       }    

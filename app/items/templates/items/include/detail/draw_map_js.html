@@ -25,12 +25,12 @@ var map = new Vue({
 
     },
 
-    mounted:function(){
+    mounted: function(){
         var lon = "{{ item_obj.point.x }}";
         var lat = "{{ item_obj.point.y }}";
         var radius = "{{ item_obj.radius }}"
         var map = L.map('map_leaflet', { center: [lat, lon],zoom: 13})
-                        .addLayer(L.tileLayer('http://{s}.tile.osm.org/{z}/{x}/{y}.png'));
+                        .addLayer(L.tileLayer('https://{s}.tile.osm.org/{z}/{x}/{y}.png'));
         //map.setView([lat, lon], 12);
         L.circle([lat, lon], {radius: radius}).addTo(map);
     }
@@ -55,12 +55,12 @@ var map = new Vue({
     
         },
     
-        mounted:function(){
+        mounted: function(){
             var lon = "{{ item_obj.point.x }}";
             var lat = "{{ item_obj.point.y }}";
             var radius = "{{ item_obj.radius }}"
             var map = L.map('map_leaflet', { center: [lat, lon],zoom: 13})
-                            .addLayer(L.tileLayer('http://{s}.tile.osm.org/{z}/{x}/{y}.png'));
+                            .addLayer(L.tileLayer('https://{s}.tile.osm.org/{z}/{x}/{y}.png'));
             //map.setView([lat, lon], 12);
             L.marker([lat, lon]).addTo(map);
         }

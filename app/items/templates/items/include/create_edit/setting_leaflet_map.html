@@ -54,25 +54,25 @@ var map = new Vue({
         
             //console.log(lng, lat);
             //marker = L.marker([lat, lng], {draggable:true});
-            console.log("１番手")
+            //console.log("１番手")
             var map = L.map('map', { center: [lat, lng],zoom: 13})
-                        .addLayer(L.tileLayer('http://{s}.tile.osm.org/{z}/{x}/{y}.png'));
+                        .addLayer(L.tileLayer('https://{s}.tile.osm.org/{z}/{x}/{y}.png'));
             var x = L.circle([lat, lng], {radius:radius}).addTo(map); 
             geo_object_first = x; 
 
                       
         }else if(lng != null && lng != "" && radius == 0 ){ 
-            console.log("２番手")
-            console.log(lng, lat);            
+            //console.log("２番手")
+            //console.log(lng, lat);            
             var map = L.map('map', { center: [lat, lng],zoom: 13})
-                        .addLayer(L.tileLayer('http://{s}.tile.osm.org/{z}/{x}/{y}.png'));
+                        .addLayer(L.tileLayer('https://{s}.tile.osm.org/{z}/{x}/{y}.png'));
             var x = L.marker([lat, lng], {draggable:true}).addTo(map);
             geo_object_first = x;      
 
         }else {
-            console.log("ココで良いか")
+            //console.log("ココで良いか")
             var map = L.map('map', { center: [14.843755528223957, -91.51963233947755],zoom: 12})
-                        .addLayer(L.tileLayer('http://{s}.tile.osm.org/{z}/{x}/{y}.png'));
+                        .addLayer(L.tileLayer('https://{s}.tile.osm.org/{z}/{x}/{y}.png'));
         }
         
 
@@ -95,7 +95,7 @@ var map = new Vue({
                 var wkt_point = `SRID=4326;POINT (${lng} ${lat})`
                 //this.wkt_point = wkt_point;
                 map_value.wkt_point = wkt_point;
-                console.log(wkt_point);
+                //console.log(wkt_point);
             }else if(map_value.radius != null){
                 //circlemarkerを描画する
                 var location = event.latlng;
@@ -107,7 +107,7 @@ var map = new Vue({
                 var lat = location["lat"].toString(10);
                 var wkt_point = `SRID=4326;POINT (${lng} ${lat})`
                 map_value.wkt_point = wkt_point;
-                console.log(wkt_point);
+                //console.log(wkt_point);
             }
             
         });
@@ -135,19 +135,19 @@ var map_value = new Vue({
         updateArea: function(){
         // Guatemalaの地域ではない場合nullが返ってしまうのでその時はアラートでユーザーに返答する
             if (this.wkt_point == null){ 
-                console.log("wkt_pointがnullなので何もしない")
+                //console.log("wkt_pointがnullなので何もしない")
                 return
                  }
-            console.log("エリアをajaxで変更する。")
+            //console.log("エリアをajaxで変更する。")
             //axiosでadm1, adm2値を更新する処理を実装する
             //endpoint: api/util/region/ で wkt_point値に属するDepartamento, Prefcturaを返す
             axios.post('http://localhost:8000/api/util/region/',{wkt_point: this.wkt_point})
             .then(function (response){
-                console.log(response);
+                //console.log(response);
                 //データを解析してadm1, adm2を取得する。
                 var adm1 = response.data.adm1;
                 var adm2 = response.data.adm2;
-                console.log(adm1, adm2);
+                //console.log(adm1, adm2);
                 //取得したadm1,adm2を地域情報を扱うvueインスタンスに渡す
 
                 setTimeout( function() {
