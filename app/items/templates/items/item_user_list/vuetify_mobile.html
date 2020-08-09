@@ -110,13 +110,13 @@
 
 
 
-
+<script src="https://cdn.jsdelivr.net/npm/vuetify@2.x/dist/vuetify.js"></script>
 <script >
 
 Vue.component("profile-data",{
     template: "#profile-data",
     data: function(){
-      console.log("test")
+      //console.log("test")
       var profile_img_url = "{{ profile_obj.image.url }}" 
       var user_name       = "{{ profile_obj }}"
       var description     = "{{ profile_obj.description }}"
@@ -143,11 +143,11 @@ Vue.component("profile-data",{
 Vue.component("feedback-tab",{
   template: "#feedback",
   data: function(){
-    console.log("feedが出てる？")
+    //console.log("feedが出てる？")
     var feedback = new Array();
     {% for obj in profile_obj.feedback.all %}
 
-        console.log("{{ obj.evaluator }}")
+        //console.log("{{ obj.evaluator }}")
         //データを格納する
         feedback.push({ 
           evaluator: "{{ obj.evaluator }}",
@@ -171,7 +171,7 @@ new Vue({
       mounted: function(){
         if("{{ profile_obj.point.x }}"==""||"{{ profile_obj.point.x }}"==null){
           return this.height = "0px"}
-        console.log("{{ profile_obj.point.x }}")
+        //console.log("{{ profile_obj.point.x }}")
         var lon = "{{ profile_obj.point.x }}";
         var lat = "{{ profile_obj.point.y }}";
         var radius = "{{ profile_obj.radius }}";

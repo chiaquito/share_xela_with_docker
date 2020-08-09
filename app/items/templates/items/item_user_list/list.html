@@ -215,7 +215,7 @@
 
 
 
-
+<script src="https://cdn.jsdelivr.net/npm/vuetify@2.x/dist/vuetify.js"></script>
 <script >
 
 
@@ -224,7 +224,7 @@
 Vue.component("profile-data",{
     template: "#profile-data",
     data: function(){
-      console.log("test")
+      //console.log("test")
       var profile_img_url = "{{ profile_obj.image.url }}" 
       var user_name       = "{{ profile_obj }}"
       var description     = "{{ profile_obj.description }}"
@@ -236,10 +236,10 @@ Vue.component("profile-data",{
       total_rep += parseInt("{{ fb.level }}") 
       //total_rep.push(parseInt("{{ fb.level }}"))
       {% endfor %}
-      console.log(total_rep)
+      //console.log(total_rep)
       var ave_rep = total_rep/rep_count
-      console.log("imakara_ave")
-      console.log(ave_rep)
+      //console.log("imakara_ave")
+      //console.log(ave_rep)
  
       return { profile_img_url: profile_img_url,
                user_name: user_name, 
@@ -255,11 +255,11 @@ Vue.component("profile-data",{
 Vue.component("feedback-tab",{
   template: "#feedback",
   data: function(){
-    console.log("feedが出てる？")
+    //console.log("feedが出てる？")
     var feedback = new Array();
     {% for obj in profile_obj.feedback.all %}
 
-        console.log("{{ obj.evaluator }}")
+        //console.log("{{ obj.evaluator }}")
         //データを格納する
         feedback.push({ 
           evaluator: "{{ obj.evaluator }}",
