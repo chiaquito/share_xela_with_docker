@@ -7,6 +7,10 @@ from items.models import Item
 
 
 class MyItemListView(View):
+	"""
+	endpoint: "mypages/mylist
+	name: "mypages:item_mylist"
+	"""
 	def get(self, request, *args, **kwargs):
 		context = {}
 		#ユーザー認証されていないときは、ログインページにつなぐ
