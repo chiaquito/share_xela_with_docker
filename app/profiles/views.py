@@ -136,7 +136,8 @@ class ProfileView(View):
 				'adm2' : profile_obj.adm2,
 				'birthday' : profile_obj.birthday,
 				'image' : profile_obj.image,
-				'phonenumber' : profile_obj.phonenumber
+				'phonenumber' : profile_obj.phonenumber,
+				'description' : profile_obj.description 
 				}
 		form = ProfileForm(data, initial=data)
 		context["form"] = form
@@ -180,11 +181,11 @@ class ProfileView(View):
 					return redirect('items:item_create2')
 
 				messages.info(request, successEditProfileMessage)
-				return redirect('profiles:profile')
+				return redirect(ViewName.PROFILE_EDIT)
 
 			else:
 				#print("profiles 再トライ")
-				return redirect('profiles:profile')
+				return redirect(ViewName.PROFILE_EDIT)
 
 
 		elif Profile.objects.filter(user=request.user).exists() == True :
@@ -195,8 +196,11 @@ class ProfileView(View):
 				adm0 = form.cleaned_data["adm0"]
 				adm1 = form.cleaned_data["adm1"]
 				adm2 = form.cleaned_data["adm2"]
+				#adm1 = request.POST["adm1"]
+				#adm2 = request.POST["adm2"]
 				birthday    = form.cleaned_data["birthday"]
 				phonenumber = form.cleaned_data["phonenumber"]
+				description = form.cleaned_data["description"]
 
 				profile_obj = Profile.objects.get(user=request.user)
 
@@ -205,6 +209,7 @@ class ProfileView(View):
 				profile_obj.adm2 = adm2
 				profile_obj.birthday = birthday
 				profile_obj.phonenumber = phonenumber
+				profile_obj.description = description
 
 
 				try:
@@ -230,8 +235,14 @@ class ProfileView(View):
 				profile_obj.save()
 
 				messages.info(request, successEditProfileMessage)
-				return redirect('profiles:profile')
+				return redirect(ViewName.PROFILE_EDIT)
 				
 			else:
-				return redirect('profiles:profile')
-
+				print("VALIDがFAKSEになる")
+				print(form.errors)
+				#print(dir(form.errors))
+				for error in form.errors:
+					print(error)
+					#print(dir(error))
+				#print(form.description.errors)
+				return redirect(ViewName.PROFILE_EDIT)
