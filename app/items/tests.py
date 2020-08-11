@@ -24,31 +24,6 @@ from config.constants import ContextKey
 
 
 
-
-
-'''
-class ItemDetailBtnChoiceTest(TestCase):
-
-    """テスト目的
-    #item_detailでユーザー認証の状態によってbtn_choiceが適切に表示されることを担保したい
-
-    """
-
-    """テスト対象
-    items.views.py ItemDetailView (items:item_detail)
-
-    """
-
-    """テスト項目
-
-    認証されていないユーザーに対するcontext["btn_choice"]の値は"NO_SHOW"である。
-    認証されたユーザーかつお気に入りを既にしているユーザーに対するcontext["btn_choice"]の値は"RED_HEART"である
-    認証されたユーザーかつお気に入りをしていないユーザーに対するcontext["btn_choice"]の値は"WHITE_HEART"である
-
-    """
-'''
-
-
 class ItemDetailContextDMObjTest(TestCase):
 
     """テスト目的
@@ -490,147 +465,7 @@ class ItemDetailTemplatesTest(TestCase):
         self.assertTrue('config/include/navbar.html' in templates)
         self.assertTrue('config/include/general/bottom_with_vuetify.html' in templates)
 
-
-
-'''これはItemCreateViewKaizenに置き換えられる
-class ItemCreateViewPOSTTest(TestCase):
-    """テスト目的
-    一定の条件下でのみItemオブジェクトが生成されないように制限する
-    """
-    """テスト対象
-    items/views.py ItemCreateview#POST
-    endpoint:"items/'create/"
-    name: "items:item_create"
-    """
-    """テスト項目
-    済 category_title_description_adm0_adm1_adm2のデータが有ればItemオブジェクトが生成される
-    済 test_categoryデータが不足している場合はFormがinvalidつまりFalseになる
-    済 test_categoryデータが不足している場合はItemオブジェクトが作られない
-    済 priceデータが不足している場合にはformはinvalidになってしまう
-    済 画像データが添付されずに生成されたItemオブジェクトの画像urlはimages_default_images_pngである
-    """
-
-    """テストメモ
-    ModelFormにModelChiceFieldを実装している。
-    このModelChoiceFieldにForeignKeyのオブジェクトを格納するときには
-    オブジェクトそのものを渡すのではなくオブジェクト.idで渡すことが必須となる。
-    """
-
-    def setUp(self):
-        category_obj = Category.objects.create(number="1")
-        post_user_obj = User.objects.create_user(username="post_user", email="test_post_user@gmail.com", password='12345')
-        self.init_data = {}
-
-
-
-    def test_category_title_description_adm0_adm1_adm2_priceのデータが有ればItemオブジェクトが生成される(self):
-        post_user_obj = User.objects.get(username="post_user")
-        profile_obj = Profile.objects.get(user=post_user_obj)
-        item_objects_count_before = Item.objects.filter(user=post_user_obj).count()
-        category_obj = Category.objects.get(number="1")
-        data = {
-                'category':category_obj.id, 
-                'title':"テスト", 
-                'description':"hdahfifif",
-                "price":0,
-                'adm0':"GUATEMALA",
-                'adm1':"Guatemala",
-                'adm2':"Guatemala"
-                } 
-                #'image1':"nin.jpg", 'image2': None, 'image3': None}
-        #files = {'image1':mock.MagicMock(spec=File), 'image2': mock.MagicMock(spec=File), 'image3': mock.MagicMock(spec=File)}
-        
-        form = ItemModelForm(data) #, files
-        self.assertTrue(form.is_valid() == True)
-
-
-        self.client = Client()
-        login_status = self.client.login(username="post_user", password="12345")
-        self.assertTrue(login_status)
-        response = self.client.post(reverse("items:item_create"), data)
-        self.assertEqual(response.status_code, 200)
-        item_objects_count_after = Item.objects.filter(user=post_user_obj).count()
-        self.assertEqual(item_objects_count_before+1, item_objects_count_after) 
-
-
-    
-    def test_categoryデータが不足している場合はFormがinvalidつまりFalseになる(self):
-
-        data = { 
-                'title':"テスト", 
-                'description':"hdahfifif", 
-                'adm0':"GUATEMALA", 'adm1':"Guatemala",'adm2':"Guatemala", "price":1000
-                }
-
-                #'image1':'nini.jpg', 'image2': 'nnin.jpg', 'image3': 'ninli.jpg'
-                
-        #files = {'image1':mock.MagicMock(spec=File), 'image2': mock.MagicMock(spec=File), 'image3': mock.MagicMock(spec=File)}
-        form = ItemModelForm(data)
-        self.assertFalse(form.is_valid())
-
-
-
-    def test_categoryデータが不足している場合はItemオブジェクトが作られない(self):
-        post_user_obj = User.objects.get(username="post_user")
-        item_objects_count_before = Item.objects.filter(user=post_user_obj).count()
-        data = {
-                'title':"テスト", 
-                'description':"hdahfifif", 
-                'adm0':"GUATEMALA", 'adm1':"Guatemala",'adm2':"Guatemala", "price":1999
-                }
-
-        self.client = Client()
-        login_status = self.client.login(username="post_user", password="12345")
-        self.assertTrue(login_status)
-        response = self.client.post(reverse("items:item_create"), data)
-        self.assertEqual(response.status_code, 200)
-        item_objects_count_after = Item.objects.filter(user=post_user_obj).count()
-        self.assertEqual(item_objects_count_before, item_objects_count_after) 
-
-
-
-    def test_priceデータが不足している場合にはformはinvalidになってしまう(self):
-
-        category_obj = Category.objects.get(number="1")
-        data = {
-        'category': category_obj.id, 
-        'title':"テスト", 
-        'description':"hdahfifif", 
-        'adm0':"GUATEMALA", 'adm1':"Guatemala",'adm2':"Guatemala"
-        }
-
-                
-        #files = {'image1':mock.MagicMock(spec=File), 'image2': mock.MagicMock(spec=File), 'image3': mock.MagicMock(spec=File)}
-        form = ItemModelForm(data)
-        self.assertFalse(form.is_valid())
-
-
-
-    
-    def test_画像データが添付されずに生成されたItemオブジェクトの画像urlはimages_default_item_pngである(self):
-        
-        post_user_obj = User.objects.get(username="post_user")
-        item_objects_count_before = Item.objects.filter(user=post_user_obj).count()
-        self.assertEqual(item_objects_count_before, 0)
-        category_obj = Category.objects.get(number="1")
-        data = {
-                'category':category_obj.id, 
-                'title':"テスト", 
-                'description':"hdahfifif", 
-                'adm0':"GUATEMALA", 'adm1':"Guatemala",'adm2':"Guatemala","price":0
-                }       
-        
-        form = ItemModelForm(data)
-        self.assertTrue(form.is_valid() )
-
-        self.client = Client()
-        login_status = self.client.login(username="post_user", password="12345")
-        self.assertTrue(login_status)
-        response = self.client.post(reverse("items:item_create"), data)
-        self.assertEqual(response.status_code, 200)
-        item_obj = Item.objects.get(user=post_user_obj)
-        self.assertEqual(item_obj.image1, "images/default_item.png") 
- '''   
+ 
    
 
 class ItemCreateViewKaizenPOSTTest(TestCase):
@@ -839,6 +674,7 @@ class ItemEditViewPOSTTest(TestCase):
     """
     """テスト項目
     変更した場合新たにItemインスタンスが生成されることはない。
+    価格の変更を実行したときに編集後の記事は価格が変更されている。
 
     """
 
@@ -866,7 +702,26 @@ class ItemEditViewPOSTTest(TestCase):
         item_count = Item.objects.all().count()
         #編集しただけなのでItemインスタンスは増えることはない。
         self.assertEqual(item_count, 1)
-        print("ココ通ってる？？")
+
+    def test_価格の変更を実行したときに編集後の記事は価格が変更されている(self):
+        #Itemオブジェクト作成
+        category_obj = pickUp_category_obj_for_test()
+        user_obj, profile_obj = create_user_for_test(create_user_data("test1"))
+        item_obj = create_item_for_test(user_obj, create_item_data(category_obj))
+        item_count = Item.objects.all().count()
+        self.assertEqual(item_count, 1)
+        #初期値のpriceをチェックする
+        self.assertEqual(item_obj.price, 900)
+        #item_objのpriceを1500に変更する
+        self.client = Client()
+        login_status = self.client.login(username="test1", password="1234tweet")
+        self.assertTrue(login_status)
+        data = create_item_data(category_obj)
+        data["price"] = 1500
+        response = self.client.post(reverse_lazy(ViewName.ITEM_EDIT, args=(str(item_obj.id),)), data)
+        # item_objのprice値をチェックする
+        item_obj = Item.objects.get(id=item_obj.id)
+        self.assertEqual(item_obj.price, 1500)
 
 
 

@@ -346,8 +346,8 @@ class ItemEditView(View):
 		#アクセス制限(記事作成者以外のアクセス)
 		if item_obj.user != request.user:
 			return redirect(ViewName.HOME)
-		print(item_obj.adm1)
-		print(item_obj.adm2)
+		#print(item_obj.adm1)
+		#print(item_obj.adm2)
 
 		data = {
 			"category" : item_obj.category,
@@ -391,9 +391,12 @@ class ItemEditView(View):
 			title       = form.cleaned_data["title"]
 			#user        = form.cleaned_data["user"]
 			description =  form.cleaned_data["description"]
+			price       =  form.cleaned_data['price']
 			#item_obj.user = request.user			
 			item_obj.title = title
 			item_obj.description = description
+			item_obj.price = price
+			
 			
 			adm1 = request.POST["adm1"]
 			adm2 = request.POST["adm2"]
