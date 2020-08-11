@@ -10,7 +10,9 @@ from .forms  import CreatingProfileForm
 from items.models import Item
 from django.http import JsonResponse
 from .strings import warningSettingAreaMessage, successEditProfileMessage
-from config.utils import add_aviso_objects
+from config.strings import no_match_guatemala_message
+from config.utils import add_aviso_objects, is_in_Guatemala
+from config.constants import ViewName, TemplateName
 
 
 REDIRECT_TO_HOME = 'home'
@@ -23,6 +25,8 @@ class CreatingProfileView(View):
 	プロフィール変更ページと共にメッセージを表示させる。
 	ビューの内容はProfileViewと少し異なる
 
+	注: ユーザーを新規作成したときにはシグナルでプロフィールオブジェクトが作成される。
+	したがってこのviewが呼び出されることはまず考えられないが、何かの不具合でプロフィールオブジェクトが生成されないときに発動する
 	"""
 	def get(self, request, *args, **kwargs):
 		context  = {}
@@ -31,7 +35,6 @@ class CreatingProfileView(View):
 		form = CreatingProfileForm(data, initial=data)
 		context["user_obj"] = user_obj
 		context["form"] = form
-
 		messages.info(request, warningSettingAreaMessage)
 		return render(request, 'profiles/profile_creating.html',context)
 
@@ -45,17 +48,14 @@ class CreatingProfileView(View):
 		form = CreatingProfileForm(request.POST)
 
 		if Profile.objects.filter(user=request.user).exists() == True:
-			return redirect('home')
+			return redirect(ViewName.HOME)
 
 		elif Profile.objects.filter(user=request.user).exists() == False and form.is_valid() == True:
 			obj = form.save(commit=False)
 			obj.save()
-			return redirect('home')
+			return redirect(ViewName.HOME)
 
-
-
-		else:
-				
+		else:				
 			return redirect('profiles:profile_creating')
 
 
@@ -106,7 +106,7 @@ class ProfileView(View):
 
 		#ユーザーアクセス制限
 		if request.user.is_anonymous == True :
-			return redirect('account_login')
+			return redirect(ViewName.ACCOUNT_LOGIN)
 
 
 		#稀のケース：認証済みユーザーのProfileオブジェクトがない場合 -> フォームを表示させる
@@ -120,7 +120,7 @@ class ProfileView(View):
 			form = ProfileForm(data, initial=data)			
 			context["form"] = form
 			#データとテンプレートのレンダリング
-			return render(request, 'profiles/profile.html', context)
+			return render(request, TemplateName.PROFILE, context)
 
 
 		#contextにデータ格納
@@ -148,7 +148,7 @@ class ProfileView(View):
 			context["email_obj"] = email_obj
 		
 		#データとテンプレートのレンダリング
-		return render(request, 'profiles/profile.html', context)
+		return render(request, TemplateName.PROFILE, context)
 
 
 
@@ -160,8 +160,8 @@ class ProfileView(View):
 		新たにprofileオブジェクトを生成する場合には、生成後products:item_createにリダイレクトする
 
 		"""
-		print("ここをとおる？？")
-		print(request.POST)
+		#print("ここをとおる？？")
+		#print(request.POST)
 		context = {}
 		form = ProfileForm(request.POST, request.FILES)
 
@@ -209,10 +209,13 @@ class ProfileView(View):
 
 				try:
 					wkt = request.POST["point"]
-					point = GEOSGeometry(wkt)
-					profile_obj.point = point 
-					#print("pointのチェック")
-					#print(wkt)
+					result = is_in_Guatemala(wkt)
+					if result == True:
+						point  = GEOSGeometry(wkt)
+						profile_obj.point = point
+					elif result == False:
+						messages.warning(request, no_match_guatemala_message)
+					
 				except:
 					pass
 				try:

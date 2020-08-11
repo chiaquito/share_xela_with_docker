@@ -2,7 +2,8 @@ from categories.models import Category
 from config.constants  import TemplateName
 from config.constants  import ContextKey
 from config.constants  import ViewName
-from config.utils      import paginate_queryset, add_aviso_objects
+from config.utils      import paginate_queryset, add_aviso_objects, is_in_Guatemala
+from config.strings import no_match_guatemala_message
 from django.shortcuts import render, redirect
 from django.contrib import messages
 from django.contrib.auth.models import User
@@ -405,8 +406,12 @@ class ItemEditView(View):
 					
 			try:
 				wkt = request.POST["point"]
-				point = GEOSGeometry(wkt)
-				item_obj.point = point 
+				result = is_in_Guatemala(wkt)
+				if result == True:
+					point  = GEOSGeometry(wkt)
+					item_obj.point = point
+				elif result == False:
+					messages.warning(request, no_match_guatemala_message)
 			except:
 				pass
 			try:
@@ -524,10 +529,16 @@ class ItemCreateViewKaizen(View):
 			obj.adm2 = adm2
 			obj.save()
 
+
 			try:
 				wkt = request.POST["point"]
-				point = GEOSGeometry(wkt)
-				obj.point = point 
+				result = is_in_Guatemala(wkt)
+				if result == True:
+					point  = GEOSGeometry(wkt)
+					obj.point = point
+				elif result == False:
+					messages.warning(request, no_match_guatemala_message)
+
 			except:
 				pass
 			try:
@@ -595,42 +606,6 @@ class ItemSearchView(View):
 			return render(request, TemplateName.ITEM_LIST, context)
 
 
-'''
-
-class ItemFavoriteView(View):
-
-	def post(self, request, *args, **kwargs):
-		"""
-		endpoint: 'items/item/<int:pk>/favorite/'
-		name: 'items:item_favorite'
-
-		このViewを通るのはすべて認証ユーザーである。
-		なぜならFavボタンを表示する対象は認証ユーザーのみであるからだ。
-
-		ただし、urlを変更することでアクセスするユーザーの可能性も考えられるのでanonymousははじく。
-
-		コレに関しては、AJAXを使う改善点が挙げられる。優先度は低い。
-		"""
-		fav_obj_id = None
-		pk = self.kwargs["pk"]
-
-
-		if request.user.is_anonymous:
-			return redirect(ViewName.ITEM_DETAIL, pk)   #テスト実施項目:非認証ユーザーのアクセスはリダイレクトされるか?　リダイレクトされる場所はアイテム詳細ページか？ 同じidのアイテムページにリダイレクト？
-		
-		item_obj = Item.objects.get(id=pk)
-		user_obj = User.objects.get(username=request.user.username)
-
-		# item_obj.favorite_usersに追加する
-		if user_obj not in item_obj.favorite_users.all():
-			item_obj.favorite_users.add(user_obj)
-
-		elif user_obj in item_obj.favorite_users.all():
-			item_obj.favorite_users.remove(user_obj)
-
-		return redirect(ViewName.ITEM_DETAIL, item_obj.id)
-
-'''
 
 
 

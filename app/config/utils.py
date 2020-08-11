@@ -2,7 +2,9 @@ import platform
 import os
 from avisos.models import Aviso
 from profiles.models import Profile
+from prefecturas.models import Departamento
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
+from django.contrib.gis.geos import GEOSGeometry
 
 
 
@@ -63,6 +65,69 @@ def add_aviso_objects(request, context):
     context["aviso_count"] = aviso_objects.count()
     return context
 
+
+
+
+
+#########################################################
+##          Wktをpoint値に変更する関数                    ##
+#########################################################
+
+# ブラウザ、android端末から送信される地理情報はwell known textである。
+# これをジオメトリ型データに変換する関数を以下とする。
+# 使用する場面は 記事作成時、記事編集時、プロフィール編集時である。
+
+
+def wkt2point(wkt):
+    """
+    Args:
+        wkt: str...Well Known Text (すべてpoint値に関するデータである)
+    Returns:
+        point: ジオメトリ型 (すべてpoint型のジオメトリデータが返る)
+
+    注: 
+    原因が分からないが、環境をDockerを使う場合と使わない場合でwktの値が変わってしまう現象が見られた。
+    したがってDockerとそれ以外でpointオブジェクトを生成する方法を変える仕組みに変更する
+    またデータオブジェクトを生成するときはこのpoint値を使ってはいけない現象も確認された。。。
+    """
+    launch_env = os.environ.get("LAUNCH_ENV", default="NO_DOCKER")
+    print(launch_env)
+    if launch_env == "DOCKER":
+        lng = wkt.split(" ")[1].replace("(", "")
+        lat = wkt.split(" ")[2].replace(")", "")
+        text = "POINT(" + lat + " " + lng + ")"
+        point = GEOSGeometry(text)
+    elif launch_env == "NO_DOCKER":
+        point  = GEOSGeometry(wkt)
+
+    return point
+
+
+
+########################################################
+###          point値のバリデーション関数                  ##
+########################################################
+
+#記事作成時、記事編集時、プロフィール編集時にpoint値を地図から取得する機能がある。
+#地図からpoint値を取得する時guatemala領域外の場合にはデータベースに当該point値を登録するのは望ましくない。
+#したがって領域外かどうかを判定する関数を以下とする。
+
+def is_in_Guatemala(wkt):
+    """機能
+    戻り値がTrueの場合pointが示すデータはguatemala内に存在するデータであり、
+    Falseの場合は存在しないデータである。
+    """
+    point = wkt2point(wkt)
+    # pointが各departamentoに含まれているかチェックする/含まれればresultをTrueに変更する
+    print("そもそもココ通る？？")
+    dep_objects = Departamento.objects.all()
+    for dep in dep_objects:
+        print("within調査")
+        print(dep.geom.contains(point))
+        if dep.geom.contains(point):
+            return True
+
+    return False
 
 
 

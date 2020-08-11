@@ -32,6 +32,8 @@ class TemplateName(object):
     USER_ITEM_LIST  = "items/item_user_list/list.html"
     # direct_messages
     DIRECT_MESSAGE_DETAIL = "direct_messages/dm_detail.html"
+    # profile
+    PROFILE         = 'profiles/profile.html'
     # solicitudes
     SOLICITUD_INPUT = "solicitudes/input_form.html"
     SOLICITUD_LIST  = 'solicitudes/solicitud_decision.html'

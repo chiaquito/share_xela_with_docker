@@ -6,7 +6,6 @@ from django.core.serializers import serialize
 from django.contrib.auth.models import User
 from django.contrib.gis.geos import GEOSGeometry
 
-
 from avisos.models import Aviso
 from categories.models import Category
 from direct_messages.models import DirectMessage
@@ -14,14 +13,9 @@ from direct_messages.models import DirectMessageContent
 from items.models import Item
 from item_contacts.models import ItemContact
 from item_contacts.forms import ItemContactModelForm
-
-
 from prefecturas.models import Prefectura, Departamento, Municipio, RegionClassed
-
-
 from profiles.models import Profile
 from solicitudes.models import Solicitud
-
 from .serializers import AvisoSerializer
 from .serializers import CategorySerializer
 from .serializers import ContactSerializer
@@ -31,14 +25,11 @@ from .serializers import ItemSerializer
 from .serializers import ProfileSerializer
 from .serializers import UserSerializer
 from .serializers import SolicitudSerializer
-
 from .utils import getTokenFromHeader
 from .utils import getUserByToken
 from .constants import BtnChoice
 from .constants import SerializerContextKey
 from .constants import CategoryValue
-
-
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework.authtoken.models import Token
@@ -46,7 +37,6 @@ from rest_framework.authentication import BasicAuthentication
 from rest_framework.authentication import TokenAuthentication
 from rest_framework import permissions
 from rest_framework import parsers
-
 import json
 import os
 
