@@ -98,8 +98,11 @@ def wkt2point(wkt):
         text = "POINT(" + lat + " " + lng + ")"
         point = GEOSGeometry(text)
     elif launch_env == "NO_DOCKER":
-        point  = GEOSGeometry(wkt)
-
+        #point  = GEOSGeometry(wkt)
+        lng = wkt.split(" ")[1].replace("(", "")
+        lat = wkt.split(" ")[2].replace(")", "")
+        text = "POINT(" + lat + " " + lng + ")"
+        point = GEOSGeometry(text)
     return point
 
 
