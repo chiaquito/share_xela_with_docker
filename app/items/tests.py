@@ -675,7 +675,12 @@ class ItemEditViewPOSTTest(TestCase):
     """テスト項目
     変更した場合新たにItemインスタンスが生成されることはない。
     価格の変更を実行したときに編集後の記事は価格が変更されている。
-
+    記事詳細を変更したら編集後の記事の詳細が変更される。
+    記事タイトルを変更したら編集後の記事のタイトルが変更される
+    記事のadm1(departamento値)をguatemalaに変更するデータを送信するとguatemalaに変更される
+    記事のadm2(municipio値)をOlintepequeに変更するデータを送信するとOlintepequeに変更される
+    記事のpoint値を更新したらpoint値が更新されている。
+    
     """
 
     #def setUp(self):
@@ -723,9 +728,90 @@ class ItemEditViewPOSTTest(TestCase):
         item_obj = Item.objects.get(id=item_obj.id)
         self.assertEqual(item_obj.price, 1500)
 
+    def test_記事詳細を変更したら編集後の記事の詳細が変更される(self):
+        #Itemオブジェクト作成
+        category_obj = pickUp_category_obj_for_test()
+        user_obj, profile_obj = create_user_for_test(create_user_data("test1"))
+        item_obj = create_item_for_test(user_obj, create_item_data(category_obj))
+        item_count = Item.objects.all().count()
+        self.assertEqual(item_count, 1)
+        #初期値のdescriptionをチェックする
+        self.assertEqual(item_obj.description, "テストアイテム1の説明") #デフォルト値: テストアイテム1の説明
+        #item_objのdescriptionを"editted"に変更する
+        self.client = Client()
+        login_status = self.client.login(username="test1", password="1234tweet")
+        self.assertTrue(login_status)
+        data = create_item_data(category_obj)
+        #data["price"] = 1500
+        data["description"] = "editted"
+        response = self.client.post(reverse_lazy(ViewName.ITEM_EDIT, args=(str(item_obj.id),)), data)
+        # item_objのprice値をチェックする
+        item_obj = Item.objects.get(id=item_obj.id)
+        self.assertEqual(item_obj.description, "editted")  
+
+    def test_記事タイトルを変更したら編集後の記事のタイトルが変更される(self):
+        #Itemオブジェクト作成
+        category_obj = pickUp_category_obj_for_test()
+        user_obj, profile_obj = create_user_for_test(create_user_data("test1"))
+        item_obj = create_item_for_test(user_obj, create_item_data(category_obj))
+        item_count = Item.objects.all().count()
+        self.assertEqual(item_count, 1)
+        #初期値のtitleをチェックする
+        self.assertEqual(item_obj.title, "テストアイテム0") #デフォルト値: テストアイテム0
+        #item_objのtitleを"変更後のタイトル"に変更する
+        self.client = Client()
+        login_status = self.client.login(username="test1", password="1234tweet")
+        self.assertTrue(login_status)
+        data = create_item_data(category_obj)
+        data["title"] = "変更後のタイトル"
+        response = self.client.post(reverse_lazy(ViewName.ITEM_EDIT, args=(str(item_obj.id),)), data)
+        # item_objのtitle値をチェックする
+        item_obj = Item.objects.get(id=item_obj.id)
+        self.assertEqual(item_obj.title, "変更後のタイトル")        
+  
+
+    def test_記事のdepartamento値をguatemalaに変更するデータを送信するとguatemalaに変更される(self): 
+        #Itemオブジェクト作成
+        category_obj = pickUp_category_obj_for_test()
+        user_obj, profile_obj = create_user_for_test(create_user_data("test1"))
+        item_obj = create_item_for_test(user_obj, create_item_data(category_obj))
+        item_count = Item.objects.all().count()
+        self.assertEqual(item_count, 1)
+        #初期値のdepartamentoをチェックする
+        self.assertEqual(item_obj.adm1, "Quetzaltenango") #デフォルト値: Quetzaltenango
+        #item_objのdescriptionを"editted"に変更する
+        self.client = Client()
+        login_status = self.client.login(username="test1", password="1234tweet")
+        self.assertTrue(login_status)
+        data = create_item_data(category_obj)
+        #data["price"] = 1500
+        data["adm1"] = "Guatemala"
+        response = self.client.post(reverse_lazy(ViewName.ITEM_EDIT, args=(str(item_obj.id),)), data)
+        # item_objのprice値をチェックする
+        item_obj = Item.objects.get(id=item_obj.id)
+        self.assertEqual(item_obj.adm1, "Guatemala")  
 
 
-
+    def test_記事のmunicipio値をOlintepequeに変更するデータを送信するとOlintepequeに変更される(self): 
+        #Itemオブジェクト作成
+        category_obj = pickUp_category_obj_for_test()
+        user_obj, profile_obj = create_user_for_test(create_user_data("test1"))
+        item_obj = create_item_for_test(user_obj, create_item_data(category_obj))
+        item_count = Item.objects.all().count()
+        self.assertEqual(item_count, 1)
+        #初期値のdepartamentoをチェックする
+        self.assertEqual(item_obj.adm2, "Quetzaltenango") #デフォルト値: Quetzaltenango
+        #item_objのdescriptionを"editted"に変更する
+        self.client = Client()
+        login_status = self.client.login(username="test1", password="1234tweet")
+        self.assertTrue(login_status)
+        data = create_item_data(category_obj)
+        #data["price"] = 1500
+        data["adm2"] = "Olintepeque"
+        response = self.client.post(reverse_lazy(ViewName.ITEM_EDIT, args=(str(item_obj.id),)), data)
+        # item_objのprice値をチェックする
+        item_obj = Item.objects.get(id=item_obj.id)
+        self.assertEqual(item_obj.adm2, "Olintepeque")  
 
 
 

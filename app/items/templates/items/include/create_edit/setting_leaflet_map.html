@@ -95,7 +95,6 @@ var map = new Vue({
                 var wkt_point = `SRID=4326;POINT (${lng} ${lat})`
                 //this.wkt_point = wkt_point;
                 map_value.wkt_point = wkt_point;
-                //console.log(wkt_point);
             }else if(map_value.radius != null){
                 //circlemarkerを描画する
                 var location = event.latlng;
@@ -107,7 +106,6 @@ var map = new Vue({
                 var lat = location["lat"].toString(10);
                 var wkt_point = `SRID=4326;POINT (${lng} ${lat})`
                 map_value.wkt_point = wkt_point;
-                //console.log(wkt_point);
             }
             
         });
@@ -135,26 +133,20 @@ var map_value = new Vue({
         updateArea: function(){
         // Guatemalaの地域ではない場合nullが返ってしまうのでその時はアラートでユーザーに返答する
             if (this.wkt_point == null){ 
-                //console.log("wkt_pointがnullなので何もしない")
                 return
                  }
-            //console.log("エリアをajaxで変更する。")
             //axiosでadm1, adm2値を更新する処理を実装する
             //endpoint: api/util/region/ で wkt_point値に属するDepartamento, Prefcturaを返す
-            axios.post('http://localhost:8000/api/util/region/',{wkt_point: this.wkt_point})
+            axios.post('http://127.0.0.1:8000/api/util/region/',{wkt_point: this.wkt_point})
             .then(function (response){
-                //console.log(response);
                 //データを解析してadm1, adm2を取得する。
                 var adm1 = response.data.adm1;
                 var adm2 = response.data.adm2;
-                //console.log(adm1, adm2);
                 //取得したadm1,adm2を地域情報を扱うvueインスタンスに渡す
 
                 setTimeout( function() {
-                //console.log('aaa');
                 muni.selected = adm2
                 }, 1000 );
-                //console.log('ccc');
                 app.selected = adm1
                 
             })
