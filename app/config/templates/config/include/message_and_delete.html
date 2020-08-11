@@ -6,7 +6,7 @@
 			
 			{% include "config/include/general/basic_margin.html" %}
 			{% for message in messages %}
-			<div id="alert" class="alert alert-info shadow-sm" role="alert">
+			<div id="alert" class="alert alert-{{ message.tags }} shadow-sm" role="alert">
 			<p>{{ message }}<button id="alert-btn" type="button" class="btn btn-link"><i class="far fa-times-circle"></i></button></p>
 			</div>
 			{% endfor %}
