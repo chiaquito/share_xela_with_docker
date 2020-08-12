@@ -1,4 +1,4 @@
-from config.constants import ContextKey
+from config.constants import ContextKey, ViewName, TemplateName
 from config.utils     import paginate_queryset
 from django.shortcuts import render, redirect
 from django.views.generic import View
@@ -15,8 +15,7 @@ class MyItemListView(View):
 		context = {}
 		#ユーザー認証されていないときは、ログインページにつなぐ
 		if request.user.is_anonymous == True:
-			return redirect('account_login')
-			#return render(request, 'config/signup.html', context)
+			return redirect(ViewName.ACCOUNT_LOGIN)
 
 		#自分が作成した記事を表示する
 		item_objects = Item.objects.filter(user=request.user).order_by("-created_at").filter(active=True)

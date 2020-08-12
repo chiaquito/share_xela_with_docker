@@ -23,6 +23,7 @@ from item_contacts.models   import ItemContact
 from profiles.models            import Profile
 from solicitudes.models         import Solicitud
 from direct_messages.models     import DirectMessage
+import json
 
 
 
@@ -80,10 +81,12 @@ class ItemUserListView(View):
 		context = {}
 		user_obj = request.session["user_obj"]
 		item_objects = Item.objects.filter(user=user_obj).order_by("-created_at")
+		profile_obj = Profile.objects.get(user=user_obj)
 		page_obj = paginate_queryset(request, item_objects)
 		context = add_aviso_objects(request, context)
 		context['user_obj'] = user_obj
-		context['profile_obj'] = Profile.objects.get(user=user_obj)
+		context['profile_obj'] = profile_obj
+		context['json_prodifle_description'] = json.dumps(profile_obj.description)
 		context[ ContextKey.ITEM_OBJECTS ] = page_obj.object_list
 		context[ ContextKey.PAGE_OBJ ] = page_obj
 		return render(request, TemplateName.USER_ITEM_LIST, context)
