@@ -41,7 +41,7 @@
               <v-layout >
                   <v-flex >
                           
-                          <v-card-text v-if="item.deadline" class="deadline-bg" >
+                          <v-card-text v-if="item.deadline" class="deadline-bg text-center" >
                             <img v-bind:src="item.src" class="centerCrop" alt=""/>
                           
                             <p v-text="item.title" ></p>
@@ -49,7 +49,7 @@
                             <span v-text="item.created_at" ></span>
                             <img class="material-icons ml-5" v-if="item.deadline" v-bind:src="item.deadline_image" >
                             </v-card-text>
-                          <v-card-text v-else="item.deadline"  >
+                          <v-card-text v-else="item.deadline"  class="text-center" >
                         
                           <img v-bind:src="item.src" class="centerCrop" alt=""/>
                           
