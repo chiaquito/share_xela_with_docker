@@ -35,19 +35,19 @@
         <v-row>
           
         </v-row>
-        <v-row>  
+        <v-row justify="center" >  
             <v-card cols=3 class="mt-4 mb-4 ml-4 pa-3" v-for="(item,i) in items" :key="i" >
               <a v-bind:href="item.href" >
-              <v-layout justify-center>
-                  <v-flex  >
+              <v-layout >
+                  <v-flex >
                           
-                          <v-card-text v-if="item.deadline" class="deadline-bg">
+                          <v-card-text v-if="item.deadline" class="deadline-bg" >
                             <img v-bind:src="item.src" class="centerCrop" alt=""/>
                           
                             <p v-text="item.title" ></p>
                             <span v-text="item.category"></span><br />
                             <span v-text="item.created_at" ></span>
-                            <img class="material-icons ml-5" v-if="item.deadline" v-bind:src="item.deadline_image">
+                            <img class="material-icons ml-5" v-if="item.deadline" v-bind:src="item.deadline_image" >
                             </v-card-text>
                           <v-card-text v-else="item.deadline"  >
                         
