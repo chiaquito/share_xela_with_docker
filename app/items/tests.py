@@ -859,34 +859,26 @@ class ItemEditViewPOSTTest(TestCase):
 
 
 
-'''
 
-class ItemEditViewPOSTTest(TestCase):
+
+class ItemDeactivateViewTest(TestCase):
     """テスト目的
-    一定の条件下でのみItemオブジェクトが変更されることを担保する
+    Itemオブジェクトのactiveアトリビュートのapiを通じた変更操作が担保される
     """
     """テスト対象
-    items/views.py ItemEditview#POST
-    endpoint:"items/<int:pk>/edit/"
-    name: "items:item_edit"
+    items/views.py ItemDeactivateView#GET, #POST
+    endpoint:"items/<int:pk>/delete/"
+    name: "items:item_deactivate"
     """
     """テスト項目
-    変更した場合新たにItemインスタンスが生成されることはない。
-    価格の変更を実行したときに編集後の記事は価格が変更されている。
-    記事詳細を変更したら編集後の記事の詳細が変更される。
-    記事タイトルを変更したら編集後の記事のタイトルが変更される
-    記事のadm1(departamento値)をguatemalaに変更するデータを送信するとguatemalaに変更される
-    記事のadm2(municipio値)をOlintepequeに変更するデータを送信するとOlintepequeに変更される
-    記事のpoint値を更新したらpoint値が更新されている。
-    記事のカテゴリを変更したら編集記事のカテゴリが更新されている
-    
+    getメソッドでendpointにアクセスすると記事を非アクティブにすることを確認するテンプレートが表示される
+    postメソッドでendpointにアクセスすると記事を非アクティブにすることができる
+    postメソッドでendpointにアクセスすると記事を消しましたってテンプレートが表示される
+
     """
 
-    #def setUp(self):
-    #    category_obj = Category.objects.create(number="1")
-    #    post_user_obj = User.objects.create_user(username="post_user", email="test_post_user@gmail.com", password='12345')
 
-    def test_変更した場合新たにItemインスタンスが生成されることはない(self):
+    def test_getメソッドでendpointにアクセスすると記事を非アクティブにすることを確認するテンプレートが表示される(self):
         item_count = Item.objects.all().count()
         self.assertEqual(item_count, 0)
         #Itemオブジェクト作成
@@ -895,37 +887,54 @@ class ItemEditViewPOSTTest(TestCase):
         item_obj = create_item_for_test(user_obj, create_item_data(category_obj))
         item_count = Item.objects.all().count()
         self.assertEqual(item_count, 1)
-        #Itemオブジェクトの編集
+        # deactivateにするページを表示する
         self.client = Client()
         login_status = self.client.login(username="test1", password="1234tweet")
         self.assertTrue(login_status)
-        data = create_item_data(category_obj)
-        data["price"] = 1000
-        response = self.client.post(reverse_lazy(ViewName.ITEM_EDIT, args=(str(item_obj.id),)), data)
+        response = self.client.get(reverse_lazy(ViewName.ITEM_DEACTIVATE, args=(str(item_obj.id),)))
         self.assertEqual(response.status_code, 200)
-        item_count = Item.objects.all().count()
-        #編集しただけなのでItemインスタンスは増えることはない。
-        self.assertEqual(item_count, 1)
+        #表示されるテンプレートの一部に TemplateName.ITEM_DEACTIVATE_CONFIRMが含まれる
+        templates = [ele.name for ele in response.templates]
+        self.assertTrue(TemplateName.ITEM_DEACTIVATE_CONFIRM in templates)
 
-    def test_価格の変更を実行したときに編集後の記事は価格が変更されている(self):
-        #Itemオブジェクト作成
+
+
+    def test_postメソッドでendpointにアクセスすると記事を非アクティブにすることができる(self):
+        # Itemオブジェクト作成
         category_obj = pickUp_category_obj_for_test()
         user_obj, profile_obj = create_user_for_test(create_user_data("test1"))
         item_obj = create_item_for_test(user_obj, create_item_data(category_obj))
         item_count = Item.objects.all().count()
         self.assertEqual(item_count, 1)
-        #初期値のpriceをチェックする
-        self.assertEqual(item_obj.price, 900)
-        #item_objのpriceを1500に変更する
+        self.assertEqual(item_obj.active, True)
+        # deactivateにする
         self.client = Client()
         login_status = self.client.login(username="test1", password="1234tweet")
         self.assertTrue(login_status)
-        data = create_item_data(category_obj)
-        data["price"] = 1500
-        response = self.client.post(reverse_lazy(ViewName.ITEM_EDIT, args=(str(item_obj.id),)), data)
-        # item_objのprice値をチェックする
-        item_obj = Item.objects.get(id=item_obj.id)
-        self.assertEqual(item_obj.price, 1500)
+        response = self.client.post(reverse_lazy(ViewName.ITEM_DEACTIVATE, args=(str(item_obj.id),)))
+        self.assertEqual(response.status_code, 200)
+        # activeアトリビュートがFalseに変更されたかチェック
+        after_item_obj = Item.objects.get(id=item_obj.id)
+        self.assertEqual(after_item_obj.active, False)
 
-'''
+
+
+    def test_postメソッドでendpointにアクセスすると記事を消しましたってテンプレートが表示される(self):
+        # Itemオブジェクト作成
+        category_obj = pickUp_category_obj_for_test()
+        user_obj, profile_obj = create_user_for_test(create_user_data("test1"))
+        item_obj = create_item_for_test(user_obj, create_item_data(category_obj))
+        item_count = Item.objects.all().count()
+        self.assertEqual(item_count, 1)
+        self.assertEqual(item_obj.active, True)
+        # deactivateにする
+        self.client = Client()
+        login_status = self.client.login(username="test1", password="1234tweet")
+        self.assertTrue(login_status)
+        response = self.client.post(reverse_lazy(ViewName.ITEM_DEACTIVATE, args=(str(item_obj.id),)))
+        self.assertEqual(response.status_code, 200)
+        #表示されるテンプレートの一部に TemplateName.ITEM_DEACTIVATEDが含まれる
+        templates = [ele.name for ele in response.templates]
+        self.assertTrue(TemplateName.ITEM_DEACTIVATED in templates)       
+
 

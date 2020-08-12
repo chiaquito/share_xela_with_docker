@@ -30,6 +30,8 @@ class TemplateName(object):
     ITEM_LIST       = "items/list_items.html"
     NO_ITEMS        = "items/no_item.html"
     USER_ITEM_LIST  = "items/item_user_list/list.html"
+    ITEM_DEACTIVATE_CONFIRM = "items/confirm_delete.html"
+    ITEM_DEACTIVATED = "items/deleted.html"
     # direct_messages
     DIRECT_MESSAGE_DETAIL = "direct_messages/dm_detail.html"
     # profile
@@ -60,6 +62,7 @@ class ViewName(object):
     ITEM_CONTACT  = 'item_contacts:ItemContactView'
     ITEM_CREATE   = "items:item_create2"
     ITEM_EDIT     = "items:item_edit"
+    ITEM_DEACTIVATE = "items:item_deactivate"
     # direct_messages
     DIRECT_MESSAGE_DETAIL = 'direct_messages:dm_detail'
     FEEDBACK_CREATE  = 'feedback:feedback'

@@ -458,7 +458,7 @@ class ItemDeactivateView(View):
 		pk = self.kwargs["pk"]
 		item_obj = Item.objects.get(id=pk)
 		context["item_obj"] = item_obj
-		return render(request, "items/confirm_delete.html", context)
+		return render(request, TemplateName.ITEM_DEACTIVATE_CONFIRM, context)
 
 
 	def post(self, request, *args, **kwargs):
