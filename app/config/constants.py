@@ -77,4 +77,6 @@ class ViewName(object):
     # avisos
     AVISO_ALL        = 'avisos:avisos_alllist'
     AVISO_LIST       = "avisos:avisos_list"
+    # mypages
+    MY_LIST          = "mypages:item_mylist"
 

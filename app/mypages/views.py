@@ -8,7 +8,8 @@ from items.models import Item
 
 class MyItemListView(View):
 	"""
-	endpoint: "mypages/mylist
+
+	endpoint: "mypages/mylist"
 	name: "mypages:item_mylist"
 	"""
 	def get(self, request, *args, **kwargs):
@@ -24,8 +25,8 @@ class MyItemListView(View):
 		if item_objects.count() > 0:
 			context[ ContextKey.ITEM_OBJECTS ] = page_obj.object_list
 			context[ ContextKey.PAGE_OBJ ] = page_obj
-			return render(request, "items/list_items.html", context)
+			return render(request, TemplateName.ITEM_LIST, context)
 		else:
-			return render(request, "mypages/no_items.html", context)
+			return render(request, TemplateName.NO_ITEMS, context)
 
 
