@@ -5,6 +5,7 @@ from django.contrib import messages
 from config.constants import ViewName
 from item_contacts.models import ItemContact
 from item_contacts.forms import ItemContactModelForm
+from item_contacts.strings import COMMENT_ESCRITO
 
 from items.models import Item
 from items.models import Profile
@@ -29,7 +30,7 @@ class ItemContactView(View):
 		
 		#ユーザー認証していない場合にはログインページへリダイレクトする。
 		if request.user.is_anonymous == True:
-			return redirect('account_login')
+			return redirect(ViewName.ACCOUNT_LOGIN)
 
 
 		#'item_obj_id' = request.POST.pop('item_obj_id', None)
@@ -48,7 +49,7 @@ class ItemContactView(View):
 			#m2mシグナルが起動する。 # avisos.models.py item_m2m_changed_receiverに連携
 
 			#messages.info(request, "コメントを追加しました。")
-			messages.info(request, "Comentario escrito")
+			messages.info(request, COMMENT_ESCRITO)
 			return redirect(ViewName.ITEM_DETAIL, item_obj_id)
 		else:
 			print("INVALID_DATA")
@@ -57,25 +58,22 @@ class ItemContactView(View):
 
 
 
-
+'''
+AvisoCheckingViewにて別のロジックに置き換えられたのでこのviewは不要となった。
 
 class ItemByItemContactView(View):
-
 	"""
 	ItemContactオブジェクトのpkからItemContactオブジェクトを取得し、
 	それを利用してItem詳細ページを表示する
 
 	このViewはAviso一覧ページにて使われている。
-
-
-	バグがあるので後で処理する。
+	endpoint: 'item_contacts/'itemcontact/<int:pk>'
+	name: "item_itemcontacts:item_itemcontact"
 	"""
 
 	def get(self, request, *args, **kwargs):
 		pk = self.kwargs["pk"]
 		item_contact_obj = ItemContact.objects.get(id=pk)
-		item_obj = item_contact_obj.item  #バグ
+		item_obj = item_contact_obj.item #バグ
 		return redirect(ViewName.ITEM_DETAIL, item_obj.id)
-
-
-
+'''

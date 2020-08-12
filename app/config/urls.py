@@ -54,7 +54,7 @@ urlpatterns = [
     path('contacts/', include(contacts.urls)),
     path('direct_messages/', include(direct_messages.urls)),
     path('feedback/', include(feedback.urls)),
-    path('maps/', include(maps.urls)),
+    #path('maps/', include(maps.urls)),
     path('item_contacts/', include(item_contacts.urls)),
     path('items/', include(items.urls)),
     path('mypages/', include(mypages.urls)),

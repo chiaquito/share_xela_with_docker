@@ -8,10 +8,10 @@ from config.constants import ViewName, TemplateName, ContextKey
 
 class MyItemListViewTest(TestCase):
     """テスト目的
-    Itemオブジェクトのactiveアトリビュートのapiを通じた変更操作が担保される
+    
     """
     """テスト対象
-    mypages/views.py ItemDeactivateView#GET, #POST
+    mypages/views.py MyItemListView#GET
     endpoint: "mypages/mylist"
     name: "mypages:item_mylist"
     """

@@ -180,22 +180,7 @@ class SolicitudInputViewPOSTMethodTest(TestCase):
         templates = [ele.name for ele in response.templates]
         self.assertTrue(TemplateName.HOME in templates) #*2
  
-    """
-    formの不適切な内容が見つからない。blankはhtmlでバリデーション
-    def test_sasasa(self):
-        # formの内容が不適切であればSolicitudオブジェクトは生成されない *3
-        self.client = Client()
-        login_status = self.client.login(username="post_user", password='1234tweet')
-        self.assertTrue(login_status) #認証状態でアクセスを実行
-        data = {"message":""}
-        form = SolicitudModelForm(data)
 
-        self.assertTrue(form.is_valid())
-
-        response = self.client.post(reverse_lazy(ViewName.SOLICITUD_INPUT, args="1"),data, follow=True)
-        templates = [ele.name for ele in response.templates]
-        #self.assertTrue(TemplateName.HOME in templates) #*2
-    """
 
     def test_should_create_an_instance(self):
         # formの内容が適切であればSolicitudオブジェクトが新たに1つ生成される *5

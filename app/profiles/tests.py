@@ -165,9 +165,6 @@ class ProfileViewGetTest(TestCase):
 
 
 
-#class ProfileViewPostTest(TestCase): #patchで修正するべき?
-
-
 
 
 
