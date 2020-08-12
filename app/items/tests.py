@@ -1,11 +1,8 @@
 from django.test import TestCase, RequestFactory
 from django.test.utils import setup_test_environment
 from django.test import Client
-
 from django.urls import reverse_lazy, reverse
 from django.core.files import File
-import mock
-
 from django.contrib.auth.models import User
 from items.forms import ItemModelForm
 from items.models           import Item
@@ -14,12 +11,11 @@ from direct_messages.models import DirectMessage
 from favorite.models        import Favorite
 from profiles.models        import Profile
 from solicitudes.models     import Solicitud
-
 from config.tests.utils import *
 from config.constants import ViewName
 from config.constants import TemplateName
 from config.constants import ContextKey
-
+import mock
 
 
 
@@ -680,7 +676,8 @@ class ItemEditViewPOSTTest(TestCase):
     記事のadm1(departamento値)をguatemalaに変更するデータを送信するとguatemalaに変更される
     記事のadm2(municipio値)をOlintepequeに変更するデータを送信するとOlintepequeに変更される
     記事のpoint値を更新したらpoint値が更新されている。
-    
+    記事のカテゴリを変更したら編集記事のカテゴリが更新されている
+    記事編集のデータに不適切なデータが有る場合にはリダイレクト(302)のステータスコードが使われる
     """
 
     #def setUp(self):
@@ -742,7 +739,6 @@ class ItemEditViewPOSTTest(TestCase):
         login_status = self.client.login(username="test1", password="1234tweet")
         self.assertTrue(login_status)
         data = create_item_data(category_obj)
-        #data["price"] = 1500
         data["description"] = "editted"
         response = self.client.post(reverse_lazy(ViewName.ITEM_EDIT, args=(str(item_obj.id),)), data)
         # item_objのprice値をチェックする
@@ -784,7 +780,6 @@ class ItemEditViewPOSTTest(TestCase):
         login_status = self.client.login(username="test1", password="1234tweet")
         self.assertTrue(login_status)
         data = create_item_data(category_obj)
-        #data["price"] = 1500
         data["adm1"] = "Guatemala"
         response = self.client.post(reverse_lazy(ViewName.ITEM_EDIT, args=(str(item_obj.id),)), data)
         # item_objのprice値をチェックする
@@ -806,14 +801,131 @@ class ItemEditViewPOSTTest(TestCase):
         login_status = self.client.login(username="test1", password="1234tweet")
         self.assertTrue(login_status)
         data = create_item_data(category_obj)
-        #data["price"] = 1500
         data["adm2"] = "Olintepeque"
         response = self.client.post(reverse_lazy(ViewName.ITEM_EDIT, args=(str(item_obj.id),)), data)
         # item_objのprice値をチェックする
         item_obj = Item.objects.get(id=item_obj.id)
-        self.assertEqual(item_obj.adm2, "Olintepeque")  
+        self.assertEqual(item_obj.adm2, "Olintepeque")
+
+
+    def test_記事のカテゴリを変更したら編集記事のカテゴリが更新されている(self):  
+        #Itemオブジェクト作成
+        category_obj = pickUp_category_obj_for_test()
+        user_obj, profile_obj = create_user_for_test(create_user_data("test1"))
+        item_obj = create_item_for_test(user_obj, create_item_data(category_obj))
+        item_count = Item.objects.all().count()
+        self.assertEqual(item_count, 1)
+        #初期値のcategoryをチェックする
+        self.assertEqual(item_obj.category.number, "10") #デフォルト値:  10 
+        #item_objのcategoryを変更する
+        changed_category = Category.objects.all().first()
+        changed_category_id = changed_category.id
+        self.client = Client()
+        login_status = self.client.login(username="test1", password="1234tweet")
+        self.assertTrue(login_status)
+        data = create_item_data(category_obj)
+        data["category"] = changed_category_id
+        response = self.client.post(reverse_lazy(ViewName.ITEM_EDIT, args=(str(item_obj.id),)), data)
+        self.assertEqual(response.status_code, 200)
+        #self.assertEqual(response.status_code, 302)
+        # item_objのprice値をチェックする
+        item_obj = Item.objects.get(id=item_obj.id)
+        self.assertEqual(item_obj.category.number, changed_category.number)
+
+
+    def test_記事編集のデータに不適切なデータが有る場合にはリダイレクト302のステータスコードが使われる(self):
+        """
+        カテゴリーの変更の際に適切なデータはcategoryオブジェクトのidをが使用される。
+        したがってカテゴリーobjectのアトリビュートであるnumberや他の文字列を使った場合にはエラーが生じる。
+        この点を利用して意図的に不適切なデータを作成しリダイレクトが行われるかテストする
+        """
+        #Itemオブジェクト作成
+        category_obj = pickUp_category_obj_for_test()
+        user_obj, profile_obj = create_user_for_test(create_user_data("test1"))
+        item_obj = create_item_for_test(user_obj, create_item_data(category_obj))
+        item_count = Item.objects.all().count()
+        self.assertEqual(item_count, 1)
+        #初期値のcategoryをチェックする
+        self.assertEqual(item_obj.category.number, "10") #デフォルト値:  10 
+        #item_objのcategoryを変更する
+        changed_category = "不適切な値"
+        self.client = Client()
+        login_status = self.client.login(username="test1", password="1234tweet")
+        self.assertTrue(login_status)
+        data = create_item_data(category_obj)
+        data["category"] = changed_category
+        response = self.client.post(reverse_lazy(ViewName.ITEM_EDIT, args=(str(item_obj.id),)), data)
 
 
 
 
+'''
+
+class ItemEditViewPOSTTest(TestCase):
+    """テスト目的
+    一定の条件下でのみItemオブジェクトが変更されることを担保する
+    """
+    """テスト対象
+    items/views.py ItemEditview#POST
+    endpoint:"items/<int:pk>/edit/"
+    name: "items:item_edit"
+    """
+    """テスト項目
+    変更した場合新たにItemインスタンスが生成されることはない。
+    価格の変更を実行したときに編集後の記事は価格が変更されている。
+    記事詳細を変更したら編集後の記事の詳細が変更される。
+    記事タイトルを変更したら編集後の記事のタイトルが変更される
+    記事のadm1(departamento値)をguatemalaに変更するデータを送信するとguatemalaに変更される
+    記事のadm2(municipio値)をOlintepequeに変更するデータを送信するとOlintepequeに変更される
+    記事のpoint値を更新したらpoint値が更新されている。
+    記事のカテゴリを変更したら編集記事のカテゴリが更新されている
+    
+    """
+
+    #def setUp(self):
+    #    category_obj = Category.objects.create(number="1")
+    #    post_user_obj = User.objects.create_user(username="post_user", email="test_post_user@gmail.com", password='12345')
+
+    def test_変更した場合新たにItemインスタンスが生成されることはない(self):
+        item_count = Item.objects.all().count()
+        self.assertEqual(item_count, 0)
+        #Itemオブジェクト作成
+        category_obj = pickUp_category_obj_for_test()
+        user_obj, profile_obj = create_user_for_test(create_user_data("test1"))
+        item_obj = create_item_for_test(user_obj, create_item_data(category_obj))
+        item_count = Item.objects.all().count()
+        self.assertEqual(item_count, 1)
+        #Itemオブジェクトの編集
+        self.client = Client()
+        login_status = self.client.login(username="test1", password="1234tweet")
+        self.assertTrue(login_status)
+        data = create_item_data(category_obj)
+        data["price"] = 1000
+        response = self.client.post(reverse_lazy(ViewName.ITEM_EDIT, args=(str(item_obj.id),)), data)
+        self.assertEqual(response.status_code, 200)
+        item_count = Item.objects.all().count()
+        #編集しただけなのでItemインスタンスは増えることはない。
+        self.assertEqual(item_count, 1)
+
+    def test_価格の変更を実行したときに編集後の記事は価格が変更されている(self):
+        #Itemオブジェクト作成
+        category_obj = pickUp_category_obj_for_test()
+        user_obj, profile_obj = create_user_for_test(create_user_data("test1"))
+        item_obj = create_item_for_test(user_obj, create_item_data(category_obj))
+        item_count = Item.objects.all().count()
+        self.assertEqual(item_count, 1)
+        #初期値のpriceをチェックする
+        self.assertEqual(item_obj.price, 900)
+        #item_objのpriceを1500に変更する
+        self.client = Client()
+        login_status = self.client.login(username="test1", password="1234tweet")
+        self.assertTrue(login_status)
+        data = create_item_data(category_obj)
+        data["price"] = 1500
+        response = self.client.post(reverse_lazy(ViewName.ITEM_EDIT, args=(str(item_obj.id),)), data)
+        # item_objのprice値をチェックする
+        item_obj = Item.objects.get(id=item_obj.id)
+        self.assertEqual(item_obj.price, 1500)
+
+'''
 

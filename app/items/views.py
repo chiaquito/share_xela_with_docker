@@ -389,17 +389,21 @@ class ItemEditView(View):
 		pk = self.kwargs["pk"]
 		item_obj = Item.objects.get(id=pk)
 		form = ItemModelForm(request.POST, request.FILES)
+		print(request.POST)
 		if form.is_valid() == True:
 
 			
 			title       = form.cleaned_data["title"]
 			#user        = form.cleaned_data["user"]
-			description =  form.cleaned_data["description"]
-			price       =  form.cleaned_data['price']
+			description = form.cleaned_data["description"]
+			price       = form.cleaned_data['price']
+			category    = form.cleaned_data['category']
+			print(category)
 			#item_obj.user = request.user			
 			item_obj.title = title
 			item_obj.description = description
 			item_obj.price = price
+			item_obj.category = category
 			
 			
 			adm1 = request.POST["adm1"]
@@ -442,7 +446,8 @@ class ItemEditView(View):
 
 		elif form.is_valid() == False:
 			print("IS_VALID == FALSE")
-			return redirect('items:item_edit')
+			print(form.errors)
+			return redirect('items:item_edit', item_obj.id)
 
 
 
