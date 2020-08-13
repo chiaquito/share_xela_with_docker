@@ -32,13 +32,13 @@ import prefecturas.urls
 import profiles.urls
 import solicitudes.urls
 
-from .views import HomeView, HowtoView, UsernameChangeView, EmailAddressChangeView, PrivacyView, CheckProfileView
+from .views import HowtoView, UsernameChangeView, EmailAddressChangeView, PrivacyView, CheckProfileView
 from .views import HomeKaizenView
 from .views import ListMyDataView
 
 
 urlpatterns = [
-    #path('', HomeView.as_view(), name='home'),
+    #path('', HomeView.as_view(), name='home'), HomeView,
     path('',HomeKaizenView.as_view(), name='home'),
     path('check_profile/', CheckProfileView.as_view(), name='check_profile'),
     path('howto/', HowtoView.as_view(), name='howto'),

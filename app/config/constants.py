@@ -63,6 +63,8 @@ class ViewName(object):
     ITEM_CREATE   = "items:item_create2"
     ITEM_EDIT     = "items:item_edit"
     ITEM_DEACTIVATE = "items:item_deactivate"
+    ITEM_USER_LIST  = "items:itemuser_list"
+    ITEM_CATEGORY_LIST = "items:ItemCategoryListView"
     # direct_messages
     DIRECT_MESSAGE_DETAIL = 'direct_messages:dm_detail'
     FEEDBACK_CREATE  = 'feedback:feedback'

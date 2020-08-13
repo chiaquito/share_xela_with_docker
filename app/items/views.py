@@ -76,11 +76,17 @@ class ItemUserListView(View):
 	Detailページのusernameアンカーからuserの投稿記事をリスト表示する。
 	sessionを使って表示する仕組みを用いている。
 	TemplateName.ITEM_LISTをincludeとして相手のプロフィールデータも表示する。
+
+	endpoint: "items/list_u/"
+	name: "items:itemuser_list"
 	"""
 	def get(self, request, *args, **kwargs):
 		context = {}
 		user_obj = request.session["user_obj"]
-		item_objects = Item.objects.filter(user=user_obj).order_by("-created_at")
+		item_objects = Item.objects.filter(user=user_obj).exclude(active=False).order_by("-created_at")
+		# 基本的にItemオブジェクトが0個の場合は存在しないと考えられるが、不足の自体に備えて以下の場合を加えておく
+		if item_objects.count() == 0:
+			return render(request, TemplateName.NO_ITEMS)
 		profile_obj = Profile.objects.get(user=user_obj)
 		page_obj = paginate_queryset(request, item_objects)
 		context = add_aviso_objects(request, context)
@@ -100,7 +106,6 @@ class ItemCategoryListView(View):
 		"""機能
 		カテゴリーナンバーに従い対応するカテゴリーのリストを返す
 		カテゴリーナンバーはcategories/models.pyを参照
-
 
 		endpoint: 'items/category/<int:pk>/items/list/'
 		name: ItemCategoryListView
@@ -167,11 +172,6 @@ class ItemCategoryLocalListView(View):
 		context[ ContextKey.ITEM_OBJECTS ] = page_obj.object_list
 		context[ ContextKey.PAGE_OBJ ] = page_obj
 		return render(request, TemplateName.ITEM_LIST, context)		
-
-
-
-
-
 
 
 
@@ -608,10 +608,13 @@ class ItemSearchView(View):
 		#print(dir(self.request))
 		if self.request.method == "GET":
 			q = self.request.GET.get("q")
-			item_objects = Item.objects.filter(Q(title__icontains=q)|Q(description__icontains=q))
+			item_objects = Item.objects.filter(Q(title__icontains=q)|Q(description__icontains=q)).exclude(active=False)
 			context["item_objects"] = item_objects
 			context = add_aviso_objects(request, context)
 			return render(request, TemplateName.ITEM_LIST, context)
+
+
+
 
 
 

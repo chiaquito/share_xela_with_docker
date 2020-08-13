@@ -17,7 +17,7 @@ from .utils import add_aviso_objects
 
 
 
-
+'''
 class HomeView(View):
 	def get(self, request, *args, **kwargs):
 		"""
@@ -39,7 +39,7 @@ class HomeView(View):
 
 		elif request.user.is_authenticated == True and Profile.objects.filter(user=request.user).exists() == False :
 			return render(request, "config/home.html")
-
+'''
 
 class HomeKaizenView(View):
 

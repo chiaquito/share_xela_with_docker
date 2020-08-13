@@ -19,7 +19,7 @@ class MyItemListView(View):
 			return redirect(ViewName.ACCOUNT_LOGIN)
 
 		#自分が作成した記事を表示する
-		item_objects = Item.objects.filter(user=request.user).order_by("-created_at").filter(active=True)
+		item_objects = Item.objects.filter(user=request.user).exclude(active=False).order_by("-created_at")
 		page_obj = paginate_queryset(request, item_objects)
 
 		if item_objects.count() > 0:

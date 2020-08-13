@@ -16,6 +16,7 @@ from config.constants import ViewName
 from config.constants import TemplateName
 from config.constants import ContextKey
 import mock
+import json
 
 
 
@@ -288,9 +289,6 @@ class ItemListByFavorite(TestCase):
 
 
 
-
-
-
 class ItemFavoriteViewTest(TestCase):
 
     """テスト目的
@@ -359,10 +357,6 @@ class ItemFavoriteViewTest(TestCase):
         item_obj = Item.objects.get(id=1)
         self.assertTrue(item_obj.favorite_users.all().count(), 2) # *1
         self.assertTrue(access_user in item_obj.favorite_users.all()) # *2
-
-
-
-
 
 
 
@@ -603,7 +597,6 @@ class ItemCreateViewKaizenPOSTTest(TestCase):
         item_obj = Item.objects.get(user=post_user_obj)
         self.assertEqual(item_obj.image1, "images/default_item.png")  
 
-    
 
 
 
@@ -938,3 +931,268 @@ class ItemDeactivateViewTest(TestCase):
         self.assertTrue(TemplateName.ITEM_DEACTIVATED in templates)       
 
 
+
+
+
+class ItemUserListViewTest(TestCase):
+    """テスト目的
+    Itemオブジェクトのactive属性がTrueのみ表示されることを担保する
+    """
+    """テスト対象
+    items/views.py ItemUserListView#GET
+    endpoint: "items/list_u/"
+    name: "items:itemuser_list"
+    """
+    """テスト項目
+    表示される記事にはactiveがFalseのものは存在しない
+    関連しないユーザーの記事が含まれずに記事を一覧する
+    contextにプロフィールデータが含まれる
+    contextにプロフィール詳細が含まれる
+    返されるテンプレートには"items/item_user_list/list.html"が含まれる
+    記事の個数が0この場合には"no_item.html"が使われる
+    """
+
+    def test_表示される記事にはactiveがFalseのものは存在しない(self):
+        # ユーザーが記事を5コ作成する。そのうち2個はactiveをFalseに設定する
+        user_obj, profile_obj = create_user_for_test(create_user_data("test1"))
+        category_obj = pickUp_category_obj_for_test()
+        item_obj = create_item_for_test(user_obj, create_item_data(category_obj))
+        item_obj.active = False
+        item_obj.save()
+        item_obj = create_item_for_test(user_obj, create_item_data(category_obj))
+        item_obj.active = False
+        item_obj.save()
+        item_obj = create_item_for_test(user_obj, create_item_data(category_obj))
+        item_obj = create_item_for_test(user_obj, create_item_data(category_obj))
+        item_obj = create_item_for_test(user_obj, create_item_data(category_obj))
+
+        # 記事にアクセスする
+        self.client = Client()
+        login_status = self.client.login(username="test1", password="1234tweet")
+        self.assertTrue(login_status)
+        # セッションにユーザーのオブジェクトを追加する
+        session = self.client.session
+        session['user_obj'] = user_obj
+        session.save()
+        response = self.client.get(reverse_lazy(ViewName.ITEM_USER_LIST))
+        # 返されるコンテンツの個数を確認
+        item_objects = response.context[ ContextKey.ITEM_OBJECTS ]
+        self.assertEqual(item_objects.count(), 3)
+        # 返されるコンテンツのactive属性値がTrueかチェック
+        for obj in response.context[ContextKey.ITEM_OBJECTS]:
+            self.assertEqual(obj.active, True)
+
+
+
+    def test_関連しないユーザーの記事が含まれずに記事を一覧する(self):
+        # ユーザーが記事を5コ作成する。そのうち2個はactiveをFalseに設定する
+        user_obj, profile_obj = create_user_for_test(create_user_data("test1"))
+        category_obj = pickUp_category_obj_for_test()
+        item_obj = create_item_for_test(user_obj, create_item_data(category_obj))
+        item_obj.active = False
+        item_obj.save()
+        item_obj = create_item_for_test(user_obj, create_item_data(category_obj))
+        item_obj.active = False
+        item_obj.save()
+        item_obj = create_item_for_test(user_obj, create_item_data(category_obj))
+        item_obj = create_item_for_test(user_obj, create_item_data(category_obj))
+        item_obj = create_item_for_test(user_obj, create_item_data(category_obj))
+        # 関係ないユーザーが記事を３個作成する
+        other_user_obj, other_profile_obj = create_user_for_test(create_user_data("other1"))
+        item_obj = create_item_for_test(other_user_obj, create_item_data(category_obj))
+        item_obj = create_item_for_test(other_user_obj, create_item_data(category_obj))
+        item_obj = create_item_for_test(other_user_obj, create_item_data(category_obj))
+        # 記事にアクセスする
+        self.client = Client()
+        login_status = self.client.login(username="test1", password="1234tweet")
+        self.assertTrue(login_status)
+        # セッションにユーザーのオブジェクトを追加する
+        session = self.client.session
+        session['user_obj'] = user_obj
+        session.save()
+        response = self.client.get(reverse_lazy(ViewName.ITEM_USER_LIST))
+        # 返されるコンテンツがすべてユーザーに関するものか確認
+        item_objects = response.context[ ContextKey.ITEM_OBJECTS ]
+        for item_obj in item_objects:
+            self.assertEqual(item_obj.user, user_obj)
+        # 返されるコンテンツの個数を確認
+        self.assertEqual(item_objects.count(), 3)
+
+
+    def test_contextにプロフィールデータが含まれる(self):
+        # ユーザーが記事を5コ作成する。そのうち2個はactiveをFalseに設定する
+        user_obj, profile_obj = create_user_for_test(create_user_data("test1"))
+        category_obj = pickUp_category_obj_for_test()
+        item_obj = create_item_for_test(user_obj, create_item_data(category_obj))
+        item_obj.active = False
+        item_obj.save()
+        item_obj = create_item_for_test(user_obj, create_item_data(category_obj))
+        item_obj.active = False
+        item_obj.save()
+        item_obj = create_item_for_test(user_obj, create_item_data(category_obj))
+        item_obj = create_item_for_test(user_obj, create_item_data(category_obj))
+        item_obj = create_item_for_test(user_obj, create_item_data(category_obj))
+
+        # 記事にアクセスする
+        self.client = Client()
+        login_status = self.client.login(username="test1", password="1234tweet")
+        self.assertTrue(login_status)
+        # セッションにユーザーのオブジェクトを追加する
+        session = self.client.session
+        session['user_obj'] = user_obj
+        session.save()
+        response = self.client.get(reverse_lazy(ViewName.ITEM_USER_LIST))
+        # contextにユーザーのProfileオブジェクトが含まれる
+        profile_in_context = response.context["profile_obj"]
+        self.assertEqual(profile_in_context, profile_obj)
+              
+
+    def test_contextにプロフィール詳細が含まれる(self):
+        # ユーザーが記事を5コ作成する。そのうち2個はactiveをFalseに設定する
+        user_obj, profile_obj = create_user_for_test(create_user_data("test1"))
+        category_obj = pickUp_category_obj_for_test()
+        item_obj = create_item_for_test(user_obj, create_item_data(category_obj))
+        item_obj.active = False
+        item_obj.save()
+        item_obj = create_item_for_test(user_obj, create_item_data(category_obj))
+        item_obj.active = False
+        item_obj.save()
+        item_obj = create_item_for_test(user_obj, create_item_data(category_obj))
+        item_obj = create_item_for_test(user_obj, create_item_data(category_obj))
+        item_obj = create_item_for_test(user_obj, create_item_data(category_obj))
+
+        # 記事にアクセスする
+        self.client = Client()
+        login_status = self.client.login(username="test1", password="1234tweet")
+        self.assertTrue(login_status)
+        # セッションにユーザーのオブジェクトを追加する
+        session = self.client.session
+        session['user_obj'] = user_obj
+        session.save()
+        response = self.client.get(reverse_lazy(ViewName.ITEM_USER_LIST))
+        # contextにユーザーのProfileオブジェクトが含まれる
+        profile_description_in_context = response.context["json_prodifle_description"]
+        self.assertEqual(profile_description_in_context, json.dumps(profile_obj.description)) 
+
+
+    def test_返されるテンプレートにはitems_item_user_list_list_htmlが含まれる(self):
+        # ユーザーが記事を5コ作成する。
+        user_obj, profile_obj = create_user_for_test(create_user_data("test1"))
+        category_obj = pickUp_category_obj_for_test()
+        item_obj = create_item_for_test(user_obj, create_item_data(category_obj))
+        item_obj = create_item_for_test(user_obj, create_item_data(category_obj))
+        item_obj = create_item_for_test(user_obj, create_item_data(category_obj))
+        item_obj = create_item_for_test(user_obj, create_item_data(category_obj))
+        item_obj = create_item_for_test(user_obj, create_item_data(category_obj))
+
+        # 記事にアクセスする
+        self.client = Client()
+        login_status = self.client.login(username="test1", password="1234tweet")
+        self.assertTrue(login_status)
+        # セッションにユーザーのオブジェクトを追加する
+        session = self.client.session
+        session['user_obj'] = user_obj
+        session.save()
+        response = self.client.get(reverse_lazy(ViewName.ITEM_USER_LIST))
+        # templateのチェック
+        templates = [template.name for template in response.templates]
+        self.assertTrue(TemplateName.USER_ITEM_LIST in templates)
+
+
+    def test_記事の個数が0この場合にはno_item_htmlが使われる(self):
+        user_obj, profile_obj = create_user_for_test(create_user_data("test1"))
+        # 記事にアクセスする
+        self.client = Client()
+        login_status = self.client.login(username="test1", password="1234tweet")
+        self.assertTrue(login_status)
+        # セッションにユーザーのオブジェクトを追加する
+        session = self.client.session
+        session['user_obj'] = user_obj
+        session.save()
+        response = self.client.get(reverse_lazy(ViewName.ITEM_USER_LIST))
+        # templateのチェック
+        templates = [template.name for template in response.templates]
+        self.assertTrue(TemplateName.NO_ITEMS in templates)
+
+
+
+class ItemCategoryListViewTest(TestCase):
+    """テスト目的
+    カテゴリーに応じて国全体における記事が表示される状態を担保する
+    """
+    """テスト対象
+    items/views.py ItemUserListView#GET
+    endpoint: 'items/category/<int:pk>/items/list/'
+    name: "items:ItemCategoryListView"
+    """
+    """テスト項目
+    特定のカテゴリーを指定すると表示される記事は当該カテゴリーの記事である
+    """
+    def test_特定のカテゴリーを指定すると表示される記事は当該カテゴリーの記事である(self):
+        # ユーザーが記事を8コ作成する。
+        user_obj, profile_obj = create_user_for_test(create_user_data("test1"))
+        category_obj = pickUp_category_obj_for_test()
+        cate1 = Category.objects.get(number="1")
+        cate2 = Category.objects.get(number="2")
+        cate3 = Category.objects.get(number="3")
+        cate4 = Category.objects.get(number="4")
+        cate5 = Category.objects.get(number="5")
+        item_obj = create_item_for_test(user_obj, create_item_data(category_obj))
+        item_obj.category = cate1
+        item_obj.save()
+        item_obj = create_item_for_test(user_obj, create_item_data(category_obj))
+        item_obj.category = cate2
+        item_obj.save()        
+        item_obj = create_item_for_test(user_obj, create_item_data(category_obj))
+        item_obj.category = cate3
+        item_obj.save()         
+        item_obj = create_item_for_test(user_obj, create_item_data(category_obj))
+        item_obj.category = cate4
+        item_obj.save()         
+        item_obj = create_item_for_test(user_obj, create_item_data(category_obj))        
+        item_obj.category = cate5
+        item_obj.save()
+        item_obj = create_item_for_test(user_obj, create_item_data(category_obj))        
+        item_obj.category = cate5
+        item_obj.save()  
+        item_obj = create_item_for_test(user_obj, create_item_data(category_obj))        
+        item_obj.category = cate5
+        item_obj.save()  
+        item_obj = create_item_for_test(user_obj, create_item_data(category_obj))        
+        item_obj.category = cate5
+        item_obj.save()
+        # 記事にアクセスする
+        self.client = Client()
+        login_status = self.client.login(username="test1", password="1234tweet")
+        self.assertTrue(login_status)
+        response = self.client.get(reverse_lazy(ViewName.ITEM_CATEGORY_LIST, args=("1",)))
+        # 表示される記事のチェック
+        item_objects = response.context[ContextKey.ITEM_OBJECTS]
+        for obj in item_objects:
+            self.assertEqual(obj.category.number, "1")
+
+        response = self.client.get(reverse_lazy(ViewName.ITEM_CATEGORY_LIST, args=("2",)))
+        # 表示される記事のチェック
+        item_objects = response.context[ContextKey.ITEM_OBJECTS]
+        for obj in item_objects:
+            self.assertEqual(obj.category.number, "2")
+
+        response = self.client.get(reverse_lazy(ViewName.ITEM_CATEGORY_LIST, args=("3",)))
+        # 表示される記事のチェック
+        item_objects = response.context[ContextKey.ITEM_OBJECTS]
+        for obj in item_objects:
+            self.assertEqual(obj.category.number, "3")
+
+        response = self.client.get(reverse_lazy(ViewName.ITEM_CATEGORY_LIST, args=("4",)))
+        # 表示される記事のチェック
+        item_objects = response.context[ContextKey.ITEM_OBJECTS]
+        for obj in item_objects:
+            self.assertEqual(obj.category.number, "4")
+
+        response = self.client.get(reverse_lazy(ViewName.ITEM_CATEGORY_LIST, args=("5",)))
+        # 表示される記事のチェック
+        item_objects = response.context[ContextKey.ITEM_OBJECTS]
+        for obj in item_objects:
+            self.assertEqual(obj.category.number, "5")
+
+                                
