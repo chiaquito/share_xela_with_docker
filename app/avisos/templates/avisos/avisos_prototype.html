@@ -30,7 +30,7 @@
 				<a class="nav-link" href="{% url 'avisos:avisos_list' %}">Solo Avisos no leído</a>
 				</li>
 			</ul>
-			{% elif type == "FILETERED" %}
+			{% elif type == "FILTERED" %}
 			<ul class="nav nav-tabs ">
 				<li class="nav-item">
 				<a class="nav-link" href="{% url 'avisos:avisos_alllist' %}">Todo de Aviso</a>
@@ -274,7 +274,7 @@ new Vue({
 			</li>
 
 			</ul>
-			{% elif type == "FILETERED" %}
+			{% elif type == "FILTERED" %}
 			<li class="nav-item">
 			<a class="nav-link" href="{% url 'avisos:avisos_alllist' %}">Todo de Aviso</a>
 			</li>

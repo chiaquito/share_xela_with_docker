@@ -653,3 +653,45 @@ class ItemFavoriteViewKaizen(View):
 		
 		return JsonResponse(data)
 
+
+
+
+class ItemInTradeAllListView(View):
+	"""
+	取引に至った記事を一覧するListView
+	endpoint: 
+	name:
+	"""
+	def get(self, request, *args, **kwargs):
+		context = {}
+		profile_obj = Profile.objects.get(user=request.user)
+		#item_objects = Item.objects.filter(direct_message__owner=profile_obj)
+		#item_objects = Item.objects.filter(direct_message__participant=profile_obj)
+		item_objects = Item.objects.filter(Q(direct_message__owner=profile_obj)|Q(direct_message__participant=profile_obj))
+		page_obj = paginate_queryset(request, item_objects)
+		context[ContextKey.ITEM_OBJECTS] = page_obj.object_list
+		context[ ContextKey.PAGE_OBJ ] = page_obj
+		context = add_aviso_objects(request, context)
+		context["type"] = "ALL"
+		
+		return render(request, "items/articles_in_trade/trading_prototype.html", context ) 
+
+
+class ItemInTradeListView(View):
+	"""
+	取引に至った記事を一覧するListView
+	ただしfeedbackを残している記事に関しては除く
+	"""
+	def get(self, request, *args, **kwargs):
+		context = {}
+		profile_obj = Profile.objects.get(user=request.user)
+		#item_objects = Item.objects.filter(direct_message__owner=profile_obj)
+		#item_objects = Item.objects.filter(direct_message__participant=profile_obj)
+		item_objects = Item.objects.filter(Q(direct_message__owner=profile_obj), Q(direct_message__is_feedbacked_by_owner=False)|Q(direct_message__participant=profile_obj), Q(direct_message__is_feedbacked_by_participant=False))
+		page_obj = paginate_queryset(request, item_objects)
+		context[ContextKey.ITEM_OBJECTS] = page_obj.object_list
+		context[ ContextKey.PAGE_OBJ ] = page_obj
+		context = add_aviso_objects(request, context)
+		context["type"] = "FILTERED"
+		
+		return render(request, "items/articles_in_trade/trading_prototype.html", context ) 		

@@ -356,7 +356,8 @@ $(".carousel-control-next-icon").css("background-image", `url("data:image/svg+xm
 {# vue.js cdn 本番用 #}
 {% include "config/include/general/vue_js_script.html" %}
 {# axios cdn #}
-<script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+{% include "config/include/general/axios_script.html" %}
+
 
 {# osmの表示に関するjavascript #}
 {% include "items/include/detail/draw_map_js.html" %}

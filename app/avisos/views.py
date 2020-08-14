@@ -70,7 +70,7 @@ class AvisosListView(View):
 			context[ ContextKey.AVISO_OBJECTS ] = page_obj.object_list
 			context["aviso_count"] = aviso_objects.count()
 			context[ ContextKey.PAGE_OBJ ] = page_obj
-			context["type"] = "FILETERED"
+			context["type"] = "FILTERED"
 			return render(request, 'avisos/avisos_prototype.html',context)
 
 

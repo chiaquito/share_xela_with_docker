@@ -9,7 +9,8 @@ from .views import ItemCategoryListView
 from .views import ItemCategoryLocalListView
 from .views import ItemCreateViewKaizen
 from .views import ItemFavoriteViewKaizen
-
+from .views import ItemInTradeListView
+from .views import ItemInTradeAllListView
 
 
 app_name = "items"
@@ -25,6 +26,8 @@ urlpatterns = [
     #path('mylist', MyItemListView.as_view(), name='item_mylist'),
     path('item/<int:pk>/', ItemDetailView.as_view(), name='item_detail'),    
     path('item/<int:pk>/favorite/', ItemFavoriteViewKaizen.as_view(), name='item_favorite'),
-    path('<int:pk>/edit/', ItemEditView.as_view(), name='item_edit'),    
+    path('<int:pk>/edit/', ItemEditView.as_view(), name='item_edit'),
+    path('in-trade/list-all/', ItemInTradeAllListView.as_view(), name='in_trade_all'),  
+    path('in-trade/list/', ItemInTradeListView.as_view(), name='in_trade'),    
 ]
 

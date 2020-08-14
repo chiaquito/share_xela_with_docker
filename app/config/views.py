@@ -109,7 +109,6 @@ class CheckProfileView(View):
 
 
 
-
 class PrivacyView(View):
     def get(self, request, *args, **kwargs):
         context = {}

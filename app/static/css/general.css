@@ -69,9 +69,9 @@ margin-top: 2.0rem;
 
 /* アンカータグ 下線表示なし
 使えていない？？ */
-a {
-    text-decoration: none;
-  }
+.wo_ul{
+    text-decoration:none;
+}
 
 /* avisoのカラー変更  */
 .aviso_bg{

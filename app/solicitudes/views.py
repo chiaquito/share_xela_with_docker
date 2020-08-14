@@ -10,7 +10,7 @@ from direct_messages.models import DirectMessage
 # Create your views here.
 
 from config.constants import ViewName, TemplateName
-
+from config.utils     import add_aviso_objects
 
 
 class SolicitudInputView(View):
@@ -56,6 +56,7 @@ class SolicitudInputView(View):
 		context = {}
 		context["item_obj"] = item_obj
 		form = SolicitudModelForm()
+		context = add_aviso_objects(request, context)
 		context["form"] = form
 		
 		return render(request, TemplateName.SOLICITUD_INPUT, context)
@@ -180,6 +181,7 @@ class SolicitudListView(View):
 		context = {}
 		context["item_obj"] = item_obj
 		context["solicitudes_objects"] = solicitudes_objects
+		context = add_aviso_objects(request, context)
 		return render(request, 'solicitudes/solicitud_decision.html', context )
 
 

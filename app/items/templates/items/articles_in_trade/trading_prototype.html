@@ -1,0 +1,302 @@
+{% extends 'config/base.html' %}
+{% load user_agents %}
+{% load static %}
+
+
+{% block head %}
+<title>Aviso</title>
+<link href="https://fonts.googleapis.com/icon?family=Material+Icons"
+      rel="stylesheet">
+{% endblock %}
+
+
+{% block content %}
+{# PC content テンプレート #}{% if request|is_pc %}
+
+<div class="container">
+	<div class="row ">
+		<div class="col-12 mr-0 px-4">
+			<p class="text-center pb-0 mb-0 mr-0 pr-0"><font size="6">Artículos en comercio</font></p>
+			<hr class="pt-0 mx-4" />			
+		</div>
+    </div>
+</div>
+
+<div id="list" class="mt-0 pt-0">
+	<div v-show="isShow">
+        <aviso-list />
+	</div>
+</div>
+
+{% if item_objects.count <= 4 %}
+{% include "config/include/general/basic_margin.html" %}
+{% include "config/include/general/basic_margin.html" %}
+{% include "config/include/general/basic_margin.html" %}
+{% include "config/include/general/basic_margin.html" %}
+{% include "config/include/general/basic_margin.html" %}	
+{% endif %}
+
+
+
+
+{% include "config/include/general/vue_js_script.html" %}
+
+
+
+
+
+<script type="text/x-template" id="aviso_list">
+
+
+	<div >
+        <v-app>
+        <v-sheet class="pa-5 mx-auto" max-width="700">
+            <a v-bind:href='filter_url' style="text-decoration:none;">
+                <v-switch class="mx-auto" inset v-model="filtering" v-bind:label="filter_label" ></v-switch>
+            </a>
+        </v-sheet>
+    
+		<v-card
+		  max-width="700"
+		  class="mx-auto"
+		>
+	  
+		  <v-list two-line subheader>
+	  
+			<v-list-item
+              v-for="(item, index) in items"
+              no-action
+              v-bind:href="item.item_url"
+              style="text-decoration:none;"
+            >
+            
+			
+			  <v-list-item-avatar class="mr-3">
+                <v-checkbox
+                :input-value="item.is_feedbacked"
+                color="#76FF03"
+                readonly
+                
+              ></v-checkbox>	
+              </v-list-item-avatar>
+
+              <v-list-item-avatar>
+				<v-img v-bind:src="item.image_url" class="cardProfileImage">	
+              </v-list-item-avatar>
+
+              <v-list-item class="p-1 ml-2">
+				<v-list-item-title v-text="item.title" class="py-1"></v-list-item-title>	
+			  </v-list-item>
+	  
+			  <v-list-item-content >
+				<v-list-item-title v-text="item.title" class="red-–text py-1"></v-list-item-title>
+				<v-list-item-subtitle v-text="item.date" class="font-weight-light pt-1"></v-list-item-subtitle>
+			  </v-list-item-content>
+			
+            
+			</v-list-item>
+		  </v-list>
+        </v-card>
+    </v-app>
+
+    </div>
+	  
+</script>
+
+
+{% include "config/include/general/axios_script.html" %}
+{% include "config/include/general/vuetify_script.html" %}
+<script>
+
+
+
+const aviso_list = {
+	template: "#aviso_list",
+	data: function(){
+        
+		var items = new Array();
+		{% for obj in item_objects %}
+        var is_feedbacked = null;
+		var title = "{{ obj.title }}";
+		var image_url = "{{ obj.image1.url }}";
+        var item_url  = "{% url 'items:item_detail' obj.id %}"
+        //console.log("{{ obj.direct_message.owner }}")
+        //console.log("{{ obj.direct_message.participant }}")
+        //console.log("{{ request.user }}")
+        if("{{ obj.direct_message.owner }}"=="{{ request.user }}"){
+            //console.log("{{ obj.direct_message.is_feedbacked_by_owner }}")
+            is_feedbacked = ("{{ obj.direct_message.is_feedbacked_by_owner }}"=="True")?true:false
+        }else if("{{ obj.direct_message.participant }}"=="{{ request.user }}"){
+            //console.log("{{ obj.direct_message.is_feedbacked_by_owner }}")
+            is_feedbacked = ("{{ obj.direct_message.is_feedbacked_by_participant }}"=="True")?true:false
+        }
+
+		items.push({
+			title: title,
+			image_url: image_url,
+            item_url: item_url,
+            is_feedbacked: is_feedbacked
+		})
+        
+		{% endfor %}
+        var filtering = ("{{ type }}"=="FILTERED")?true:false;
+        var filter_url = (filtering==true)?"{% url 'items:in_trade_all' %}":"{% url 'items:in_trade' %}";
+        var filter_label = "Sólo los artículos que no deja comentarios";
+        //console.log(filtering)
+		return { items: items,
+                 filtering: filtering,
+                 filter_url: filter_url,
+                 filter_label: filter_label }
+	},
+    watch:{ filtering:function(){
+        //console.log("動くか???")
+        
+    }}
+}
+
+
+new Vue({
+	el:"#list",
+	vuetify: new Vuetify(),
+	data:{ isShow: false },
+	mounted:function(){
+		this.isShow = ("{{ item_objects.count }}" != "0")?true:false
+	},
+	components:{'aviso-list': aviso_list}
+
+});
+
+
+</script>
+
+
+
+
+
+{# MOBILE content テンプレート #}{% elif request|is_mobile %}
+
+<div class="container">
+	<div class="row">
+		<div class="col-12">
+
+			<p class="mt-2 pb-0"><font size="6">Avisos</font></p>
+			<hr class="pt-0 mt-o" />	
+		</div>
+		<div class="col-12 mt-1">
+			
+
+			<ul class="nav nav-tabs">
+			{% if type == "ALL" %}
+			<li class="nav-item">
+			<a class="nav-link active" href="#">Todo de Aviso</a>
+			</li>
+			<li class="nav-item">
+			<a class="nav-link" href="{% url 'avisos:avisos_list' %}">Solo Avisos no leído</a>
+			</li>
+
+			</ul>
+			{% elif type == "FILETERED" %}
+			<li class="nav-item">
+			<a class="nav-link" href="{% url 'avisos:avisos_alllist' %}">Todo de Aviso</a>
+			</li>
+			<li class="nav-item">
+			<a class="nav-link active" href="#">Solo Avisos no leído</a>
+			</li>			
+			</ul>
+			{% endif %}
+		</div>	
+	</div>
+
+	<div class="row">
+
+
+
+	</div>
+	<div class="row">
+		<div class="col">
+
+		
+				<table class="table table-striped mt-3">
+				<thead>
+				<tr>
+				<th scope="col">Estado</th>
+				<th scope="col">Fecha</th>
+				<th scope="col">Tipo de aviso</th>
+				<th scope="col">Articulo</th>
+				</tr>
+				</thead>
+				<tbody>
+				{% for obj in aviso_objects %}
+				<tr>
+				<th scope="row">
+					{% if obj.checked == False %}
+					{# 未読 #}
+					{% elif obj.checked == True %}
+					{# 既読 #} &nbsp;&nbsp;&nbsp;
+					<span class="material-icons">
+						check_circle_outline
+						</span>	
+					{% endif %}					
+				</th>
+				<td>
+					{{ obj.created_at }}
+				</td>
+				<td>
+					{% if obj.content_type.model == "solicitud" %}
+
+					{#  <a href="{% url 'solicitudes:get_solicitud' obj.object_id %}">アイテムの取引申請が来ています</a> #}
+					{#  <a href="{% url 'avisos:aviso_check' obj.id %}">アイテムの取引申請が来ています</a> #}
+					<a href="{% url 'avisos:aviso_check' obj.id %}">Hay Solicitud de transacción</a>
+				</td>
+				<td>	
+					{{ obj.content_object.item }}<br/>
+				</td>
+				<td>
+					{% elif obj.content_type.model == "directmessage" %}
+
+					{# <a href="{% url 'direct_messages:get_dm' obj.object_id  %}">あなたが取引相手として決まりました</a> #}
+					<a href="{% url 'avisos:aviso_check' obj.id %}">Usted ha sido decidido como socio comercial</a>
+				</td>	
+				<td>	
+					{{ obj.content_object.item }}<br/>
+				</td>				
+				<td>
+					{% elif obj.content_type.model == "directmessagecontent" %}
+
+					{# <a href="{% url 'direct_messages:get_dm' obj.object_id  %}">メッセージが来ました</a> #}
+					<a href="{% url 'avisos:aviso_check' obj.id %}">Hay mensaje</a>
+				</td>
+				<td>
+					{{ obj.content_object.dm.item }}<br/>
+				</td>	
+				<td>
+					{% elif obj.content_type.model == 'itemcontact' %}
+
+					{# <a href="{% url 'item_contacts:item_itemcontact' obj.object_id %}">アイテムにコメントが付きました。</a> #}
+					{# <a href="{% url 'avisos:aviso_check' obj.id %}">アイテムにコメントが付きました。</a> #}
+					<a href="{% url 'avisos:aviso_check' obj.id %}">Hay commentarios del articulo</a>
+
+				</td>
+				<td>
+					{{ obj.content_object.item }}<br/>
+				</td>
+
+					{% endif %}					
+
+				</td>
+				
+				</tr>
+				{% endfor %}
+				</tbody>
+				</table>
+			
+		</div>
+	</div>
+</div>
+
+{% endif %}
+{% endblock %}
+
+
+
+

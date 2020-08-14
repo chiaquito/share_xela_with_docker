@@ -10,7 +10,7 @@ from .forms import DirectMessageContentModelForm
 
 
 from config.constants import ViewName
-
+from config.utils     import add_aviso_objects
 
 
 
@@ -60,6 +60,7 @@ class DirectMessageDetailView(View):
 		context["dm_content_objects"] = dm_content_objects
 		context["form"] = form
 		context["item_obj"] = item_obj
+		context = add_aviso_objects(request, context)
 
 
 		#context["BtnFeedback"]をセットするか否か

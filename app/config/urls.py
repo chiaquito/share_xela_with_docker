@@ -37,6 +37,7 @@ from .views import HomeKaizenView
 from .views import ListMyDataView
 
 
+
 urlpatterns = [
     #path('', HomeView.as_view(), name='home'), HomeView,
     path('',HomeKaizenView.as_view(), name='home'),
