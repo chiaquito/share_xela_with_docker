@@ -5,8 +5,6 @@
 
 {% block head %}
 <title>Aviso</title>
-<link href="https://fonts.googleapis.com/icon?family=Material+Icons"
-      rel="stylesheet">
 {% endblock %}
 
 
@@ -15,184 +13,82 @@
 
 <div class="container">
 	<div class="row ">
-		<div class="col-3 mr-0 px-4">
+		<div class="col-12 mr-0 px-4">
 			<p class="text-center pb-0 mb-0 mr-0 pr-0"><font size="6">Avisos</font></p>
 			<hr class="pt-0 mx-4" />			
 		</div>
-		<div class="col-9 mt-4  ml-0 pl-2">
-			
-			{% if type == "ALL" %}
-			<ul class="nav nav-tabs ml-0 pl-0 ">
-				<li class="nav-item  ml-0 pl-0 ">
-				<a class="nav-link active" href="#">Todo de Aviso</a>
-				</li>
-				<li class="nav-item">
-				<a class="nav-link" href="{% url 'avisos:avisos_list' %}">Solo Avisos no leído</a>
-				</li>
-			</ul>
-			{% elif type == "FILTERED" %}
-			<ul class="nav nav-tabs ">
-				<li class="nav-item">
-				<a class="nav-link" href="{% url 'avisos:avisos_alllist' %}">Todo de Aviso</a>
-				</li>
-				<li class="nav-item">
-				<a class="nav-link active" href="#">Solo Avisos no leído</a>
-				</li>			
-			</ul>
-			{% endif %}
-		</div>	
-	</div>
-
-	<div class="row">
-	</div>
-	{% comment %}
-	<!--div class="row">
-		<div class="col">
-				<table class="table table-striped mt-5">
-				<thead>
-				<tr>
-				<th scope="col" >Estado</th>
-				<th scope="col">Fecha</th>
-				<th scope="col">Aviso</th>
-				</tr>
-				</thead>
-				<tbody>
-				{% for obj in aviso_objects %}
-				<tr>
-				<th scope="row">
-					{% if obj.checked == False %}
-					{# 未読 #} 
-					{% elif obj.checked == True %}
-					{# 既読 #} &nbsp;&nbsp;&nbsp;
-					<span class="material-icons">
-						check_circle_outline
-						</span>	
-					{% endif %}					
-				</th>
-				<td >
-					{{ obj.created_at }}
-				</td>
-				{% if obj.content_type.model == "solicitud" %}
-				<td >
-					
-
-					{#  <a href="{% url 'solicitudes:get_solicitud' obj.object_id %}">アイテムの取引申請が来ています</a> #}
-					{#  <a href="{% url 'avisos:aviso_check' obj.id %}">アイテムの取引申請が来ています</a> #}
-					<a href="{% url 'avisos:aviso_check' obj.id %}">Hay Solicitud de transacción</a>
-				</td>
-				{% elif obj.content_type.model == "directmessage" %}
-				<td>
-					
-
-					{# <a href="{% url 'direct_messages:get_dm' obj.object_id  %}">あなたが取引相手として決まりました</a> #}
-					<a href="{% url 'avisos:aviso_check' obj.id %}">Usted ha sido decidido como socio comercial</a>
-				</td>	
-				{% elif obj.content_type.model == "directmessagecontent" %}				
-				<td>
-					
-					{# <a href="{% url 'direct_messages:get_dm' obj.object_id  %}">メッセージが来ました</a> #}
-					<a href="{% url 'avisos:aviso_check' obj.id %}">Hay mensaje</a>
-				</td>
-				{% elif obj.content_type.model == 'itemcontact' %}
-				<td >
-					
-
-					{# <a href="{% url 'item_contacts:item_itemcontact' obj.object_id %}">アイテムにコメントが付きました。</a> #}
-					{# <a href="{% url 'avisos:aviso_check' obj.id %}">アイテムにコメントが付きました。</a> #}
-					<a href="{% url 'avisos:aviso_check' obj.id %}">Hay commentarios del articulo</a>
-					
-				</td>
-				{% endif %}	
-				
-
-				</tr>
-				{% endfor %}
-				</tbody>
-				</table>
-
-				{% if aviso_objects.count <= 4 %}
-				{% include "config/include/general/basic_margin.html" %}
-				{% include "config/include/general/basic_margin.html" %}
-				{% include "config/include/general/basic_margin.html" %}
-				{% include "config/include/general/basic_margin.html" %}
-				{% include "config/include/general/basic_margin.html" %}
-				{% include "config/include/general/basic_margin.html" %}
-				{% include "config/include/general/basic_margin.html" %}
-				{% include "config/include/general/basic_margin.html" %}
-				{% include "config/include/general/basic_margin.html" %}
-				{% endif %}
-			
-		</div>
-	</div-->
-	{% endcomment %}
+	</div>	
 </div>
+
 <div id="list" class="mt-0 pt-0">
-	<!--aviso-list v-show="isShow"/-->
+	
 	<div v-show="isShow">
 		<aviso-list />
 	</div>
-	
-	{% if aviso_objects.count <= 4 %}
-	{% include "config/include/general/basic_margin.html" %}
-	{% include "config/include/general/basic_margin.html" %}
-	{% include "config/include/general/basic_margin.html" %}
-	{% include "config/include/general/basic_margin.html" %}
-	{% include "config/include/general/basic_margin.html" %}
-	
-	{% endif %}
 </div>
-
+{% if aviso_objects.count <= 4 %}
+{% include "config/include/general/basic_margin.html" %}
+{% include "config/include/general/basic_margin.html" %}
+{% include "config/include/general/basic_margin.html" %}
+{% include "config/include/general/basic_margin.html" %}
+{% include "config/include/general/basic_margin.html" %}
+{% endif %}
 
 
 {% include "config/include/general/vue_js_script.html" %}
-
-
 <script type="text/x-template" id="aviso_list">
 
+	<div>
+		<v-app>
+		<v-sheet class="pa-5 mx-auto" max-width="700">
+			<a v-bind:href='filter_url' style="text-decoration:none;">
+				<v-switch class="mx-auto" inset v-model="filtering" v-bind:label="filter_label" ></v-switch>
+			</a>
+		</v-sheet>
 	
 		<v-card
-		  max-width="600"
-		  class="mx-auto"
+		  max-width="700"
+		  class="mx-auto px-5"
 		>
 	  
 		  <v-list two-line subheader>
-			{# <v-subheader inset>Folders</v-subheader> #}
+			<v-subheader inset>Folders</v-subheader>
 	  
 			<v-list-item
 			  v-for="(item, index) in items"
-			> {# @click="send_page"#}
-			
+			  v-bind:href="item.url"
+			  style="text-decoration:none;"
+			>
+
 			  <v-list-item-avatar class="mr-3">
-				<span v-show="item.checked" class="material-icons" >
-					check_circle_outline
-					</span>	
-			  </v-list-item-avatar>
+				<v-checkbox
+                :input-value="item.checked"
+                color="#76FF03"
+                readonly
+                
+              ></v-checkbox>	
+              </v-list-item-avatar>
 	  
 			  <v-list-item-content >
-				<a v-bind:href="item.url">
 				<v-list-item-title v-text="item.title" class="red-–text py-1"></v-list-item-title>
 				<v-list-item-subtitle v-text="item.date" class="font-weight-light pt-1"></v-list-item-subtitle>
 				</a>
 			  </v-list-item-content>
-	  
-			  <!--v-list-item-action>
-				<v-btn icon>
-				  <v-icon color="grey lighten-1">mdi-information</v-icon>
-				</v-btn>
-			  </!--v-list-item-action-->
-			
+	
 			  
 			</v-list-item>
 			
 	  
 		  </v-list>
 		</v-card>
+		</v-app>
+	</div>
 	  
 </script>
 
 
 
-<script src="https://cdn.jsdelivr.net/npm/vuetify@2.x/dist/vuetify.js"></script>
+{% include "config/include/general/vuetify_script.html" %}
 <script>
 
 const aviso_list = {
@@ -228,8 +124,14 @@ const aviso_list = {
 			checked: checked,
 			date: date
 		})
-		{% endfor %}	
-		return { items: items }
+		{% endfor %}
+		var filtering = ("{{ type }}"=="FILTERED")?true:false;
+        var filter_url = (filtering==true)?"{% url 'avisos:avisos_alllist' %}":"{% url 'avisos:avisos_list' %}";
+        var filter_label = "Sólo los avisos que no ha leido";	
+		return { items: items,
+			     filtering: filtering,
+                 filter_url: filter_url,
+                 filter_label: filter_label}
 	},
 }
 
@@ -239,7 +141,6 @@ new Vue({
 	vuetify: new Vuetify(),
 	data:{ isShow: false },
 	mounted:function(){
-		//console.log("{{ aviso_objects.count }}")
 		this.isShow = ("{{ aviso_objects.count }}" != "0")?true:false
 	},
 	components:{'aviso-list': aviso_list}
