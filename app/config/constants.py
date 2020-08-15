@@ -67,7 +67,9 @@ class ViewName(object):
     ITEM_CATEGORY_LIST = "items:ItemCategoryListView"
     # direct_messages
     DIRECT_MESSAGE_DETAIL = 'direct_messages:dm_detail'
-    FEEDBACK_CREATE  = 'feedback:feedback'
+    # feedback
+    FEEDBACK_FORM    = 'feedback:create'
+    FEEDBACK_POST    = 'feedback:feedback'
     # solicitudes
     SOLICITUD_INPUT  = "solicitudes:solicitud_input"
     SOLICITUD_LIST   = "solicitudes:solicitud_list"

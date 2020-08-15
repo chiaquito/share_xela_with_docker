@@ -69,7 +69,7 @@ class FeedbackView(View):
         Feedbackオブジェクトの生成
         Profile.feedbackにFeedbackオブジェクトの追加
         
-        endpoint: 'feedback/'
+        endpoint: 'feedback/feedback/'
         name: 'feedback:feedback'
         """
         """テスト項目
@@ -91,8 +91,6 @@ class FeedbackView(View):
         except:
             return redirect(ViewName.HOME)
 
-
-
         
         if request.user.is_anonymous:
             return redirect(ViewName.HOME)
@@ -105,8 +103,11 @@ class FeedbackView(View):
 
         form = FeedbackModelForm(request.POST)
         if form.is_valid():
+            print("validを通る")
+            level = request.POST["level"]
             feedback_obj = form.save(commit=False)
             feedback_obj.evaluator = User.objects.get(username=request.user.username)
+            feedback_obj.level = level
             feedback_obj.save()
 
             #取引相手のProfileオブジェクトのfeedbackに生成したfeedbackを追加する
@@ -126,6 +127,7 @@ class FeedbackView(View):
             return redirect("items:item_detail", item_obj.id)
 
         else:
+            print("ここを通る？？")
             for ele in form:
                 print(ele.error)
             return redirect("feedback:create", dm_obj_pk)

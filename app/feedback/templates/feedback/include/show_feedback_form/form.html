@@ -13,13 +13,13 @@
         <!--form method="post" action="#"-->    
         {% csrf_token %}
 
-        {{ form.level }}
-        {% include "config/include/general/basic_margin.html" %}
+        <span>Evaluación</span><br />
+        <div id="app">
+            <rating-form></rating-form>
+        </div>
+        
 
-
-        {% comment %}{{ form.solicitud_user }}{% endcomment %}
-
-
+        <span>Comentario</span><br />
         {{ form.content }}
 
         
@@ -32,3 +32,54 @@
         </div>
     </div>
 </div>
+
+
+
+
+
+
+
+{% include "config/include/general/vue_js_script.html" %}
+{% include "config/include/general/vuetify_script.html" %}
+
+
+<script type="text/x-template" id="rating_form">
+    
+    <div class="text-center mt-0 pt-0">
+        
+            <v-rating
+            v-model="rating"
+            background-color="#FFC400 lighten-3"
+            color="#FFC400"
+            ></v-rating>
+            <input type="hidden" name="level" required v-bind:value="rating">
+        
+    </div>
+
+
+
+</script>
+ 
+
+
+
+<script>
+
+const rating_form = {
+    template: "#rating_form",
+    data: function(){
+        return {rating: "5"}
+    }
+}
+
+
+new Vue({
+    el:"#app",
+    vuetify: new Vuetify(),
+    data:{ isShow: false },
+    mounted:function(){ },
+    components:{'rating-form': rating_form}
+
+});
+</script>
+

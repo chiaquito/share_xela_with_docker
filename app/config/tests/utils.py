@@ -1,11 +1,12 @@
 # coding: utf-8
 
-##########################################################################
-# テスト環境を作る時に頻度が高いテスト環境は関数化してテストコードを書きやすくする    #
-# またandroidに対するapiテストに関するテスト環境構築コードも後半部に記述する       #
-##########################################################################
+################################################################################
+# テスト環境を作る時に頻度が高いテスト環境は関数化してテストコードを書きやすくするのが目的    #
+# またandroidに対するapiテストに関するテスト環境構築コードも後半部に記述する              #
+################################################################################
 
 ### スクリプトの種類 ###
+
 # ユーザー(User)オブジェクト作成
 # 記事作成のためのCategoryオブジェクト作成
 # 記事(Item)オブジェクト作成
@@ -267,6 +268,13 @@ def create_solicitud_data(message=None):
 def create_solicitud_for_test(item_obj, access_user_obj, solicitud_data):
     """申請者オブジェクトを作成する
 
+    Args:
+        item_obj: Itemオブジェクト
+        access_user_obj: Userオブジェクト
+        solicitud_data: dict...create_solicitud_data()で作成することを想定する
+    Returns:
+         solicitud_obj: Solicitudオブジェクト
+
     コピペ:
 
         solicitud_obj = create_solicitud_for_test(item_obj, access_user_obj, create_solicitud_data(message=None))
@@ -283,6 +291,18 @@ def create_solicitud_for_test(item_obj, access_user_obj, solicitud_data):
 
 
 def create_direct_message_for_test(solicitud_obj):
+    """
+    DirectMessageオブジェクトを生成する
+    DirectMessageオブジェクトをdataなしにそのまま使えるようにしてある
+    
+    Args:
+        solicitud_obj: Solicitudオブジェクト
+    Returns:
+        dm_obj: DirectMessageオブジェクト
+    
+    コピペ
+        dm_obj = create_direct_message_for_test(solicitud_obj)
+    """
 
     #SOLICITUD_SELECT
     SOLICITUD_SELECT_URL = reverse(ViewName.SOLICITUD_SELECT, args=(solicitud_obj.id,),)
@@ -292,9 +312,11 @@ def create_direct_message_for_test(solicitud_obj):
     login_status = client.login(username=post_user_obj.username, password="1234tweet")
     client.post(SOLICITUD_SELECT_URL)
     item_obj = Item.objects.get(solicitudes__id=solicitud_obj.id)
+    #print("kansuu確認", item_obj)
     dm_obj = item_obj.direct_message
+    #print("関数確認", dm_obj)
 
-    return dm_obj
+    return dm_obj, item_obj
 
 
 
