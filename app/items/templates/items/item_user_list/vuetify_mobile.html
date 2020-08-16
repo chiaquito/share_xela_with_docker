@@ -119,7 +119,7 @@ Vue.component("profile-data",{
       //console.log("test")
       var profile_img_url = "{{ profile_obj.image.url }}" 
       var user_name       = "{{ profile_obj }}"
-      var description     = "{{ profile_obj.description }}"
+      var description     = {{ json_prodifle_description|safe }}
       var rep_count = parseInt("{{ profile_obj.feedback.all.count }}")
       //console.log(rep_count)
       var total_rep = 0

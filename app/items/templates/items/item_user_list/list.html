@@ -317,9 +317,6 @@ new Vue({
               <div id="profile" class="col-12">
                 <profile-data class="p-0"></profile-data>
               
-              
-
-
               <ul class="nav nav-pills mb-3" id="pills-tab" role="tablist">
                 <li class="nav-item">
                   <a class="nav-link active" id="pills-home-tab" data-toggle="pill" href="#pills-area" role="tab" aria-controls="pills-home" aria-selected="true">area de entrega</a>
@@ -337,14 +334,12 @@ new Vue({
                 
               </div>
 
-
             </div>
           </div>
         </div>
 
       </div>
       </div>
-
       
 </div>
 </div>
@@ -367,13 +362,17 @@ new Vue({
                     <div class="row ">
                         <div class="col-4 pl-0">
                          <a href="{% url 'items:item_detail' obj.id %}" >
-                            <img src="{{ obj.image1.url }}" class="card-img border centerCropSmallMobile"  alt="...">
+                            <img src="{{ obj.image1.url }}" class="card-img border" style="width: 5rem;"  alt="...">
                          </a>
                         </div>
                         <div class="col-8">
                         <p class="card-text">{{ obj.description|truncatechars:100 }}</p>
                         <p class="card-text"><small class="text-muted">{{ obj.category.get_number_display }}<br />
-                        {{ obj.created_at }}</small></p>                        
+                        {{ obj.created_at }}</small>
+                        {% if obj.deadline %}
+                        <img src="{% static 'twotone_block_black_36dp.png' %}" class="material-icons ml-4" />
+                        {% endif %}
+                        </p>
                         </div>
                     </div>
                 </div>

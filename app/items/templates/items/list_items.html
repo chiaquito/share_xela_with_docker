@@ -3,17 +3,12 @@
 {% load static %}
 
 
-{% block head %}
+{% block head %}<title>Los Articulos</title>{% endblock %}
 
-<title>Los Articulos</title>
-
-
-{% endblock %}
 
 
 {%  block content %}
 {% if request|is_pc %}
-
 
 
 <div class="container-fluid" id="app">
@@ -23,6 +18,59 @@
         </main>
     </v-app>    
 </div>
+
+
+
+
+
+
+{% elif request|is_mobile %}
+<div class="container">
+    <div class="row">
+      <div class="col-12">
+        <p><br/></p>
+
+        <div class="card-columns">
+        {% for obj in item_objects %}
+        <div class="card my-3">
+            <div class="card-header">
+            <a class="card-title" href="{% url 'items:item_detail' obj.id %}">{{ obj.title }}</a>
+            </div>
+            <div class="card-body  pl-3">
+                <div class="container-fluid">
+                    <div class="row ">
+                        <div class="col-4 pl-0">
+                         <a href="{% url 'items:item_detail' obj.id %}" >
+                            <img src="{{ obj.image1.url }}" class="card-img border" style="width: 5rem;" alt="...">
+                         </a>
+                        </div>
+                        <div class="col-8">
+                        <p class="card-text">{{ obj.description|truncatechars:100 }}</p>
+                        <p class="card-text"><small class="text-muted">{{ obj.category.get_number_display }}<br />
+                        {{ obj.created_at }}</small>
+                        {% if obj.deadline %}
+                        <img src="{% static 'twotone_block_black_36dp.png' %}" class="material-icons ml-4" />
+                        {% endif %}
+                        </p>                        
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+        </div>
+
+        </div>
+    </div>
+</div>
+{% endif %}
+
+{% endblock %}
+
+
+
+
+{%  block javascript %}
 
 
 
@@ -63,16 +111,9 @@
               </v-layout>
               </a>
         </v-card>
-    
         </v-row>
     </v-container>
-
-
-
-
 </script>
-
-
 
 <script src="https://cdn.jsdelivr.net/npm/vuetify@2.x/dist/vuetify.js"></script>
 <script >
@@ -99,61 +140,13 @@ Vue.component("item_list",{
     }
 });
 
-
-
 new Vue({
-      el: '#app',
-      vuetify: new Vuetify(),
-    });    
+    el: '#app',
+    vuetify: new Vuetify(),
+});    
 </script>
 
 
 
 
-{% elif request|is_mobile %}
-<div class="container">
-    <div class="row">
-      <div class="col-12">
-        <p><br/></p>
-
-        <div class="card-columns">
-        {% for obj in item_objects %}
-        <div class="card my-3">
-            <div class="card-header">
-            <a class="card-title" href="{% url 'items:item_detail' obj.id %}">{{ obj.title }}</a>
-            </div>
-            <div class="card-body  pl-3">
-                <div class="container-fluid">
-                    <div class="row ">
-                        <div class="col-4 pl-0">
-                         <a href="{% url 'items:item_detail' obj.id %}" >
-                            <img src="{{ obj.image1.url }}" class="card-img border" style="width: 5rem;" alt="...">
-                         </a>
-                        </div>
-                        <div class="col-8">
-                        <p class="card-text">{{ obj.description|truncatechars:100 }}</p>
-                        <p class="card-text"><small class="text-muted">{{ obj.category.get_number_display }}<br />
-                        {{ obj.created_at }}</small></p>                        
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-        {% endfor %}
-        </div>
-
-        </div>
-    </div>
-</div>
-{% endif %}
-
-
-
-
-
 {% endblock %}
-
-
-
-
-
