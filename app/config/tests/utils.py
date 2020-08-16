@@ -62,7 +62,8 @@ def setUp_cetegory_for_test():
 
 
 def pickUp_category_obj_for_test():
-    """使用例
+    """
+    コピペ
     category_obj = pickUp_category_obj_for_test()
 
     """
@@ -200,11 +201,11 @@ def create_item_for_test(user_obj, item_data):
     """機能
 
     Args:
-        user_obj: User ... 
+        user_obj: Userオブジェクト ... 
         item_data:dict ... create_item_data()を引数として使える。
 
     Returns:
-        item_obj: Item
+        item_obj: Itemオブジェクト
 
     コピペ:
         記事を作成する場合は以下のコードをコピペする
@@ -317,9 +318,6 @@ def create_direct_message_for_test(solicitud_obj):
     #print("関数確認", dm_obj)
 
     return dm_obj, item_obj
-
-
-
 
 
 

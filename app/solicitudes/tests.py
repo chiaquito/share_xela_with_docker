@@ -1,25 +1,16 @@
-from django.test import TestCase
-from django.test import Client
-from django.urls import reverse, reverse_lazy
-
-from config.constants import ViewName
-from config.constants import TemplateName
-
+from django.contrib.auth.models import User
 from categories.models import Category
+from config.constants import ViewName, TemplateName
+from config.tests.utils import *
+from django.test import TestCase, Client
+from django.urls import reverse, reverse_lazy
 from direct_messages.models import DirectMessage
 from items.models import Item
-from django.contrib.auth.models import User
-
 from profiles.models import Profile
 from solicitudes.models import Solicitud
-
 from solicitudes.forms import SolicitudModelForm
-
 import random
-from config.tests.utils import *
 
-
-#testを書く
 
 
 class SolicitudInputViewGETMethodTest(TestCase):
@@ -381,8 +372,6 @@ class SolicitudSelectViewTest(TestCase):
         #不適切なformデータを生成する
         """
 
-
-
         category_obj = pickUp_category_obj_for_test()
         post_user_obj, post_user_profile_obj =  create_user_for_test(create_user_data(prefix_user_emailaddress="post_user"))        
         self.item_obj1 = create_item_for_test(post_user_obj, create_item_data(category_obj))
@@ -464,5 +453,71 @@ class SolicitudSelectViewTest(TestCase):
 
 
 
+class AddUserToSessionViewTest(TestCase):
+
+    """テスト目的
+    取引申請者一覧ページのユーザー名をクリックするとユーザー別の記事リストを表示するページに遷移させることを担保させる
+    """
+    """テスト対象
+    solicitudes/views.py AddUserToSessionView#GET
+    endpoint: "solicitudes/user/<int:pk>/"
+    name: "solicitudes:add_user_to_session"
+    """
+    """テスト項目
+    ユーザー名をクリックすると申請者毎のユーザーページが表示される
+    """    
 
 
+
+    def test_ユーザー名をクリックすると申請者毎のユーザーページが表示される(self):
+        category_obj = pickUp_category_obj_for_test()
+        post_user_obj, post_profile_obj = create_user_for_test(create_user_data(prefix_user_emailaddress="post_user"))
+        item_obj = create_item_for_test(post_user_obj, create_item_data(category_obj))
+
+        access_user_obj1, access_profile_obj1 = create_user_for_test(create_user_data(prefix_user_emailaddress="access_user1"))
+        item_obj1 = create_item_for_test(access_user_obj1, create_item_data(category_obj))
+        access_user_obj2, access_profile_obj2 = create_user_for_test(create_user_data(prefix_user_emailaddress="access_user2"))
+        item_obj2 = create_item_for_test(access_user_obj2, create_item_data(category_obj))
+        access_user_obj3, access_profile_obj3 = create_user_for_test(create_user_data(prefix_user_emailaddress="access_user3"))
+        item_obj3 = create_item_for_test(access_user_obj3, create_item_data(category_obj))
+        solicitud_obj1 = create_solicitud_for_test(item_obj, access_user_obj1, create_solicitud_data(message=None))
+        solicitud_obj2 = create_solicitud_for_test(item_obj, access_user_obj2, create_solicitud_data(message=None))
+        solicitud_obj3 = create_solicitud_for_test(item_obj, access_user_obj3, create_solicitud_data(message=None))
+
+        # access_user1のアンカータグをクリックする access_user1は記事を作成している
+        self.client  = Client()
+        login_status = self.client.login(username="post_user", password="1234tweet")
+        self.assertTrue(login_status)  
+        url = reverse_lazy("solicitudes:add_user_to_session", args=(solicitud_obj1.applicant.user.id,))
+        response = self.client.get(url, follow=True)
+        templates = [ template.name for template in response.templates ]
+        # ユーザー別記事リストが表示される
+        self.assertTrue(TemplateName.USER_ITEM_LIST in templates)
+        profile_obj = response.context["profile_obj"]
+        self.assertEqual(profile_obj.user.id, access_user_obj1.id)
+        
+
+        # access_user2のアンカータグをクリックする access_user2は記事を作成していない
+        self.client  = Client()
+        login_status = self.client.login(username="post_user", password="1234tweet")
+        self.assertTrue(login_status)  
+        url = reverse_lazy("solicitudes:add_user_to_session", args=(solicitud_obj2.applicant.user.id,))
+        response = self.client.get(url, follow=True)
+        templates = [ template.name for template in response.templates ]
+        # ユーザー別記事リストが表示される
+        self.assertTrue(TemplateName.USER_ITEM_LIST in templates)
+        profile_obj = response.context["profile_obj"]
+        self.assertEqual(profile_obj.user.id, access_user_obj2.id)
+        
+
+        # access_user3のアンカータグをクリックする access_user3は記事を作成していない
+        self.client  = Client()
+        login_status = self.client.login(username="post_user", password="1234tweet")
+        self.assertTrue(login_status)  
+        url = reverse_lazy("solicitudes:add_user_to_session", args=(solicitud_obj3.applicant.user.id,))
+        response = self.client.get(url, follow=True)
+        templates = [ template.name for template in response.templates ]
+        # ユーザー別記事リストが表示される
+        self.assertTrue(TemplateName.USER_ITEM_LIST in templates)
+        profile_obj = response.context["profile_obj"]
+        self.assertEqual(profile_obj.user.id, access_user_obj3.id)

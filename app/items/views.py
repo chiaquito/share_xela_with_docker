@@ -199,7 +199,8 @@ class ItemDetailView(View):
 		item_obj = Item.objects.get(id=pk)
 		#user_obj = User.objects.get(username=item_obj.user)
 		user_obj = item_obj.user
-		#なんのためのセッションか忘れてしまった。
+		# 記事主名をクリックすると記事主のfeedbackや記事一覧を表示するために使用するセッションを追加。
+		# ViewName.ITEM_USER_LIST(ItemUserListView)で使われる
 		self.request.session["user_obj"] = user_obj
 		profile_obj = Profile.objects.get(user=user_obj)
 		solicitudes_objects     = item_obj.solicitudes.all()

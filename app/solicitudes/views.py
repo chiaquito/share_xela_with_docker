@@ -37,7 +37,6 @@ class SolicitudInputView(View):
 		pk = self.kwargs["pk"]
 		item_obj = Item.objects.get(id=pk)
 
-
 		#アクセスユーザーを制限
 		# 未認証ユーザーの場合 -> 認証ページにリダイレクト
 		if request.user.is_anonymous == True :
@@ -51,14 +50,12 @@ class SolicitudInputView(View):
 		elif request.user.username == item_obj.user.username:
 			return redirect(ViewName.HOME)
 
-
 		#表示するデータをcontextに格納する
 		context = {}
 		context["item_obj"] = item_obj
 		form = SolicitudModelForm()
 		context = add_aviso_objects(request, context)
-		context["form"] = form
-		
+		context["form"] = form		
 		return render(request, TemplateName.SOLICITUD_INPUT, context)
 
 
@@ -107,7 +104,7 @@ class SolicitudInputView(View):
 			#このオブジェクトをItemオブジェクトのsolicitudesフィールドに追加する
 			item_obj.solicitudes.add(solicitud_obj)
 
-			#m2mでAvisoオブジェクトを生成する
+			#シグナルのm2mでAvisoオブジェクトを生成する
 
 			return redirect(ViewName.ITEM_DETAIL, item_obj.id)
 			
@@ -211,7 +208,7 @@ class SolicitudSelectView(View):
 		#アクセスユーザーの制限
 		#未認証ユーザーによるアクセスの場合には、認証ページにリダイレクトされる
 		if request.user.is_anonymous == True :
-			return redirect('account_login')
+			return redirect(ViewName.ACCOUNT_LOGIN)
 		# リクエストユーザーが記事作成者ではない場合 -> Homeにリダイレクト
 		elif request.user.username != item_obj.user.username:
 			return redirect(ViewName.HOME)
@@ -221,15 +218,25 @@ class SolicitudSelectView(View):
 
 		#post_save()のシグナルでDirectMessageオブジェクトを生成する
 
-		#messages.info(request, "取引相手を決定しました。メッセージで詳細を決めてください。")
+		#messages.info(request, "取引相手を決定しました。メッセージで取引詳細を決めてください。")
 		messages.info(request, "Ha decidido con quién hacer negocios. Por favor, decida los detalles en su mensaje.")
-		return redirect("solicitudes:solicitud_list", item_obj.id)
+		return redirect(ViewName.SOLICITUD_LIST, item_obj.id)
+		
 
 
 
+class AddUserToSessionView(View):
 
+	def get(self, request, *args, **kwargs):
+		"""機能
+		Solicitud(取引申請者)リストに表示される申請者をクリックすると、そのuserデータをsessionに追加する。
+		セッション追加後にユーザーごとの記事一覧表示画面に遷移させるViewにリダイレクトを実行する。
 
-
-
-
+		endpoint: "solicitudes/user/<int:pk>/"
+		name: "solicitudes:add_user_to_session"
+		"""
+		user_id = self.kwargs["pk"]
+		user_obj = User.objects.get(id=user_id)
+		self.request.session["user_obj"] = user_obj
+		return redirect(ViewName.ITEM_USER_LIST)
 

@@ -95,7 +95,7 @@
             {% for obj in solicitudes_objects %}	
               <tr>
                 <th width="10%" scope="row">{{ forloop.counter }}</th>
-                <td width="20%">{{ obj.applicant }}</td>
+                <td width="20%"><a style="text-decoration:none;" href="{% url 'solicitudes:add_user_to_session' obj.applicant.user.id %}" target="_blank">{{ obj.applicant }}</a></td>
                 <td width="50%">{{ obj.message }}</td>
                 <td width="20%">
                   <form method="POST" action="{% url 'solicitudes:solicitud_decision' obj.id %}">{% csrf_token %}
