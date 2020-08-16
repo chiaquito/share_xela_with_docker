@@ -335,7 +335,7 @@ class DirectMessageDetailViewGETTest(TestCase):
         form = FeedbackModelForm(data)
         self.assertTrue(form.is_valid())        
         self.client.session["dm_obj_pk"] = Item.objects.get(id=item_obj.id).direct_message.id
-        response = self.client.post(reverse_lazy(ViewName.FEEDBACK_CREATE), follow=True)
+        response = self.client.post(reverse_lazy(ViewName.FEEDBACK_POST), follow=True)
         self.assertTrue("btn_feedback" not in response.context) # *5
 
 
@@ -383,7 +383,7 @@ class DirectMessageDetailViewGETTest(TestCase):
         form = FeedbackModelForm(data)
         self.assertTrue(form.is_valid()) #フォーム内容が適切かチェック
         self.client.session["dm_obj_pk"] = Item.objects.get(id=item_obj.id).direct_message.id
-        response = self.client.post(reverse_lazy(ViewName.FEEDBACK_CREATE), data, follow=True)
+        response = self.client.post(reverse_lazy(ViewName.FEEDBACK_POST), data, follow=True)
         self.assertTrue("btn_feedback" not in response.context) #*7
 
 
