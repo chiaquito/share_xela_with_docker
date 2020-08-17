@@ -302,7 +302,7 @@ def create_direct_message_for_test(solicitud_obj):
         dm_obj: DirectMessageオブジェクト
     
     コピペ
-        dm_obj = create_direct_message_for_test(solicitud_obj)
+        dm_obj, item_obj = create_direct_message_for_test(solicitud_obj)
     """
 
     #SOLICITUD_SELECT

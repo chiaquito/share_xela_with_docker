@@ -18,12 +18,10 @@ from profiles.models import Profile
 from item_contacts.forms import ItemContactModelForm
 from config.constants import ViewName, TemplateName, ContextKey
 from config.tests.utils import pickUp_category_obj_for_test, create_item_contact_for_test
-from config.tests.utils import create_user_for_test
-from config.tests.utils import create_user_data
-from config.tests.utils import create_item_for_test
-from config.tests.utils import create_item_data
-#from config.tests.utils import
-#from config.tests.utils import
+from config.tests.utils import create_user_for_test, create_user_data
+from config.tests.utils import create_item_for_test, create_item_data
+from config.tests.utils import create_solicitud_for_test, create_solicitud_data
+from config.tests.utils import create_direct_message_for_test
 
 
 #################################################
@@ -149,9 +147,9 @@ class AvisosListViewTestCase(TestCase):
 
 
 
-#################################################
+##################################################
 #           2. シグナルに関するテスト               ##
-#################################################
+##################################################
 
 class ItemContactPostSaveTest(TestCase):
     """テスト目的
@@ -173,6 +171,7 @@ class ItemContactPostSaveTest(TestCase):
     済 item_contact_objectsのカウントが0以外で生成されるAvisoオブジェクト数は記事作成者がコメントを送信する場合には、記事作成者を除くItemContactオブジェクトの重複なしのユーザー数と一致する。*8
     済 item_contact_objectsのカウントが0以外で生成されるAvisoオブジェクト数は記事作成者以外がコメントを送信する場合には、当該ユーザーを除くItemContactオブジェクトの重複なしのユーザー数と一致する。*9
     済 item_contact_objectsのカウントが0以外の場合、生成されるAvisoオブジェクトのaviso_user値はコメント送信者以外のProfileオブジェクトである。*10
+    済 ダイレクトメッセージを送信するとAvisoオブジェクトが生成される
 
     """
     def setUp(self):
@@ -188,7 +187,7 @@ class ItemContactPostSaveTest(TestCase):
         category_obj = Category.objects.create(number="Donar o vender")
         post_user    = User.objects.create_user(username="post_user", email="test_post_user@gmail.com", password='12345')
         access_user  = User.objects.create_user(username="access_user", email="test_access_user@gmail.com", password='12345')
-        item_obj1    =  Item.objects.create(user=post_user, id=1, title="テストアイテム１", description="説明です。", category=category_obj, adm0="huh", adm1="cmks", adm2="dks")
+        item_obj1    = Item.objects.create(user=post_user, id=1, title="テストアイテム１", description="説明です。", category=category_obj, adm0="huh", adm1="cmks", adm2="dks")
         contact_user1 = User.objects.create_user(username="contact_user1", email="test_contact_user1@gmail.com", password='12345')
         contact_user2 = User.objects.create_user(username="contact_user2", email="test_contact_user1@gmail.com", password='12345')
         contact_user3 = User.objects.create_user(username="contact_user3", email="test_contact_user1@gmail.com", password='12345')
@@ -238,17 +237,6 @@ class ItemContactPostSaveTest(TestCase):
 
         item_contact_objects = response.context["item_contact_objects"]
         self.assertEqual(item_contact_objects.count(), 3)
-        #print(item_contact_objects)
-        """
-        for numero in range(item_contact_objects.count()):
-            if numero == 1:
-                self.assertEqual(item_contact_objects[numero].post_user.user ,User.objects.get(username="contact_user1")) # *3
-            elif numero == 2:
-                self.assertEqual(item_contact_objects[numero].post_user.user ,User.objects.get(username="contact_user2")) # *3
-            elif numero == 3:
-                self.assertEqual(item_contact_objects[numero].post_user.user ,User.objects.get(username="contact_user3")) # *3
-        """
-        #self.assertEqual(Profile.objects.get(user=User.objects.get(username="contact_user3")), item_contact_objects.last().post_user) #*4(aviso.modelsのロジック正確性を担保)
 
 
     def test_should_add_to_itemcontact_object_to_itemcontacts_count0(self):
@@ -429,13 +417,36 @@ class ItemContactPostSaveTest(TestCase):
         self.assertEqual(Item.objects.get(id=1).item_contacts.all().count(), item_contacts_count+1) #*9
         
         self.assertEqual(Aviso.objects.filter(content_type=ContentType.objects.get(model="itemcontact")).count(), before_aviso_objects_count_of_itemcontact+profiles_count)
-        #users = []
-        #for aviso_obj in Aviso.objects.filter(content_type=ContentType.objects.get(model="itemcontact"))[before_aviso_objects_count_of_itemcontact+1:]:
-        #    users.append(aviso_obj.aviso_user.user)
-        #self.assertTrue(post_user in users) # *10
-        #aviso_obj = Aviso.objects.filter(content_type=ContentType.objects.get(model="itemcontact")).order_by("-id").first()
-        #self.assertTrue(aviso_obj.aviso_user.user == post_user) # *10
 
+
+
+    def test_ダイレクトメッセージを送信するとAvisoオブジェクトが生成される(self):
+        aviso_objects_count = Aviso.objects.all().count()
+        self.assertEqual(aviso_objects_count, 0)
+        category_obj = pickUp_category_obj_for_test()
+        post_user_obj, post_profile_obj = create_user_for_test(create_user_data(prefix_user_emailaddress="poosr"))
+        item_obj = create_item_for_test(post_user_obj, create_item_data(category_obj))
+        
+        contact_user1, profile_obj = create_user_for_test(create_user_data(prefix_user_emailaddress="contact_user1"))
+        solicitud_obj = create_solicitud_for_test(item_obj, contact_user1, create_solicitud_data(message=None))
+        new_aviso_objects_count = Aviso.objects.all().count()
+        self.assertEqual(new_aviso_objects_count, aviso_objects_count+1)
+        dm_obj, item_obj = create_direct_message_for_test(solicitud_obj)
+        new1_aviso_objects_count = Aviso.objects.all().count()
+        self.assertEqual(new1_aviso_objects_count, new_aviso_objects_count+1)
+
+        
+        self.client = Client()
+        login_status = self.client.login(username=contact_user1.username, password='1234tweet')
+        self.assertTrue(login_status) #ログイン状態でアクセス
+        #送信データの作成
+        data = {'profile':profile_obj,  'content': "ダイレクトメッセージのコンテント"}
+        # ダイレクトメッセージをcontact_user1が送信する
+        response = self.client.post(reverse_lazy(ViewName.DIRECT_MESSAGE_DETAIL, args=(str(dm_obj.id),)), data, follow=True)
+        self.assertEqual(response.status_code, 200)
+        after_aviso_objects_count = Aviso.objects.all().count()
+        # Avisoオブジェクトが生成されたかチェック
+        self.assertEqual(after_aviso_objects_count, new1_aviso_objects_count+1)
 
 
 
