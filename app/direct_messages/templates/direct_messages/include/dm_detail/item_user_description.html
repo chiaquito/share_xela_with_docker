@@ -2,7 +2,7 @@
 <div class="col-6 ml-2">
     <h5 class="card-title mb-1">Usuario</h5>
     <hr class="mt-0 mb-1" />
-    <p class="card-text pt-0">{{ item_obj.user }}</p>
+    <p class="card-text pt-0"><a href="{% url 'solicitudes:add_user_to_session' item_obj.user.id %}" style="text-decoration: none;" target="_blank">{{ item_obj.user }}</a></p>
     <h5 class="card-title mb-1">Descripsion</h5>
     <hr class="mt-0 mb-1" />
     <p class="card-text mt-0">{{ item_obj.description|linebreaks }}</p>	
