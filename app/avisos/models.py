@@ -314,8 +314,10 @@ def dm_content_m2m_receiver(sender, instance, action, pk_set, *args, **kwargs):
 	dm_objにdm_contentがaddされる。これをトリガーとしてAvisoオブジェクトが生成する。
 
 	aviso_user = 通知を送る相手
-	"""	
+	"""
+	print("チェック前")	
 	if action == "post_add":
+		print("コンテントのチェック")
 		dm_obj = instance
 		#dm_content_objects = dm_obj.direct_message_contents.all()
 		dm_content_objects_pk_set = list(pk_set)
@@ -348,13 +350,14 @@ def dm_content_m2m_receiver(sender, instance, action, pk_set, *args, **kwargs):
 		fcmd_obj.sendMessage()
 
 		#emailの送信を実装
-		subject = "ShareXekla Tiene un mensaje"
+		subject = "ShareXela Tiene un mensaje"
 		content = item_obj.title + "\n" 
 		message_to = [aviso_user.user.email]
 		sendMail(subject, content, message_to)			
 
 
-m2m_changed.connect(itemsolicitudes_m2m_changed_receiver, sender=DirectMessage.direct_message_contents.through)
+m2m_changed.connect(dm_content_m2m_receiver, sender=DirectMessage.direct_message_contents.through)
+#m2m_changed.connect(itemsolicitudes_m2m_changed_receiver, sender=DirectMessage.direct_message_contents.through)
 
 
 

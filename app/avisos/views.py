@@ -99,6 +99,7 @@ class AvisoCheckingView(View):
 
 			pk = aviso_obj.object_id
 			dmc_obj = DirectMessageContent.objects.get(id=pk)
+			dm_obj  = DirectMessage.objects.get(direct_message_contents__id=dmc_obj.id)
 			#return redirect('direct_messages:dm_detail', dmc_obj.dm.pk)
 			return redirect(ViewName.DIRECT_MESSAGE_DETAIL, dm_obj.pk)
 

@@ -76,10 +76,8 @@
 				</a>
 			  </v-list-item-content>
 	
-			  
 			</v-list-item>
 			
-	  
 		  </v-list>
 		</v-card>
 		</v-app>
@@ -101,6 +99,7 @@ const aviso_list = {
 		var url   = null;
 		var checked = ( "{{obj.checked}}" == "True")?true:false;
 		var date  = "{{ obj.created_at }}";
+		console.log("{{ obj.content_type.model }}");
 
 		if("{{ obj.content_type.model }}" == "solicitud"){
 			// アイテムの取引申請が来ています
@@ -108,6 +107,7 @@ const aviso_list = {
 			url   = "{% url 'avisos:aviso_check' obj.id %}"
 		}else if("{{ obj.content_type.model}}" == "directmessage"){
 			// あなたが取引相手として決まりました
+			console.log("通っている。。。")
 			title = "Usted ha sido decidido como socio comercial"
 			url   = "{% url 'avisos:aviso_check' obj.id %}"
 		}else if("{{ obj.content_type.model }}" == "directmessagecontent"){
