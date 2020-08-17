@@ -17,29 +17,6 @@ from .utils import add_aviso_objects
 
 
 
-'''
-class HomeView(View):
-	def get(self, request, *args, **kwargs):
-		"""
-		非ログインユーザーの場合、ログインかつプロフィールオブジェクトがある場合、ログインかつプロフィールオブジェクトがない場合に
-		分けている
-        endpoint:''
-        name: 'home'
-		"""
-		
-		context = {}
-		if request.user.is_anonymous == True:
-			return render(request, "config/home.html", context)
-
-		elif request.user.is_authenticated == True and Profile.objects.filter(user=request.user).exists() == True :
-			aviso_objects = Aviso.objects.filter(aviso_user=Profile.objects.get(user=request.user)).filter(checked=False)
-			context["aviso_objects"] = aviso_objects
-			context["aviso_count"] = aviso_objects.count()
-			return render(request, "config/home.html", context)
-
-		elif request.user.is_authenticated == True and Profile.objects.filter(user=request.user).exists() == False :
-			return render(request, "config/home.html")
-'''
 
 class HomeKaizenView(View):
 

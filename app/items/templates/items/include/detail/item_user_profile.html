@@ -10,7 +10,7 @@
                             
                         </div>
                         <div class="col-8">
-                            <p><a href="{% url 'items:itemuser_list' %}">{{ profile_obj.user }}<br/>
+                            <p><a href="{% url 'solicitudes:add_user_to_session' profile_obj.user.id %}" target="_blank" style="text-decoration: none;" >{{ profile_obj.user }}<br/>
                                 su articulos otros</a><br/>
                             </p>    
                             {# retroalimentación: {{ feedback_sum }}　promedio: {{ feedback_ave }}<br /> #}

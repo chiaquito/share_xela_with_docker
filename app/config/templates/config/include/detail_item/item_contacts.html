@@ -18,7 +18,7 @@
 
 		<div class="card my-3  shadow-sm" style="width: 30rem;">
   		<div class="card-body py-2">
-    	<h5 class="card-title">{{ obj.post_user }}</h5>
+    	<h5 class="card-title" ><a href="{% url 'solicitudes:add_user_to_session' obj.post_user.id %}" target="_blank" style="text-decoration: none;" >{{ obj.post_user }}</a></h5>
     	<p class="card-text mb-1">{{ obj.message }}</p>
     	<p class="card-link mb-0 pb-0 text-right">{{ obj.timestamp }}</p>
   		</div>
