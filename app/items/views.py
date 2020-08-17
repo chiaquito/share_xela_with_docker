@@ -609,7 +609,7 @@ class ItemSearchView(View):
 		#print(dir(self.request))
 		if self.request.method == "GET":
 			q = self.request.GET.get("q")
-			item_objects = Item.objects.filter(Q(title__icontains=q)|Q(description__icontains=q)).exclude(active=False)
+			item_objects = Item.objects.filter(Q(title__icontains=q)|Q(description__icontains=q)).exclude(active=False).order_by("-created_at")
 			context["item_objects"] = item_objects
 			context = add_aviso_objects(request, context)
 			return render(request, TemplateName.ITEM_LIST, context)

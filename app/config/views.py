@@ -52,10 +52,10 @@ class HomeKaizenView(View):
         name: 'home'
         """
 
-        item_objects_cosas = Item.objects.filter(Q(category__number="1")|Q(category__number="2")|Q(category__number="3")).exclude(active=False).order_by("-id")[:4]
-        item_objects_habitacion = Item.objects.filter(Q(category__number="4")|Q(category__number="5")|Q(category__number="6")|Q(category__number="7")).exclude(active=False).order_by("-id")[:4]
-        item_objects_trabajo = Item.objects.filter(Q(category__number="8")|Q(category__number="9")).exclude(active=False).order_by("-id")[:4]
-        item_objects_tienda = Item.objects.filter(category__number="10").exclude(active=False).order_by("-id")[:4]        
+        item_objects_cosas = Item.objects.filter(Q(category__number="1")|Q(category__number="2")|Q(category__number="3")).exclude(active=False).order_by("-created_at")[:4]
+        item_objects_habitacion = Item.objects.filter(Q(category__number="4")|Q(category__number="5")|Q(category__number="6")|Q(category__number="7")).exclude(active=False).order_by("-created_at")[:4]
+        item_objects_trabajo = Item.objects.filter(Q(category__number="8")|Q(category__number="9")).exclude(active=False).order_by("-created_at")[:4]
+        item_objects_tienda = Item.objects.filter(category__number="10").exclude(active=False).order_by("-created_at")[:4]        
         
         # データの格納
         context = {}
