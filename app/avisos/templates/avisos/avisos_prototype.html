@@ -22,9 +22,8 @@
 	</div>	
 </div>
 
-<div id="list" class="mt-0 pt-0">
-	
-	<div v-show="isShow">
+
+<div id="list" class="mt-0 pt-0">	
 		<aviso-list />
 	</div>
 </div>
@@ -51,10 +50,10 @@
 		<v-card
 		  max-width="700"
 		  class="mx-auto px-5"
+		  v-show="isShow"
 		>
 	  
 		  <v-list two-line subheader>
-			<v-subheader inset>Folders</v-subheader>
 	  
 			<v-list-item
 			  v-for="(item, index) in items"
@@ -130,10 +129,12 @@ const aviso_list = {
 		var filtering = ("{{ type }}"=="FILTERED")?true:false;
         var filter_url = (filtering==true)?"{% url 'avisos:avisos_alllist' %}":"{% url 'avisos:avisos_list' %}";
         var filter_label = "Sólo los avisos que no ha leido";	
+		var isShow = ("{{ aviso_objects.count }}" != "0")?true:false;
 		return { items: items,
 			     filtering: filtering,
                  filter_url: filter_url,
-                 filter_label: filter_label}
+                 filter_label: filter_label,
+				 isShow: isShow}
 	},
 }
 
@@ -143,13 +144,18 @@ new Vue({
 	vuetify: new Vuetify(),
 	data:{ isShow: false },
 	mounted:function(){
-		this.isShow = ("{{ aviso_objects.count }}" != "0")?true:false
+		//this.isShow = ("{{ aviso_objects.count }}" != "0")?true:false
 	},
 	components:{'aviso-list': aviso_list}
 });
 
-
 </script>
+
+
+
+
+
+
 
 
 
