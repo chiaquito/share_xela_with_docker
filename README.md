@@ -58,7 +58,7 @@ WebApplication:
 
 
 AndroidApplication:
-  -  Kotlin/github: https://github.com/chiaki1990/ShareXela_Android
+  -  Kotlin
 
 
 ## その他使用技術
@@ -70,10 +70,12 @@ AndroidApplication:
 
 #### 記事投稿機能  
   pais(国),departamento(県), municipio(市)は地域を表しますが、departamentoから一つ選択するとdepartamentoを構成する
-  municipoの選択肢(selectタグに内包されるoption)をjavascript(vue.js)によって動的に変更しています。　東京都を選ぶと八王子や東村山、23区が町に該当する選択肢として表示されます。
-  新規記事作成の場合ユーザーのプロフィールデータを示すprofiles.models.Profileオブジェクトに従ってpais, departamento, municipioを記述する手間を省くようにしています。
-  また、データベースにPostgisを使っています。ユーザーが地図をクリックするとmap上に描画したオブジェクトの座標をデータとして保存します。
-  このオブジェクトを元に"Refleja la direccion"(場所に反映する)ボタンを押すと当該pointオブジェクトを含む地域departamentoとmunicipio値が自動的に修正されます。  北海道、札幌市を選択していても、東京都新宿区のあたりを地図でクリックし地図の隣のボタンを押すと、北海道、札幌市から自動的に東京都、新宿区にデータが変更される。これもjavascript(vue.js)を使って実装しています。  
+  municipoの選択肢をjavascript(vue.js)によって動的に変更しています。    
+  東京都を選ぶと八王子や東村山、23区が町に該当する選択肢として表示されるようなイメージです。
+  また、新規記事作成の場合にはユーザーのプロフィールデータであるprofiles.models.Profileオブジェクトに従ってpais, departamento, municipioを自動的に入力するようにしています。  
+
+  また、データベースにPostgisを使っています。ユーザーが地図をクリックするとmap上に描画したオブジェクトの座標をデータとして保存します。  
+  このオブジェクトを元に"Refleja la direccion"(場所に反映する)ボタンを押すと当該pointオブジェクトを含む地域departamentoとmunicipio値が自動的に修正されます。  北海道、札幌市を選択していても、東京都新宿区のあたりを地図でクリックし地図の隣のボタンを押すと、北海道、札幌市から自動的に東京都、新宿区にデータが変更されるイメージです。これもjavascript(vue.js)を使って実装しています。  
   https://sharexela.ga/items/create2/
 
 
@@ -125,7 +127,7 @@ AndroidApplication:
 
 #### PCによるwebブラウザの表示とスマホによるwebブラウザとAndroidアプリによる表示
 
-##### Webブラウザ:
+##### Webブラウザ  
     HTTPヘッダーに含まれるUser-Agentに従ってPCの場合はPC用のテンプレートを配信し、スマートホンの場合にはそれのテンプレートを配信し、
     デバイスによってできるだけ見やすいようにしています。
 
@@ -142,6 +144,7 @@ AndroidApplication:
         
         
 ## AndroidApplicationについて
+github: https://github.com/chiaki1990/ShareXela_Android
 #### データの種類について
   アプリケーションはKotlinで作成しています。  
   画面に描画するデータの殆どはサーバーと通信して取得しています。
