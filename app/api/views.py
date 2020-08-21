@@ -500,10 +500,16 @@ class GetRegionDataByPointAPIView(APIView):
 	def post(self, request, *args, **kwargs):
 		"""機能
 		wktのPOINTに基づいて対応するadm1, adm2を取得する
+		
+		# 試験項目
+		#ローカル(Docker)できちんと動作する ○
+		#本番環境で動作する(Chrome)　○
+		#サファリでも動作する　○
+		#スマホの環境で動作する　○		
 
 		endpoint: api/util/region/
 		name: -
-		もしかしてshpファイル自体が異なる可能性がある。これについては修正コストが高いのでこのままにしておく。
+		もしかして.shpファイル自体が異なる可能性がある。これについては修正コストが高いのでこのままにしておく。
 		-> dockerを使うとなぜかWKTを反転させないと使えないことが判明した。 
 		"""
 		"""テスト項目
@@ -527,7 +533,16 @@ class GetRegionDataByPointAPIView(APIView):
 			text = "POINT(" + lat + " " + lng + ")"
 			point = GEOSGeometry(text)
 		elif launch_env == "NO_DOCKER":
+			# 試験的に追加
+			lng = wkt_point.split(" ")[1].replace("(", "")
+			lat = wkt_point.split(" ")[2].replace(")", "")
+			text = "POINT(" + lat + " " + lng + ")"
+			point = GEOSGeometry(text)
+		elif launch_env == "CIRCLECI":
 			point  = GEOSGeometry(wkt_point)
+
+
+
 
 
 

@@ -139,15 +139,17 @@ var map_value = new Vue({
             if (this.wkt_point == null){ 
                 return
                  }
+            
             //axiosでadm1, adm2値を更新する処理を実装する
             //endpoint: api/util/region/ で wkt_point値に属するDepartamento, Prefcturaを返す
-            axios.post('http://127.0.0.1:8000/api/util/region/',{wkt_point: this.wkt_point})
-            .then(function (response){
+            var url = "{{ request.scheme }}://"+"{{ request.get_host }}"+"/api/util/region/"
+            //console.log(url)
+            axios.post(url, {wkt_point: this.wkt_point}).then(function (response){
                 //データを解析してadm1, adm2を取得する。
                 var adm1 = response.data.adm1;
                 var adm2 = response.data.adm2;
+    
                 //取得したadm1,adm2を地域情報を扱うvueインスタンスに渡す
-
                 setTimeout( function() {
                 muni.selected = adm2
                 }, 1000 );

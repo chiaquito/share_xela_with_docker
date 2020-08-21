@@ -12,7 +12,7 @@ jobs:
           DATABASE_PASSWORD: geodjango1990
           DATABASE_PORT: 5432
           DATABASE_HOST: localhost
-          LAUNCH_ENV: NO_DOCKER
+          LAUNCH_ENV: DOCKER
 
       - image: circleci/postgres:10.5-postgis
         environment:
@@ -68,7 +68,6 @@ jobs:
             pip install --user fabric3 
             fab deploy -f .circleci/fabfile.py
             
-            # 
             #ssh -p 21345 -i ~/.ssh/id_rsa -o 'StrictHostKeyChecking no' chiaki@sharexela.ga
             
 
