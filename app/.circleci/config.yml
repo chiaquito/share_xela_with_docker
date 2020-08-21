@@ -12,7 +12,7 @@ jobs:
           DATABASE_PASSWORD: geodjango1990
           DATABASE_PORT: 5432
           DATABASE_HOST: localhost
-          LAUNCH_ENV: DOCKER
+          LAUNCH_ENV: CIRCLECI
 
       - image: circleci/postgres:10.5-postgis
         environment:
