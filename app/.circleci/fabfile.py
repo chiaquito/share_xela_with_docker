@@ -1,9 +1,9 @@
-from fabric.api import env, run, cd, task, sudo
+from fabric.api import env, run, cd, task
 import os.path
 import os
 
 
-#host = 'share_xela.ga'
+# host = 'share_xela.ga'
 HOST = '153.126.194.171'
 PULL_DIR = '/home/chiaki/sharexela_src/'
 APP_PATH = PULL_DIR
@@ -17,17 +17,12 @@ GUNICORN_CONF = APP_PATH + "/.circleci/" + "gunicorn_conf.py"
 os.environ.setdefault("DJANGO_SETTINGS_MODULE", "config.settings.prod_settings")
 
 
-
-
 def test():
     """
     fab testが実行できるかのテスト
     バージョンが表示されなければfabric自体が起動できていない。
     """
     run("python3 -c 'import sys;print(sys.version)'")
-
-
-
 
 
 class DeployHandler(object):
@@ -45,15 +40,13 @@ class DeployHandler(object):
                 print("存在しない")
                 run("mkdir /home/chiaki/sharexela_src")
 
-
     def pull(self):
         """
         githubの指定するリポジトリからソースコードを取得する。
         """
         with cd(PULL_DIR):
-            #run("git remote -v")
+            # run("git remote -v")
             run("git pull origin master")
-
 
     def install_dependencies(self):
         """
@@ -61,7 +54,6 @@ class DeployHandler(object):
         """
         with cd(APP_PATH):
             run("python3 -m pip install -r requirements.txt")
-
 
     def makemigrations(self):
         """
@@ -84,8 +76,6 @@ class DeployHandler(object):
         with cd(APP_PATH):
             run("python3 manage.py collectstatic --no-input --settings=config.settings.prod_settings")
 
-
-
     def kill_process(self):
         """
         gunicornのプロセスをkillする
@@ -94,22 +84,19 @@ class DeployHandler(object):
         with cd(APP_PATH):
             run('kill -HUP `cat .circleci/gunicorn.pid`', warn_only=True)
 
-
     def restart(self):
         """
         アプリケーションの起動
         """
         with cd(APP_PATH):
-            #run("gunicorn --daemon --bind 127.0.0.1:8000 --env DJANGO_SETTINGS_MODULE=config.settings.prod_settings config.wsgi:application")
+            # run("gunicorn --daemon --bind 127.0.0.1:8000 --env DJANGO_SETTINGS_MODULE=config.settings.prod_settings config.wsgi:application")
             run("gunicorn --daemon --env DJANGO_SETTINGS_MODULE=config.settings.prod_settings config.wsgi:application -c {}".format(GUNICORN_CONF), pty=False)
 
-
     def restart_with_supervisor(self):
-        with cd(APP_PATH):                
+        with cd(APP_PATH):
             run('supervisorctl reread')
             run('supervisorctl update')
             run('supervisorctl restart sharexela')
-
 
 
 @task

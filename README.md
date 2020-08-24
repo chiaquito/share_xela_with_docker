@@ -49,8 +49,8 @@ WebApplication:
       - nginx
 
   - WebApplicationServar
-      - Django(Python)
-      - Vue.js(javascript)
+      - Django 2.26(Python3.8)
+      - Vue.js (javascript)
       - jQuery(javascript)
 
   - Database
@@ -63,7 +63,9 @@ AndroidApplication:
 
 ## その他使用技術
  - CircleCI
- - Docker
+ - Docker/docker-compose
+ - github
+ - Centos7 (さくらVPS) 
 
 
 ## 各機能について一言コメント

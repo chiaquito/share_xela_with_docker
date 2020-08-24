@@ -1,18 +1,15 @@
 from django.http import HttpResponse, JsonResponse
 from django.http import Http404
-from django.shortcuts import render
-from django.views.generic import View
 from django.core.serializers import serialize
 from django.contrib.auth.models import User
 from django.contrib.gis.geos import GEOSGeometry
-
+from django.shortcuts import redirect
 from avisos.models import Aviso
 from categories.models import Category
 from direct_messages.models import DirectMessage
 from direct_messages.models import DirectMessageContent
 from items.models import Item
 from item_contacts.models import ItemContact
-from item_contacts.forms import ItemContactModelForm
 from prefecturas.models import Prefectura, Departamento, Municipio, RegionClassed
 from profiles.models import Profile
 from solicitudes.models import Solicitud
@@ -23,20 +20,16 @@ from .serializers import DirectMessageContentSerializer
 from .serializers import ItemContactSerializer
 from .serializers import ItemSerializer
 from .serializers import ProfileSerializer
-from .serializers import UserSerializer
 from .serializers import SolicitudSerializer
 from .utils import getTokenFromHeader
 from .utils import getUserByToken
-from .constants import BtnChoice
 from .constants import SerializerContextKey
-from .constants import CategoryValue
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework.authtoken.models import Token
 from rest_framework.authentication import BasicAuthentication
 from rest_framework.authentication import TokenAuthentication
 from rest_framework import permissions
-from rest_framework import parsers
 import json
 import os
 
@@ -88,8 +81,8 @@ class TestAPIView(APIView):
 
 class TestAPI2View(APIView):
 
-	#authentication_classes = (TokenAuthentication,)
-	#permission_classes = (permissions.IsAuthenticated,)
+	# authentication_classes = (TokenAuthentication,)
+	# permission_classes = (permissions.IsAuthenticated,)
 
 	def get(self, request, *args, **kwargs):
 		"""
@@ -104,8 +97,12 @@ class TestAPI2View(APIView):
 
 
 
-#AuthTokenが使えるか投げるためのView
+# AuthTokenが使えるか投げるためのView
 class CheckAuthTokenView(APIView):
+
+
+
+	
 	"""
 	endpoint: /api/checktoken/
 
@@ -131,15 +128,12 @@ class CheckAuthTokenView(APIView):
 
 			return Response(serializerContext)
 
-		return Response({"result":"fail"})
-		
-				
+		return Response({"result": "fail"})			
 
 
 
-
-#最初に二股に分けるビューを経由させてから以下のビューに連結させる方がビューの役割をシンプルに保つことができるので、時間があったら修正する
-#　というか以下はクラスじゃなくて関数でいい気がする。ただ関数を挟んでリダイレクトするとクエリを増やし、返す結果が遅くなってしまう
+# 最初に二股に分けるビューを経由させてから以下のビューに連結させる方がビューの役割をシンプルに保つことができるので、時間があったら修正する
+# というか以下はクラスじゃなくて関数でいい気がする。ただ関数を挟んでリダイレクトするとクエリを増やし、返す結果が遅くなってしまう
 
 class SubsolicitudListOrDirectMessageListAPIView(APIView):
 	def get(self, request, *args, **kwargs):
@@ -173,21 +167,21 @@ class SolicitudListAPIView(APIView):
 		serializerContext = {}
 
 		pk = self.kwargs["pk"]
-		#print("PKテスト",pk)
+		# print("PKテスト",pk)
 		item_obj = Item.objects.get(id=pk)
 		solicitudes_objects = Solicitud.objects.filter(item=item_obj)
-		#申請者のうちTrue（取引相手が決まっている）の場合にはDirectMessage詳細ページを表示する
+		# 申請者のうちTrue（取引相手が決まっている）の場合にはDirectMessage詳細ページを表示する
 		for obj in solicitudes_objects:
-			if obj.accepted == True:
+			if obj.accepted is True:
 				dm_obj = DirectMessage.objects.get(item=item_obj)
 				return redirect('direct_messages:dm_detail', dm_obj.pk)
 
 
-		#context["item_obj"] = item_obj
+		# context["item_obj"] = item_obj
 		itemObjSerializer = ItemSerializer(item_obj1)
 		serializerContext["ItemSerializerModel"] = itemObjSerializer.data
 
-		#context["solicitudes_objects"] = solicitudes_objects
+		# context["solicitudes_objects"] = solicitudes_objects
 		solicitudesObjects = SolicitudSerializer(solicitudes_objects)
 		serializerContext["SolicitudSerializer"] = solicitudesObjects.data
 

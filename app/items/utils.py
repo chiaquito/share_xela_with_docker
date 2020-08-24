@@ -1,23 +1,16 @@
-
 from django.contrib.auth.models import User
-from items.models import Item
-
-
 from config.constants import ContextKey
-
 
 
 def addBtnFavToContext(request, item_obj, context):
     """機能
-    
     アイテム詳細ページにcontext[btn_fav]を追加する。
     場合によってはcontext[fav_obj_id]も追加する。
 
-    input:
+    Args:
     request: Request
-    item_obj:Item 
+    item_obj:Item
     context: dict
-    
     output: dict
     用途:
     ItemDetailView#getにのみ使われる
@@ -25,7 +18,7 @@ def addBtnFavToContext(request, item_obj, context):
     """
     """
     テスト項目
-    item.favorite_usersに格納されるすべてのUserオブジェクトをusers: listに格納できている 
+    item.favorite_usersに格納されるすべてのUserオブジェクトをusers: listに格納できている
     既にfavボタンを押しているユーザーのアクセスの場合fav_objはNoneではない。 fav_objはUserオブジェクトである
     未認証ユーザーの場合にはcontext["btn_fav"]の値が"NO_SHOW"である。
     アイテムにfavを押している認証ユーザーの場合にはcontext["fav_obj_id"]というキーが存在しない。
@@ -36,11 +29,9 @@ def addBtnFavToContext(request, item_obj, context):
     アイテムにfavを押していない認証ユーザーの場合にはcontext["fav_obj_id"]というキーが存在する。
     アイテムにfavを押していない認証ユーザーの場合にはcontext["fav_obj_id"]の値は"NO_ID"である
     """
-
-
     # context["btn_fav"]を設定
     if request.user.is_anonymous:
-        #print("ANONYMOUS_USERなのでCONTEXTにNO_SHOWを追加するが、この値はテスト以外に使われることはない")
+        # print("ANONYMOUS_USERなのでCONTEXTにNO_SHOWを追加するが、この値はテスト以外に使われることはない")
         context[ContextKey.BTN_FAV] = "NO_SHOW"
         return context
 
@@ -55,18 +46,12 @@ def addBtnFavToContext(request, item_obj, context):
     return context
 
 
-
-
-
-
-
 def addBtnFavToContext_botsu(request, item_obj, context):
     """機能
-    
     アイテム詳細ページにcontext[btn_fav]を追加する。
     場合によってはcontext[fav_obj_id]も追加する。
 
-    input: 
+    input:
     context: dict
     request: Request
 
@@ -77,7 +62,7 @@ def addBtnFavToContext_botsu(request, item_obj, context):
     """
     """
     テスト項目
-    item.favorite_usersに格納されるすべてのUserオブジェクトをusers: listに格納できている 
+    item.favorite_usersに格納されるすべてのUserオブジェクトをusers: listに格納できている
     既にfavボタンを押しているユーザーのアクセスの場合fav_objはNoneではない。 fav_objはUserオブジェクトである
     未認証ユーザーの場合にはcontext["btn_fav"]の値が"NO_SHOW"である。
     アイテムにfavを押している認証ユーザーの場合にはcontext["fav_obj_id"]というキーが存在しない。
@@ -90,16 +75,13 @@ def addBtnFavToContext_botsu(request, item_obj, context):
     """
 
     fav_obj = None
-    users   = []
-
+    users = []
 
     # context["btn_fav"]を設定
     if request.user.is_anonymous:
         print("ANONYMOUS_USERなのでCONTEXTにNO_SHOWを追加するが、この値はテスト以外に使われることはない")
         context[ContextKey.BTN_FAV] = "NO_SHOW"
         return context
-
-
 
     request_user = User.objects.get(username=request.user.username)
 
@@ -108,17 +90,15 @@ def addBtnFavToContext_botsu(request, item_obj, context):
         if fav.user == request_user:
             fav_obj = fav
 
-
-
     if request.user.is_authenticated and request_user not in users:
-        #白のハートボタンを表示するためにcontextを追加する
+        # 白のハートボタンを表示するためにcontextを追加する
         print("白のハートボタンを表示するためにcontextを追加する")
         context[ContextKey.BTN_FAV] = "WHITE_HEART"
         context["fav_obj_id"] = "NO_ID"
         return context
 
     elif request.user.is_authenticated and request_user in users:
-        #赤のハートボタンを表示するためにcontextを追加する
+        # 赤のハートボタンを表示するためにcontextを追加する
         print("赤のハートボタンを表示するためにcontextを追加する")
         context[ContextKey.BTN_FAV] = "RED_HEART"
         # htmlに<input name="fav_obj_id" value={{ fav_id }}>を追加するするための処理を行う

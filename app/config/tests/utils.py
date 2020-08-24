@@ -82,7 +82,7 @@ def create_user_data(prefix_user_emailaddress, password1=None, password2=None):
     高階関数の引数として使うことを予定している
 
     Args:
-        prefix_user_emailaddress:str 
+        prefix_user_emailaddress: str 
         password1:str
         password2:str
 
@@ -97,18 +97,17 @@ def create_user_data(prefix_user_emailaddress, password1=None, password2=None):
     if password1 != None:
         data["password1"] = password1
     else:
-        data["password1"] = TestConstants.DEFAULT_PASSWOD #"1234tweet"
+        data["password1"] = TestConstants.DEFAULT_PASSWOD  # "1234tweet"
 
     if password2 != None:
         data["password2"] = password2
     else:
-        data["password2"] = TestConstants.DEFAULT_PASSWOD #"1234tweet"
+        data["password2"] = TestConstants.DEFAULT_PASSWOD  # "1234tweet"
 
     return data
 
 
-
-#data = {"email":"postuser@gmail.com", "password1":"12345", "password2":"12345"}
+# data = {"email":"postuser@gmail.com", "password1":"12345", "password2":"12345"}
 def create_user_for_test(userData):
     """機能
     ユーザー登録を入力として生成したUserオブジェクト,Profileオブジェクトを返す
@@ -129,19 +128,12 @@ def create_user_for_test(userData):
     response = client.post(CREATE_USER_URL, userData)
     user_obj = User.objects.get(email=userData["email"])
     profile_obj = Profile.objects.get(user=user_obj)
-    #userオブジェクトを生成するとEmailAddressオブジェクトも生成される仕様である
+    # userオブジェクトを生成するとEmailAddressオブジェクトも生成される仕様である
     # email_obj = EmailAddress.objects.get(email=userData["email"])
     return user_obj, profile_obj
 
 
-
-
-
-
-
-
-
-def create_item_data(category_obj, title=None, price=None, description=None, adm0=None, adm1=None, adm2=None ):
+def create_item_data(category_obj, title=None, price=None, description=None, adm0=None, adm1=None, adm2=None):
     """機能
 
     高階関数の引数として使うことを予定している
@@ -152,7 +144,6 @@ def create_item_data(category_obj, title=None, price=None, description=None, adm
 
     data = {}
     count = str(Item.objects.all().count())
-
 
     data['category'] = category_obj.id
     if title != None:
@@ -184,24 +175,20 @@ def create_item_data(category_obj, title=None, price=None, description=None, adm
     else:
         data["adm2"] = "Quetzaltenango"
 
-    #フォームのチェック
+    # フォームのチェック
     form = ItemModelForm(data)
-    if form.is_valid() == False:
+    if form.is_valid() is False:
         for ele in form.errors:
             print(ele)
 
-
     return data
-
-
-
 
 
 def create_item_for_test(user_obj, item_data):
     """機能
 
     Args:
-        user_obj: Userオブジェクト ... 
+        user_obj: Userオブジェクト ...
         item_data:dict ... create_item_data()を引数として使える。
 
     Returns:
@@ -217,12 +204,11 @@ def create_item_for_test(user_obj, item_data):
     CREATE_ITEM_URL = reverse(ViewName.ITEM_CREATE)
     client = Client()
     login_status = client.login(username=user_obj.username, password="1234tweet")
-    #login_status = client.force_authenticate(user=user_obj)
+    # login_status = client.force_authenticate(user=user_obj)
     print("login_status :", login_status)
     response = client.post(CREATE_ITEM_URL, item_data)
     item_obj = Item.objects.get(title=item_data["title"])
     return item_obj
-
 
 
 def create_item_contact_for_test(comment_user_obj, data=None):
@@ -239,7 +225,7 @@ def create_item_contact_for_test(comment_user_obj, data=None):
     """
     item_obj_id = Item.objects.all().last().id
     CREATE_ITEMCONTACT_URL = reverse(ViewName.ITEM_CONTACT)
-    if data == None:
+    if data is None:
         data = {
             "item_obj_id": item_obj_id,
             "message": "メッセージ"
@@ -252,9 +238,6 @@ def create_item_contact_for_test(comment_user_obj, data=None):
     return item_contact_obj
 
 
-
-
-
 def create_solicitud_data(message=None):
 
     data = {}
@@ -263,7 +246,6 @@ def create_solicitud_data(message=None):
     else:
         data["message"] = "申請内容"
     return data
-
 
 
 def create_solicitud_for_test(item_obj, access_user_obj, solicitud_data):
@@ -281,7 +263,7 @@ def create_solicitud_for_test(item_obj, access_user_obj, solicitud_data):
         solicitud_obj = create_solicitud_for_test(item_obj, access_user_obj, create_solicitud_data(message=None))
     """
 
-    #access_userが申請する
+    # access_userが申請する
     POST_SOLICITUD_URL = reverse(ViewName.SOLICITUD_INPUT, args=(item_obj.id,))
     client = Client()
     login_status = client.login(username=access_user_obj.username, password="1234tweet")
@@ -290,17 +272,16 @@ def create_solicitud_for_test(item_obj, access_user_obj, solicitud_data):
     return solicitud_obj
 
 
-
 def create_direct_message_for_test(solicitud_obj):
     """
     DirectMessageオブジェクトを生成する
     DirectMessageオブジェクトをdataなしにそのまま使えるようにしてある
-    
+
     Args:
         solicitud_obj: Solicitudオブジェクト
     Returns:
         dm_obj: DirectMessageオブジェクト
-    
+
     コピペ
         dm_obj, item_obj = create_direct_message_for_test(solicitud_obj)
     """
@@ -313,24 +294,11 @@ def create_direct_message_for_test(solicitud_obj):
     login_status = client.login(username=post_user_obj.username, password="1234tweet")
     client.post(SOLICITUD_SELECT_URL)
     item_obj = Item.objects.get(solicitudes__id=solicitud_obj.id)
-    #print("kansuu確認", item_obj)
+    # print("kansuu確認", item_obj)
     dm_obj = item_obj.direct_message
-    #print("関数確認", dm_obj)
+    # print("関数確認", dm_obj)
 
     return dm_obj, item_obj
-
-
-
-
-
-
-
-
-"""
-apiによるデータの取得ができるか。
-webからケータイに移行した場合にはtokenが存在しないことにならないか?いや存在するか多分rest-authがtokenを返してくれるので大丈夫
-"""
-
 
 
 def create_user_for_android_test(userName):
@@ -339,7 +307,7 @@ def create_user_for_android_test(userName):
     """
     """機能
     Userを登録する。
-    
+
     (補足)User登録するだけでProfileオブジェクト、Tokenオブジェクト、EmailAddressオブジェクトが自動的に作成される
 
     Args:
@@ -348,21 +316,14 @@ def create_user_for_android_test(userName):
     Returns:
         key:str 
     """
-    #https://django-rest-auth.readthedocs.io/en/latest/api_endpoints.html#registration
+    # https://django-rest-auth.readthedocs.io/en/latest/api_endpoints.html#registration
     CREATE_USER_API_URL = reverse('rest_register')
     client = APIClient()
-
-
     email = userName + "@gmail.com"
-    data = {"email": email, "password1":"1234tweet", "password2":"1234tweet"}
-
+    data = {"email": email, "password1": "1234tweet", "password2": "1234tweet"}
     response = client.post(CREATE_USER_API_URL, data)
     key = response.data["key"]
     return key
-
-
-
-
 
 
 def create_item_data_for_android_test(
@@ -386,8 +347,6 @@ def create_item_data_for_android_test(
 
     item_data = {}
     count = str(Item.objects.all().count())
-
-
     item_data['category'] = { "number": category_obj.number }
 
     if title != None:
@@ -430,7 +389,7 @@ def create_item_data_for_android_test(
         item_data["radius"] = 100
 
 
-    #フォームのチェック
+    # フォームのチェック
     form = ItemModelForm(item_data)
     if form.is_valid() == False:
         for ele in form.errors:

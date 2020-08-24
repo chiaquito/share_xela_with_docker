@@ -3,8 +3,7 @@
 #                                                                  #
 ####################################################################
 
-
-from django.test import TestCase, RequestFactory
+from django.test import TestCase
 from django.test import Client
 from django.urls import reverse, reverse_lazy
 from django.contrib.contenttypes.models import ContentType
@@ -12,16 +11,17 @@ from django.contrib.auth.models import User
 from avisos.models import Aviso
 from categories.models import Category
 from api.models import DeviceToken
-from items.models    import Item
-from item_contacts.models import ItemContact
+from items.models import Item
 from profiles.models import Profile
 from item_contacts.forms import ItemContactModelForm
 from config.constants import ViewName, TemplateName, ContextKey
-from config.tests.utils import pickUp_category_obj_for_test, create_item_contact_for_test
-from config.tests.utils import create_user_for_test, create_user_data
-from config.tests.utils import create_item_for_test, create_item_data
-from config.tests.utils import create_solicitud_for_test, create_solicitud_data
-from config.tests.utils import create_direct_message_for_test
+from config.tests.utils import (
+    pickUp_category_obj_for_test, create_item_contact_for_test,
+    create_user_for_test, create_user_data,
+    create_item_for_test, create_item_data,
+    create_solicitud_for_test, create_solicitud_data,
+    create_direct_message_for_test
+)
 
 
 #################################################
@@ -29,9 +29,7 @@ from config.tests.utils import create_direct_message_for_test
 #################################################
 
 class AvisosAllListViewTestCase(TestCase):
-    """テスト目的
 
-    """
     """テスト対象
     avisos/views.py AvisosAllListView#get
     """
@@ -46,14 +44,13 @@ class AvisosAllListViewTestCase(TestCase):
         """
         self.category_obj = pickUp_category_obj_for_test()
         self.user_obj, self.profile_obj = create_user_for_test(create_user_data(prefix_user_emailaddress="test1"))
-        #user_objが記事を作成する
+        # user_objが記事を作成する
         item_obj = create_item_for_test(self.user_obj, create_item_data(self.category_obj))
-        
 
     def test_特定のユーザーに結びつくavisoオブジェクトの表示ですべて表示される(self):
-        
+
         comment_user_obj, comment_user_profile_obj = create_user_for_test(create_user_data(prefix_user_emailaddress="comment_user"))
-        
+
         # 5個のコメントを付す
         item_contact_obj = create_item_contact_for_test(comment_user_obj)
         item_contact_obj = create_item_contact_for_test(comment_user_obj)
@@ -63,39 +60,34 @@ class AvisosAllListViewTestCase(TestCase):
 
         # 全Avisoオブジェクトを取得する
         aviso_objects = Aviso.objects.filter(aviso_user=self.profile_obj)
-        #print(aviso_objects.count())
+        # print(aviso_objects.count())
         self.assertEqual(aviso_objects.count(), 5)
 
         # 記事作成者(user_obj)がAviso一覧ページにアクセスする
         self.client = Client()
         login_status = self.client.login(username=self.user_obj.username, password='1234tweet')
+        self.assertTrue(login_status)  # ログイン状態でアクセス
         aviso_all_url = reverse(ViewName.AVISO_ALL)
         response = self.client.get(aviso_all_url)
-        avisos_response = response.context[ ContextKey.AVISO_OBJECTS ]
+        avisos_response = response.context[ContextKey.AVISO_OBJECTS]
         self.assertEqual(avisos_response.count(), 5)
 
         # 返されるテンプレートにaviso-listタグが含まれていることを確認する
-        self.assertContains( response, 'v-card', status_code=200 )
+        self.assertContains(response, 'v-card', status_code=200)
 
-
-    
     def test_avisoオブジェクトが0のときはオブジェクトは0になる(self):
         # 記事作成者(user_obj)がAviso一覧ページにアクセスする
         self.client = Client()
         login_status = self.client.login(username=self.user_obj.username, password='1234tweet')
+        self.assertTrue(login_status)  # ログイン状態でアクセス
         aviso_all_url = reverse(ViewName.AVISO_ALL)
         response = self.client.get(aviso_all_url)
-        avisos_response = response.context[ ContextKey.AVISO_OBJECTS ]
+        avisos_response = response.context[ContextKey.AVISO_OBJECTS]
         self.assertEqual(avisos_response.count(), 0)
 
 
-        
-
-
 class AvisosListViewTestCase(TestCase):
-    """テスト目的
 
-    """
     """テスト対象
     avisos/views.py AvisosListView#get
     """
@@ -109,14 +101,13 @@ class AvisosListViewTestCase(TestCase):
         """
         self.category_obj = pickUp_category_obj_for_test()
         self.user_obj, self.profile_obj = create_user_for_test(create_user_data(prefix_user_emailaddress="test1"))
-        #user_objが記事を作成する
+        # user_objが記事を作成する
         item_obj = create_item_for_test(self.user_obj, create_item_data(self.category_obj))
-        
 
     def test_特定のユーザーに結びつくavisoオブジェクトの表示で未読のみ表示される(self):
-        
+
         comment_user_obj, comment_user_profile_obj = create_user_for_test(create_user_data(prefix_user_emailaddress="comment_user"))
-        
+
         # 5個のコメントを付す
         item_contact_obj = create_item_contact_for_test(comment_user_obj)
         aviso_obj1 = Aviso.objects.filter(aviso_user=self.profile_obj).last()
@@ -129,22 +120,17 @@ class AvisosListViewTestCase(TestCase):
 
         # 全Avisoオブジェクトを取得する
         aviso_objects = Aviso.objects.filter(aviso_user=self.profile_obj)
-        #print(aviso_objects.count())
+        # print(aviso_objects.count())
         self.assertEqual(aviso_objects.count(), 5)
 
         # 記事作成者(user_obj)がAviso一覧ページにアクセスする
         self.client = Client()
         login_status = self.client.login(username=self.user_obj.username, password='1234tweet')
+        self.assertTrue(login_status)  # ログイン状態でアクセス
         aviso_list_url = reverse(ViewName.AVISO_LIST)
         response = self.client.get(aviso_list_url)
-        avisos_response = response.context[ ContextKey.AVISO_OBJECTS ]
+        avisos_response = response.context[ContextKey.AVISO_OBJECTS]
         self.assertEqual(avisos_response.count(), 4)
-
-
-
-
-
-
 
 
 ##################################################
@@ -157,21 +143,20 @@ class ItemContactPostSaveTest(TestCase):
     """
     """テスト対象
     avisos/models.py item_contact_post_save_receiver
-    item_contacts/views.py 
+    item_contacts/views.py
 
     """
     """テスト項目
-    済 ItemContactオブジェクトが生成されたらItem.item_contacts(ManyToManyField)に当該オブジェクトが追加される。*1
-    済 ItemContactオブジェクトが生成されたらAvisoオブジェクトが少なくと1つ以上生成される。 *2
-    保留 item_m2m_changed_receiver内のitem_contact_objectsが時系列順にItemContactオブジェクトが並んでいる。 *3
-    済 item_contact_objは時系列順に並べたitem_contact_objectsのうち最後のオブジェクトである。*4
-    済 コメント前のitem_contact_objectsのカウントが0の場合、記事作成者以外のユーザーがコメントすると生成されるAvisoオブジェクトは一つのみである。*5
-    済 コメント前のitem_contact_objectsのカウントが0の場合、記事作成者以外のユーザーがコメントすると生成されるAvisoオブジェクトのaviso_user値は記事作成者のProfileオブジェクトである。*6
-    済 コメント前のitem_contact_objectsのカウントが0の場合、記事作成者のユーザーがコメントすると生成されるAvisoオブジェクトは0個である。*7
-    済 item_contact_objectsのカウントが0以外で生成されるAvisoオブジェクト数は記事作成者がコメントを送信する場合には、記事作成者を除くItemContactオブジェクトの重複なしのユーザー数と一致する。*8
-    済 item_contact_objectsのカウントが0以外で生成されるAvisoオブジェクト数は記事作成者以外がコメントを送信する場合には、当該ユーザーを除くItemContactオブジェクトの重複なしのユーザー数と一致する。*9
-    済 item_contact_objectsのカウントが0以外の場合、生成されるAvisoオブジェクトのaviso_user値はコメント送信者以外のProfileオブジェクトである。*10
-    済 ダイレクトメッセージを送信するとAvisoオブジェクトが生成される
+    ItemContactオブジェクトが生成されたらItem.item_contacts(ManyToManyField)に当該オブジェクトが追加される。*1
+    ItemContactオブジェクトが生成されたらAvisoオブジェクトが少なくと1つ以上生成される。 *2
+    item_contact_objは時系列順に並べたitem_contact_objectsのうち最後のオブジェクトである。*4
+    コメント前のitem_contact_objectsのカウントが0の場合、記事作成者以外のユーザーがコメントすると生成されるAvisoオブジェクトは一つのみである。*5
+    コメント前のitem_contact_objectsのカウントが0の場合、記事作成者以外のユーザーがコメントすると生成されるAvisoオブジェクトのaviso_user値は記事作成者のProfileオブジェクトである。*6
+    コメント前のitem_contact_objectsのカウントが0の場合、記事作成者のユーザーがコメントすると生成されるAvisoオブジェクトは0個である。*7
+    item_contact_objectsのカウントが0以外で生成されるAvisoオブジェクト数は記事作成者がコメントを送信する場合には、記事作成者を除くItemContactオブジェクトの重複なしのユーザー数と一致する。*8
+    item_contact_objectsのカウントが0以外で生成されるAvisoオブジェクト数は記事作成者以外がコメントを送信する場合には、当該ユーザーを除くItemContactオブジェクトの重複なしのユーザー数と一致する。*9
+    item_contact_objectsのカウントが0以外の場合、生成されるAvisoオブジェクトのaviso_user値はコメント送信者以外のProfileオブジェクトである。*10
+    ダイレクトメッセージを送信するとAvisoオブジェクトが生成される
 
     """
     def setUp(self):
@@ -185,13 +170,12 @@ class ItemContactPostSaveTest(TestCase):
 
         """
         category_obj = Category.objects.create(number="Donar o vender")
-        post_user    = User.objects.create_user(username="post_user", email="test_post_user@gmail.com", password='12345')
-        access_user  = User.objects.create_user(username="access_user", email="test_access_user@gmail.com", password='12345')
-        item_obj1    = Item.objects.create(user=post_user, id=1, title="テストアイテム１", description="説明です。", category=category_obj, adm0="huh", adm1="cmks", adm2="dks")
+        post_user = User.objects.create_user(username="post_user", email="test_post_user@gmail.com", password='12345')
+        access_user = User.objects.create_user(username="access_user", email="test_access_user@gmail.com", password='12345')
+        item_obj1 = Item.objects.create(user=post_user, id=1, title="テストアイテム１", description="説明です。", category=category_obj, adm0="huh", adm1="cmks", adm2="dks")
         contact_user1 = User.objects.create_user(username="contact_user1", email="test_contact_user1@gmail.com", password='12345')
         contact_user2 = User.objects.create_user(username="contact_user2", email="test_contact_user1@gmail.com", password='12345')
         contact_user3 = User.objects.create_user(username="contact_user3", email="test_contact_user1@gmail.com", password='12345')
-
 
     def test_should_add_to_itemcontact_object_to_itemcontacts(self):
         # ItemContactオブジェクトが生成されたらItem.item_contacts(ManyToManyField)に当該オブジェクトが追加される。*1
@@ -199,22 +183,21 @@ class ItemContactPostSaveTest(TestCase):
         item_obj1 = Item.objects.get(id=1)
         before_adding_itemcontact_count = item_obj1.item_contacts.all().count()
         self.assertEqual(before_adding_itemcontact_count, 0)
-        contact_user1 = User.objects.get(username="contact_user1") # *1
+        contact_user1 = User.objects.get(username="contact_user1")  # *1
         self.client = Client()
         login_status = self.client.login(username="contact_user1", password='12345')
-        self.assertTrue(login_status) #ログイン状態でアクセス
-        #送信データの適切性検証
-        data = {'item_obj_id':1,  'message': "ばばば"}
+        self.assertTrue(login_status)  # ログイン状態でアクセス
+        # 送信データの適切性検証
+        data = {'item_obj_id': 1, 'message': "ばばば"}
         form = ItemContactModelForm(data)
-        self.assertTrue(form.is_valid()) #データの検証
+        self.assertTrue(form.is_valid())  # データの検証
 
         response = self.client.post(reverse(ViewName.ITEM_CONTACT), data, follow=True)
         self.assertEqual(response.status_code, 200)
         templates = [ele.name for ele in response.templates]
         self.assertTrue(TemplateName.ITEM_DETAIL in templates)
         after_adding_itemcontact_count = Item.objects.get(id=1).item_contacts.all().count()
-        self.assertEqual(after_adding_itemcontact_count, 1) # *1, *2 *5
-
+        self.assertEqual(after_adding_itemcontact_count, 1)  # *1, *2 *5
 
 
     def test_should_be_old_first_order_od_itemcontact_objects(self):
@@ -222,18 +205,18 @@ class ItemContactPostSaveTest(TestCase):
         # item_contact_objは時系列順に並べたitem_contact_objectsのうち最後のオブジェクトである。*4
         self.client = Client()
         login_status = self.client.login(username="contact_user1", password='12345')
-        self.assertTrue(login_status) #ログイン状態でアクセス
-        response = self.client.post(reverse(ViewName.ITEM_CONTACT), {'item_obj_id':1,  'message': "ばばば"}, follow=True)
+        self.assertTrue(login_status)  # ログイン状態でアクセス
+        response = self.client.post(reverse(ViewName.ITEM_CONTACT), {'item_obj_id': 1,  'message': "ばばば"}, follow=True)
 
         self.client = Client()
         login_status = self.client.login(username="contact_user2", password='12345')
-        self.assertTrue(login_status) #ログイン状態でアクセス
-        response = self.client.post(reverse(ViewName.ITEM_CONTACT), {'item_obj_id':1,  'message': "びびび"}, follow=True)
+        self.assertTrue(login_status)  # ログイン状態でアクセス
+        response = self.client.post(reverse(ViewName.ITEM_CONTACT), {'item_obj_id': 1,  'message': "びびび"}, follow=True)
 
         self.client = Client()
         login_status = self.client.login(username="contact_user3", password='12345')
-        self.assertTrue(login_status) #ログイン状態でアクセス
-        response = self.client.post(reverse(ViewName.ITEM_CONTACT), {'item_obj_id':1,  'message': "ぶぶぶ"}, follow=True)
+        self.assertTrue(login_status)  # ログイン状態でアクセス
+        response = self.client.post(reverse(ViewName.ITEM_CONTACT), {'item_obj_id': 1,  'message': "ぶぶぶ"}, follow=True)
 
         item_contact_objects = response.context["item_contact_objects"]
         self.assertEqual(item_contact_objects.count(), 3)
@@ -245,38 +228,38 @@ class ItemContactPostSaveTest(TestCase):
         item_obj1 = Item.objects.get(id=1)
         before_adding_itemcontact_count = item_obj1.item_contacts.all().count()
         self.assertEqual(before_adding_itemcontact_count, 0)
-        self.assertEqual(Aviso.objects.all().count(),0)
+        self.assertEqual(Aviso.objects.all().count(), 0)
 
-        #contact_user1 = User.objects.get(username="contact_user1") # *1
+        # contact_user1 = User.objects.get(username="contact_user1") # *1
         self.client = Client()
         login_status = self.client.login(username="contact_user1", password='12345')
-        self.assertTrue(login_status) #ログイン状態でアクセス
-        #送信データの適切性検証
-        data = {'item_obj_id':1,  'message': "ばばば"}
+        self.assertTrue(login_status)  # ログイン状態でアクセス
+        # 送信データの適切性検証
+        data = {'item_obj_id': 1,  'message': "ばばば"}
         form = ItemContactModelForm(data)
-        self.assertTrue(form.is_valid()) #データの検証
+        self.assertTrue(form.is_valid())  # データの検証
 
         response = self.client.post(reverse(ViewName.ITEM_CONTACT), data, follow=True)
         self.assertEqual(response.status_code, 200)
-        #templates = [ele.name for ele in response.templates]
+        # templates = [ele.name for ele in response.templates]
         self.assertTrue(TemplateName.ITEM_DETAIL in [ele.name for ele in response.templates])
         after_adding_itemcontact_count = Item.objects.get(id=1).item_contacts.all().count()
-        self.assertEqual(after_adding_itemcontact_count, before_adding_itemcontact_count+1) # *5
+        self.assertEqual(after_adding_itemcontact_count, before_adding_itemcontact_count+1)  # *5
         item_obj1 = Item.objects.get(id=1)
         self.assertEqual(Aviso.objects.filter(content_type=ContentType.objects.get(model="itemcontact")).first().aviso_user.user, item_obj1.user) # *6
 
 
     def test_should_no_be_created_aviso_by_owner_user(self):
-        #コメント前のitem_contact_objectsのカウントが0の場合、記事作成者のユーザーがコメントすると生成されるAvisoオブジェクトは0個である。*7
+        # コメント前のitem_contact_objectsのカウントが0の場合、記事作成者のユーザーがコメントすると生成されるAvisoオブジェクトは0個である。*7
         item_obj1 = Item.objects.get(id=1)
         before_adding_itemcontact_count = item_obj1.item_contacts.all().count()
         self.assertEqual(before_adding_itemcontact_count, 0)
         before_aviso_count = Aviso.objects.all().count()
-        self.assertEqual(before_aviso_count,0)  
+        self.assertEqual(before_aviso_count, 0)  
         self.client = Client()
         login_status = self.client.login(username="post_user", password='12345')
-        self.assertTrue(login_status) #ログイン状態でアクセス
-        #送信データの適切性検証
+        self.assertTrue(login_status)  # ログイン状態でアクセス
+        # 送信データの適切性検証
         data = {'item_obj_id':1,  'message': "ばばば"}
         form = ItemContactModelForm(data)
         self.assertTrue(form.is_valid()) #データの検証
@@ -297,40 +280,40 @@ class ItemContactPostSaveTest(TestCase):
         contact_user1 = User.objects.get(username="contact_user1")
         contact_user2 = User.objects.get(username="contact_user2")
         contact_user3 = User.objects.get(username="contact_user3")
-        post_user     = User.objects.get(username="post_user")
+        post_user = User.objects.get(username="post_user")
         self.client = Client()
         login_status = self.client.login(username="contact_user1", password='12345')
-        self.assertTrue(login_status) #ログイン状態でアクセス
-        #送信データの適切性検証
-        data = {'item_obj_id':1,  'message': "ばばば"}
+        self.assertTrue(login_status)  # ログイン状態でアクセス
+        # 送信データの適切性検証
+        data = {'item_obj_id': 1,  'message': "ばばば"}
         form = ItemContactModelForm(data)
-        self.assertTrue(form.is_valid()) #データの検証
+        self.assertTrue(form.is_valid())  # データの検証
         response = self.client.post(reverse(ViewName.ITEM_CONTACT), data, follow=True)
 
-        #送信データの適切性検証
-        data = {'item_obj_id':1,  'message': "ばばば2"}
+        # 送信データの適切性検証
+        data = {'item_obj_id': 1,  'message': "ばばば2"}
         form = ItemContactModelForm(data)
-        self.assertTrue(form.is_valid()) #データの検証
+        self.assertTrue(form.is_valid())  # データの検証
         response = self.client.post(reverse(ViewName.ITEM_CONTACT), data, follow=True)
         self.client = Client()
         login_status = self.client.login(username="contact_user2", password='12345')
-        self.assertTrue(login_status) #ログイン状態でアクセス
-        #送信データの適切性検証
-        data = {'item_obj_id':1,  'message': "びびび"}
+        self.assertTrue(login_status)  # ログイン状態でアクセス
+        # 送信データの適切性検証
+        data = {'item_obj_id': 1, 'message': "びびび"}
         form = ItemContactModelForm(data)
-        self.assertTrue(form.is_valid()) #データの検証
+        self.assertTrue(form.is_valid())  # データの検証
         response = self.client.post(reverse(ViewName.ITEM_CONTACT), data, follow=True)
 
         self.client = Client()
         login_status = self.client.login(username="contact_user3", password='12345')
-        self.assertTrue(login_status) #ログイン状態でアクセス
-        #送信データの適切性検証
-        data = {'item_obj_id':1,  'message': "ぶぶぶ"}
+        self.assertTrue(login_status)  # ログイン状態でアクセス
+        # 送信データの適切性検証
+        data = {'item_obj_id': 1,  'message': "ぶぶぶ"}
         form = ItemContactModelForm(data)
-        self.assertTrue(form.is_valid()) #データの検証
+        self.assertTrue(form.is_valid())  # データの検証
         response = self.client.post(reverse(ViewName.ITEM_CONTACT), data, follow=True)
 
-        #記事作成者がコメント送信する前の値チェック
+        # 記事作成者がコメント送信する前の値チェック
         item_obj1 = Item.objects.get(id=1)
         item_contacts_count = item_obj1.item_contacts.all().count()
         self.assertEqual(item_contacts_count, 4)
@@ -342,61 +325,59 @@ class ItemContactPostSaveTest(TestCase):
 
         self.client = Client()
         login_status = self.client.login(username="post_user", password='12345')
-        self.assertTrue(login_status) #ログイン状態でアクセス
-        #送信データの適切性検証
-        data = {'item_obj_id':1,  'message': "ぶぶぶjjj"}
+        self.assertTrue(login_status)  # ログイン状態でアクセス
+        # 送信データの適切性検証
+        data = {'item_obj_id': 1,'message': "ぶぶぶjjj"}
         form = ItemContactModelForm(data)
-        self.assertTrue(form.is_valid()) #データの検証
+        self.assertTrue(form.is_valid())  # データの検証
         response = self.client.post(reverse(ViewName.ITEM_CONTACT), data, follow=True)
-        self.assertEqual(Item.objects.get(id=1).item_contacts.all().count(), item_contacts_count+1) #*8
+        self.assertEqual(Item.objects.get(id=1).item_contacts.all().count(), item_contacts_count+1)  # *8
 
         self.assertEqual(Aviso.objects.filter(content_type=ContentType.objects.get(model="itemcontact")).count(), before_aviso_objects_count_of_itemcontact+profiles_count)
         for aviso_obj in Aviso.objects.filter(content_type=ContentType.objects.get(model="itemcontact"))[before_aviso_objects_count_of_itemcontact+1:]:
-            self.assertFalse(aviso_obj.aviso_user.user == post_user) # *10
+            self.assertFalse(aviso_obj.aviso_user.user == post_user)  # *10
 
 
+    def test_should_equal_aviso_objects_itemcontact_objects_by_contact_user(self):
+        # item_contact_objectsのカウントが0以外で生成されるAvisoオブジェクト数は記事作成者以外がコメントを送信する場合には、当該ユーザーを除くItemContactオブジェクトの重複なしのユーザー数と一致する。*9
 
-    def test_should_equal_aviso_objects_itemcontact_objects_by_contact_user(self): 
-        #item_contact_objectsのカウントが0以外で生成されるAvisoオブジェクト数は記事作成者以外がコメントを送信する場合には、当該ユーザーを除くItemContactオブジェクトの重複なしのユーザー数と一致する。*9
-        
-        
         contact_user1 = User.objects.get(username="contact_user1")
         contact_user2 = User.objects.get(username="contact_user2")
         contact_user3 = User.objects.get(username="contact_user3")
-        post_user     = User.objects.get(username="post_user")
+        post_user = User.objects.get(username="post_user")
         self.client = Client()
         login_status = self.client.login(username="contact_user1", password='12345')
-        self.assertTrue(login_status) #ログイン状態でアクセス
-        #送信データの適切性検証
-        data = {'item_obj_id':1,  'message': "ばばば"}
+        self.assertTrue(login_status)  # ログイン状態でアクセス
+        # 送信データの適切性検証
+        data = {'item_obj_id': 1, 'message': "ばばば"}
         form = ItemContactModelForm(data)
-        self.assertTrue(form.is_valid()) #データの検証
+        self.assertTrue(form.is_valid())  # データの検証
         response = self.client.post(reverse(ViewName.ITEM_CONTACT), data, follow=True)
 
-        #送信データの適切性検証
-        data = {'item_obj_id':1,  'message': "ばばば2"}
+        # 送信データの適切性検証
+        data = {'item_obj_id': 1,  'message': "ばばば2"}
         form = ItemContactModelForm(data)
-        self.assertTrue(form.is_valid()) #データの検証
+        self.assertTrue(form.is_valid())  # データの検証
         response = self.client.post(reverse(ViewName.ITEM_CONTACT), data, follow=True)
         self.client = Client()
         login_status = self.client.login(username="contact_user2", password='12345')
-        self.assertTrue(login_status) #ログイン状態でアクセス
-        #送信データの適切性検証
-        data = {'item_obj_id':1,  'message': "びびび"}
+        self.assertTrue(login_status)  # ログイン状態でアクセス
+        # 送信データの適切性検証
+        data = {'item_obj_id': 1,  'message': "びびび"}
         form = ItemContactModelForm(data)
-        self.assertTrue(form.is_valid()) #データの検証
+        self.assertTrue(form.is_valid())  # データの検証
         response = self.client.post(reverse(ViewName.ITEM_CONTACT), data, follow=True)
 
         self.client = Client()
         login_status = self.client.login(username="contact_user3", password='12345')
-        self.assertTrue(login_status) #ログイン状態でアクセス
-        #送信データの適切性検証
-        data = {'item_obj_id':1,  'message': "ぶぶぶ"}
+        self.assertTrue(login_status)  # ログイン状態でアクセス
+        # 送信データの適切性検証
+        data = {'item_obj_id': 1,  'message': "ぶぶぶ"}
         form = ItemContactModelForm(data)
-        self.assertTrue(form.is_valid()) #データの検証
+        self.assertTrue(form.is_valid())  # データの検証
         response = self.client.post(reverse(ViewName.ITEM_CONTACT), data, follow=True)
 
-        #記事作成者以外がコメント送信する前の値チェック
+        # 記事作成者以外がコメント送信する前の値チェック
         item_obj1 = Item.objects.get(id=1)
         item_contacts_count = item_obj1.item_contacts.all().count()
         self.assertEqual(item_contacts_count, 4)
@@ -408,14 +389,13 @@ class ItemContactPostSaveTest(TestCase):
 
         self.client = Client()
         login_status = self.client.login(username="contact_user3", password='12345')
-        self.assertTrue(login_status) #ログイン状態でアクセス
-        #送信データの適切性検証
-        data = {'item_obj_id':1,  'message': "ぶぶぶjjj"}
+        self.assertTrue(login_status)  # ログイン状態でアクセス
+        # 送信データの適切性検証
+        data = {'item_obj_id': 1, 'message': "ぶぶぶjjj"}
         form = ItemContactModelForm(data)
-        self.assertTrue(form.is_valid()) #データの検証
+        self.assertTrue(form.is_valid())  # データの検証
         response = self.client.post(reverse(ViewName.ITEM_CONTACT), data, follow=True)
         self.assertEqual(Item.objects.get(id=1).item_contacts.all().count(), item_contacts_count+1) #*9
-        
         self.assertEqual(Aviso.objects.filter(content_type=ContentType.objects.get(model="itemcontact")).count(), before_aviso_objects_count_of_itemcontact+profiles_count)
 
 
@@ -447,9 +427,6 @@ class ItemContactPostSaveTest(TestCase):
         after_aviso_objects_count = Aviso.objects.all().count()
         # Avisoオブジェクトが生成されたかチェック
         self.assertEqual(after_aviso_objects_count, new1_aviso_objects_count+1)
-
-
-
 
 
 class UserPostSaveTest(TestCase):
@@ -611,15 +588,14 @@ class UserPostSaveTest(TestCase):
 
 
     def test_should_be_None_of_device_token_obj_devicetoken_attribute(self):
-        #Userオブジェクトが生成された時にはDeviceTokenオブジェクトのdevice_token属性値はNoneである
+        # Userオブジェクトが生成された時にはDeviceTokenオブジェクトのdevice_token属性値はNoneである
 
-        #Userオブジェクトを作成する
+        # Userオブジェクトを作成する
         self.SIGN_UP_DATA["email"] = "hfhsifhidrgr@gmail.com"
         self.SIGN_UP_DATA["password1"] = "1234tweet"
         self.SIGN_UP_DATA["password2"] = "1234tweet"
         data = self.SIGN_UP_DATA
         response = self.client.post(self.SIGN_UP_URL, data)
-
         user_obj = User.objects.get(email="hfhsifhidrgr@gmail.com")
         device_token_obj = DeviceToken.objects.all().first()
         self.assertEqual(device_token_obj.device_token, None)

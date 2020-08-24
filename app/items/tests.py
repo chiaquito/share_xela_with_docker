@@ -15,7 +15,6 @@ from config.tests.utils import *
 from config.constants import ViewName
 from config.constants import TemplateName
 from config.constants import ContextKey
-import mock
 import json
 
 
