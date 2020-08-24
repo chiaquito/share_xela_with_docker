@@ -1,11 +1,17 @@
+"""
+フロントエンド変更のためseleniumによるテストは
+余裕があるまで再構築しない
+
 from django.test import LiveServerTestCase
 from django.urls import reverse_lazy
-#from selenium.webdriver.chrome.webdriver import WebDriver
+from selenium.webdriver.chrome.webdriver import WebDriver
 from selenium import webdriver
 from webdriver_manager.chrome import ChromeDriverManager
 
 from django.contrib.auth.models import User
 from config.constants import ViewName
+
+"""
 
 """
 

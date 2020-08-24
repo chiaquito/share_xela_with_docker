@@ -3,60 +3,50 @@ from django.views.generic import View
 # Create your views here.
 from .forms import ContactModelForm
 from .strings import emailSubject, content, sender, strMessage
-from django.contrib.auth.models import User
 from django.core.mail import send_mail
 from django.contrib import messages
 
 
-
-
-from api.firebase_cloud_messaging import FireBaseMassagingDeal
-
-
 class ContactView(View):
-	"""
-	非会員でもメッセージを送れる仕組みに変更する
-	"""
+    """
+    非会員でもメッセージを送れる仕組みに変更する
+    """
 
+    def get(self, request, *args, **kwargs):
+        """機能
 
-	def get(self, request, *args, **kwargs):
-		"""機能
+        endpoint: "contacts/inquiries/"
+        name: "contacts:inquiries"
+        """
+        context = {}
+        form = ContactModelForm()
+        context["form"] = form
+        return render(request, "contacts/contact.html", context)
 
-		endpoint: "contacts/inquiries/"
-		name: "contacts:inquiries"
-		"""
-		context = {}	
-		form = ContactModelForm()
-		context["form"] = form
-		return render(request, "contacts/contact.html", context)
+    def post(self, request, *args, **kwargs):
+        """機能
 
+        endpoint: "contacts/inquiries/"
+        name: "contacts:inquiries"
+        """
+        context = {}
+        form = ContactModelForm(request.POST)
+        if form.is_valid():
+            form.save()
+            # print(dir(form))
+            # print(form.cleaned_data)
+            clientEmailAddress = form.cleaned_data["email_address"]
 
-	def post(self, request, *args, **kwargs):
-		"""機能
-		
-		endpoint: "contacts/inquiries/"
-		name: "contacts:inquiries"
-		"""		
-		context = {}
-		form = ContactModelForm(request.POST)
-		if form.is_valid():
-			form.save()
-			#print(dir(form))
-			#print(form.cleaned_data)
-			clientEmailAddress = form.cleaned_data["email_address"]
+            send_mail(
+                emailSubject,
+                content,
+                sender,
+                [clientEmailAddress, ],
+                )
+            messages.info(self.request, strMessage)
 
-			send_mail(
-				emailSubject,
-				content,
-				sender,
-				[clientEmailAddress,],
-				)
-			
-			messages.info(self.request, strMessage)
-
-			return redirect('home')
-		else:
-			#print("FORM IS INVALID")
-			context["form"] = form
-			return render(request, "contacts/contact.html", context)
-
+            return redirect('home')
+        else:
+            # print("FORM IS INVALID")
+            context["form"] = form
+            return render(request, "contacts/contact.html", context)

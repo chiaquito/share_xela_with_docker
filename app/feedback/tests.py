@@ -1,6 +1,6 @@
 from django.test import TestCase
 from django.test import Client
-
+from django.urls import reverse_lazy
 # Create your tests here.
 from feedback.models import Feedback
 from feedback.views import FeedbackView

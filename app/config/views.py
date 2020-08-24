@@ -1,11 +1,9 @@
 from django.shortcuts import render, redirect
 from django.views.generic import View
 from categories.models import Category
-from avisos.models import Aviso
 from profiles.models import Profile
 from items.models import Item
 from django.db.models import Q
-
 from .forms import UsernameChangeForm, EmailAddressChangeForm
 from django.contrib.auth.models import User
 from allauth.account.models import EmailAddress
@@ -14,12 +12,13 @@ from api.constants import SerializerContextKey
 from .constants import TemplateName
 from .utils import add_aviso_objects
 
-
-
+from django.contrib.gis.geos import GEOSGeometry
+from items.forms import ItemModelForm
+from rest_framework.views import APIView
+from django.http import HttpResponse
 
 
 class HomeKaizenView(View):
-
 
     def get(self, request, *args, **kwargs):
         """
@@ -33,23 +32,17 @@ class HomeKaizenView(View):
         item_objects_habitacion = Item.objects.filter(Q(category__number="4")|Q(category__number="5")|Q(category__number="6")|Q(category__number="7")).exclude(active=False).order_by("-created_at")[:4]
         item_objects_trabajo = Item.objects.filter(Q(category__number="8")|Q(category__number="9")).exclude(active=False).order_by("-created_at")[:4]
         item_objects_tienda = Item.objects.filter(category__number="10").exclude(active=False).order_by("-created_at")[:4]        
-        
+
         # データの格納
         context = {}
-        context[SerializerContextKey.ITEM_OBJECTS_COSAS]      = item_objects_cosas
+        context[SerializerContextKey.ITEM_OBJECTS_COSAS] = item_objects_cosas
         context[SerializerContextKey.ITEM_OBJECTS_HABITACION] = item_objects_habitacion
-        context[SerializerContextKey.ITEM_OBJECTS_TRABAJO]    = item_objects_trabajo
-        context[SerializerContextKey.ITEM_OBJECTS_TIENDA]     = item_objects_tienda
+        context[SerializerContextKey.ITEM_OBJECTS_TRABAJO] = item_objects_trabajo
+        context[SerializerContextKey.ITEM_OBJECTS_TIENDA] = item_objects_tienda
 
         # avisoオブジェクトデータの格納        
         context = add_aviso_objects(request, context)
         return render(request, TemplateName.HOME, context)
-
-
- 
-
-
-
 
 
 class HowtoView(View):
@@ -67,23 +60,18 @@ class HowtoView(View):
         return render(request, TemplateName.HOWTO, context)
 
 
-
-
 class CheckProfileView(View):
-	"""
-	サインアップのリダイレクト先としてこちらのViewを通す
-	まず、request.userのProfileオブジェクトが存在しているかをチェックする
-	もし無いなら取引エリアのみのフォームを表示するページにリダイレクトさせる。
-	あるようならhomeページにリダイレクトさせる。
-	"""
-	def get(self, request, *args, **kwargs):
-		if Profile.objects.filter(user=request.user).exists() == True:
-			return redirect('home')
-		elif Profile.objects.filter(user=request.user).exists() == False:
-			return redirect('profiles:profile_creating')
-
-
-
+    """
+    サインアップのリダイレクト先としてこちらのViewを通す
+    まず、request.userのProfileオブジェクトが存在しているかをチェックする
+    もし無いなら取引エリアのみのフォームを表示するページにリダイレクトさせる。
+    あるようならhomeページにリダイレクトさせる。
+    """
+    def get(self, request, *args, **kwargs):
+        if Profile.objects.filter(user=request.user).exists() == True:
+            return redirect('home')
+        elif Profile.objects.filter(user=request.user).exists() == False:
+            return redirect('profiles:profile_creating')
 
 
 class PrivacyView(View):
@@ -91,7 +79,6 @@ class PrivacyView(View):
         context = {}
         context = add_aviso_objects(request, context)
         return render(request, TemplateName.PRIVACY, context)
-
 
 
 class UsernameChangeView(View):
@@ -102,18 +89,17 @@ class UsernameChangeView(View):
         context = add_aviso_objects(request, context)
         return render(request, TemplateName.CHANGE_USERNAME, context)
 
-
     def post(self, request, *args, **kwargs):
         context = {}
         form = UsernameChangeForm(request.POST)
         if form.is_valid():
             username = form.cleaned_data["username"]
-            #print(username)
+            # print(username)
             user_obj = User.objects.get(username=request.user.username)
-            #print(user_obj)
+            # print(user_obj)
             user_obj.username = username
             user_obj.save()
-            #messages.info(request,"usernameを変更しました。")
+            # messages.info(request,"usernameを変更しました。")
             messages.info(request, "Nombre de usuario ha cambiado")
             return redirect('profiles:profile')
         else:
@@ -121,21 +107,19 @@ class UsernameChangeView(View):
             return render(request, TemplateName.CHANGE_USERNAME, context)
 
 
-
 class EmailAddressChangeView(View):
 
     def get(self, request, *args, **kwargs):
         """機能
-        
+
         endpoint: 'email_change/'
         name: "email_change"
         """
         context = {}
-        form    = EmailAddressChangeForm()
+        form = EmailAddressChangeForm()
         context["form"] = form
         context = add_aviso_objects(request, context)
         return render(request, TemplateName.CHANGE_EMAIL, context)
-
 
     def post(self, request, *args, **kwargs):
         """機能
@@ -144,11 +128,11 @@ class EmailAddressChangeView(View):
         name: "email_change"
         """
         context = {}
-        form    = EmailAddressChangeForm(request.POST)
+        form = EmailAddressChangeForm(request.POST)
         if form.is_valid():
-			
-            email    = form.cleaned_data["email"]
-            if User.objects.filter(email=email).exists() == False :
+
+            email = form.cleaned_data["email"]
+            if User.objects.filter(email=email).exists() is False:
                 user_obj = User.objects.get(username=request.user.username)
                 user_obj.email = email
                 user_obj.save()
@@ -157,10 +141,10 @@ class EmailAddressChangeView(View):
                 email_obj.save()
                 messages.info(request, "Dirección de correo electrónico ha cambiado")
                 return redirect('profiles:profile')
-            
-            if User.objects.filter(email=email).exists() == True :
+
+            if User.objects.filter(email=email).exists() is True:
                 messages.info(request, "La dirección de correo electrónico ya está registrada.")
-                #messages.info(request, "そのメールアドレスはすでに登録されています。")
+                # messages.info(request, "そのメールアドレスはすでに登録されています。")
                 context["form"] = form
                 return render(request, TemplateName.CHANGE_EMAIL, context)
 
@@ -168,20 +152,6 @@ class EmailAddressChangeView(View):
             context["form"] = form
             return render(request, TemplateName.CHANGE_EMAIL, context)
 
-
-
-
-
-
-
-
-
-
-from django.contrib.gis.geos import GEOSGeometry
-from items.forms import ItemModelForm
-from rest_framework.views import APIView
-from rest_framework.response import Response
-from django.http import HttpResponse
 
 class ListMyDataView(APIView):
     def post(self, request, *args, **kwargs):
@@ -196,31 +166,30 @@ class ListMyDataView(APIView):
         user = User.objects.get(email="chiaki.amazon@gmail.com")
         new_dict = request.data.copy()
 
-        category = request.data["category_"] 
+        category = request.data["category_"]
         cate_obj = Category.objects.get(number=category)
         new_dict["category"] = cate_obj.id
         new_dict["point"] = GEOSGeometry(request.data["point_"])
-        new_dict["user"] = user 
-        #print(request.data)
-        #print(new_dict)
+        new_dict["user"] = user
+        # print(request.data)
+        # print(new_dict)
 
         title = request.data["title"]
         price = request.data["price"]
         if len(Item.objects.filter(title=title).filter(price=price)) >= 1:
-            print("既に登録済み")
+            # print("既に登録済み")
             return HttpResponse("登録済みなので登録しない")
 
-
-        print(request.FILES)
+        # print(request.FILES)
         form = ItemModelForm(new_dict)
-        #print(form.is_valid())
-        #print([ele for ele in form.errors])
+        # print(form.is_valid())
+        # print([ele for ele in form.errors])
         if form.is_valid():
-            obj   = form.save(commit=False)
+            obj = form.save(commit=False)
             adm1 = request.POST["adm1"]
             adm2 = request.POST["adm2"]
             obj.adm1 = adm1
-            obj.adm2 = adm2            
+            obj.adm2 = adm2
             obj.point = new_dict["point"]
             obj.radius = new_dict["radius"]
             obj.user = user
@@ -228,14 +197,13 @@ class ListMyDataView(APIView):
                 obj.image1 = request.FILES["file0"]
             except:
                 pass
-            try:    
+            try:
                 obj.image2 = request.FILES["file1"]
             except:
                 pass
-            try:    
+            try:
                 obj.image3 = request.FILES["file2"]
             except:
                 pass
             obj.save()
         return HttpResponse("Response")
-

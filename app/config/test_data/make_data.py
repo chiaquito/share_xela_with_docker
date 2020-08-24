@@ -1,9 +1,8 @@
 from items.models import Item
 from config.settings.dev_settings import DEBUG
 import random
-
 from django.contrib.auth.models import User
-from items.models import Item
+# from items.models import Item
 from categories.models import Category
 from avisos.models import Aviso
 from feedback.models import Feedback
@@ -12,7 +11,8 @@ from prefecturas.models import RegionClassed
 from api.models import DeviceToken
 
 
-print("スクリプトを実行")
+print("サンプルデータを作成するスクリプトを実行")
+
 """
 python manage.py shell
 from config.test_data.make_data import main
@@ -21,32 +21,26 @@ main()
 """
 
 
-
-
-
-
 INSTALLED_APPS_FOR_TEST_DATA = [
     'feedback',
-
     'avisos',
     'api',
     'categories',
     'contacts',
     'direct_messages',
     'favorite',
-    
     'maps',
     'mypages',
     'item_contacts',
     'items',
     'prefecturas',
     'profiles',
-    'solicitudes',    
+    'solicitudes',
 ]
 
 
-
 title_cosa_list =[
+
         'libros de medicina',
         'bota',
         'televisión',
@@ -77,11 +71,10 @@ title_aviso_list = [
         'La mascota de mi perro se ha ido.',
         '¿Te gustaría estudiar ruso con nosotros?',
         'Mañana una batalla de rap en el parque.',
-
 ]
 
 
-title_habitacion_alquilar_list =[
+title_habitacion_alquilar_list = [
 
         'hay una habitación disponible. Es espacioso.',
         'Tenemos habitaciones cerca  de San Carlos.',
@@ -91,13 +84,12 @@ title_habitacion_alquilar_list =[
         'habitación disponible. Aceptamos viajeros.',
 ]
 
-title_habitacion_buscar_list =[
+
+title_habitacion_buscar_list = [
         'buscando una habitación cerca de San Carlos.',
         'buscando una habitación barata.',
         'habitación para alojar a los viajeros.', 
 ]
-
-
 
 
 description_sample = """
@@ -139,10 +131,6 @@ description_sample_ja = """
 """
 
 
-
-
-
-
 class TestData(object):
 
     def delete_objects(self):
@@ -152,7 +140,6 @@ class TestData(object):
         Profile.objects.filter(user__is_superuser=False).delete()
         Item.objects.all().delete()
         User.objects.all().filter(is_superuser=False).delete()
-
 
     def load_set_up(self):
         from config.set_up import main
@@ -166,7 +153,7 @@ class TestData(object):
             adm2 = random.choice(rc_obj.municipios.all()).adm2_es
             profile_obj = Profile.objects.get(user=chiaki)
             profile_obj.adm1 = rc_obj.departamento.adm1_es
-            profile_obj.adm2 =adm2
+            profile_obj.adm2 = adm2
             profile_obj.save()
         except:
             print("error")
@@ -177,8 +164,8 @@ class TestData(object):
             adm2 = random.choice(rc_obj.municipios.all()).adm2_es
             profile_obj = Profile.objects.get(user=yan)
             profile_obj.adm1 = rc_obj.departamento.adm1_es
-            profile_obj.adm2 =adm2
-            profile_obj.save()            
+            profile_obj.adm2 = adm2
+            profile_obj.save()
         except:
             print("error")
             pass
@@ -188,8 +175,8 @@ class TestData(object):
             adm2 = random.choice(rc_obj.municipios.all()).adm2_es
             profile_obj = Profile.objects.get(user=tom)
             profile_obj.adm1 = rc_obj.departamento.adm1_es
-            profile_obj.adm2 =adm2
-            profile_obj.save()                        
+            profile_obj.adm2 = adm2
+            profile_obj.save()
         except:
             print("error")
             pass
@@ -199,15 +186,15 @@ class TestData(object):
             adm2 = random.choice(rc_obj.municipios.all()).adm2_es
             profile_obj = Profile.objects.get(user=taka)
             profile_obj.adm1 = rc_obj.departamento.adm1_es
-            profile_obj.adm2 =adm2
-            profile_obj.save()                        
+            profile_obj.adm2 = adm2
+            profile_obj.save()
         except:
             print("error")
             pass
 
     def make_items(self):
-        #data_template = {user, title, description, price, category, adm0, adm1, adm2, point, radius, }
-        
+        #　data_template = {user, title, description, price, category, adm0, adm1, adm2, point, radius, }
+
         for num in range(60):
             data = {}
             user_obj = random.choice(User.objects.all())
@@ -225,7 +212,6 @@ class TestData(object):
                 data["title"] = title
             elif category_obj.number == "5":
                 title = random.choice(title_habitacion_alquilar_list)
-            
 
             else:
                 continue
@@ -233,22 +219,25 @@ class TestData(object):
             data["description"] = description
 
             profile_obj = Profile.objects.get(user=user_obj)
-            itemobj = Item.objects.create(user=user_obj, category=category_obj, title=title, description=description, adm0="GUATEMALA", adm1=profile_obj.adm1, adm2=profile_obj.adm2 )
-            
-
+            Item.objects.create(
+                user=user_obj,
+                category=category_obj,
+                title=title,
+                description=description,
+                adm0="GUATEMALA",
+                adm1=profile_obj.adm1,
+                adm2=profile_obj.adm2
+                )
 
 
 def main():
-    if DEBUG == True:
+    if DEBUG is True:
         td_obj = TestData()
         td_obj.delete_objects()
         td_obj.load_set_up()
         td_obj.make_users()
         td_obj.make_items()
-        #td_obj.make_users()
-
-        
-
+        # td_obj.make_users()
 
 
 if __name__ == '__main__':

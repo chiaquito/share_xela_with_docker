@@ -1,15 +1,16 @@
-from django.test import TestCase
+from django.test import TestCase, Client
 from items.models import Item
-from config.tests.utils import *
+from django.urls import reverse_lazy
 from config.constants import ViewName, TemplateName, ContextKey
-
-
+from config.tests.utils import (
+    create_item_for_test, create_item_data,
+    create_user_for_test, create_user_data,
+    pickUp_category_obj_for_test,
+)
 
 
 class MyItemListViewTest(TestCase):
-    """テスト目的
-    
-    """
+
     """テスト対象
     mypages/views.py MyItemListView#GET
     endpoint: "mypages/mylist"
@@ -35,14 +36,13 @@ class MyItemListViewTest(TestCase):
         templates = [ele.name for ele in response.templates]
         self.assertTrue(TemplateName.NO_ITEMS in templates)
 
-
     def test_記事が作成してあるときは記事を閲覧するテンプレートが表示される(self):
         item_count = Item.objects.all().count()
         self.assertEqual(item_count, 0)
         # ユーザーが記事を作成する
         user_obj, profile_obj = create_user_for_test(create_user_data("test1"))
         category_obj = pickUp_category_obj_for_test()
-        item_obj = create_item_for_test(user_obj, create_item_data(category_obj))
+        create_item_for_test(user_obj, create_item_data(category_obj))
 
         self.client = Client()
         login_status = self.client.login(username="test1", password="1234tweet")
@@ -51,7 +51,6 @@ class MyItemListViewTest(TestCase):
         # 返されるテンプレートの確認
         templates = [ele.name for ele in response.templates]
         self.assertTrue(TemplateName.ITEM_LIST in templates)
-
 
     def test_表示される記事はすべてアクセスしたユーザが作成した記事である(self):
         # ユーザーが記事を5コ作成する
@@ -70,16 +69,18 @@ class MyItemListViewTest(TestCase):
 
         # 記事にアクセスする
         self.client = Client()
-        login_status = self.client.login(username="test1", password="1234tweet")
+        login_status = self.client.login(
+            username="test1",
+            password="1234tweet"
+            )
         self.assertTrue(login_status)
         response = self.client.get(reverse_lazy(ViewName.MY_LIST))
         # 返されるコンテンツがすべてユーザーに関するものか確認
-        item_objects = response.context[ ContextKey.ITEM_OBJECTS ]
+        item_objects = response.context[ContextKey.ITEM_OBJECTS]
         for item_obj in item_objects:
             self.assertEqual(item_obj.user, user_obj)
         # 返されるコンテンツの個数を確認
         self.assertEqual(item_objects.count(), 5)
-
 
     def test_表示される記事にはactiveFalseが含まれない(self):
         # ユーザーが記事を5コ作成する。そのうち2個はactiveをFalseに設定する
@@ -102,12 +103,15 @@ class MyItemListViewTest(TestCase):
 
         # 記事にアクセスする
         self.client = Client()
-        login_status = self.client.login(username="test1", password="1234tweet")
+        login_status = self.client.login(
+            username="test1",
+            password="1234tweet"
+            )
         self.assertTrue(login_status)
         response = self.client.get(reverse_lazy(ViewName.MY_LIST))
         # 返されるコンテンツがすべてユーザーに関するものか確認
-        item_objects = response.context[ ContextKey.ITEM_OBJECTS ]
+        item_objects = response.context[ContextKey.ITEM_OBJECTS]
         for item_obj in item_objects:
             self.assertEqual(item_obj.user, user_obj)
         # 返されるコンテンツの個数を確認
-        self.assertEqual(item_objects.count(), 3)        
+        self.assertEqual(item_objects.count(), 3)

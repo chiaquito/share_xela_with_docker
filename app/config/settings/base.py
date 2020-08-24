@@ -9,16 +9,13 @@ https://docs.djangoproject.com/en/2.1/topics/settings/
 For the full list of settings and their values, see
 https://docs.djangoproject.com/en/2.1/ref/settings/
 """
-
 import os
-import environ 
+import environ
 
-
-env_dir  = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+env_dir = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 env_file = os.path.join(env_dir, ".env")
 env = environ.Env()
 env.read_env(env_file)
-
 
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
@@ -31,9 +28,6 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__fil
 
 # SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = os.environ.get('SECRET_KEY')
-
-
-
 
 # Application definition
 INSTALLED_APPS = [
@@ -94,8 +88,10 @@ ROOT_URLCONF = 'config.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [os.path.join(BASE_DIR, 'config', 'templates'),
-                 os.path.join(BASE_DIR, 'config', 'templates', 'allauth') ],
+        'DIRS': [
+            os.path.join(BASE_DIR, 'config', 'templates'),
+            os.path.join(BASE_DIR, 'config', 'templates', 'allauth')
+            ],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -113,8 +109,6 @@ WSGI_APPLICATION = 'config.wsgi.application'
 
 # Database
 # https://docs.djangoproject.com/en/2.1/ref/settings/#databases
-
-
 
 """
 DATABASES = {
@@ -161,9 +155,6 @@ AUTH_PASSWORD_VALIDATORS = [
 ]
 
 
-
-
-
 ##############################
 ### login&logout redirect  ###
 ##############################
@@ -171,9 +162,7 @@ AUTH_PASSWORD_VALIDATORS = [
 LOGIN_URL = 'login'          # ログインしていないときのリダイレクト先
 #LOGIN_REDIRECT_URL = 'home'  # ログイン後のリダイレクト先
 LOGIN_REDIRECT_URL = 'check_profile'  # ログイン後のリダイレクト先
-LOGOUT_REDIRECT_URL = 'home' # ログアウト後のリダイレクト先
-
-
+LOGOUT_REDIRECT_URL = 'home'  # ログアウト後のリダイレクト先
 
 
 #################################
@@ -199,8 +188,8 @@ SITE_ID = 1
 
 SOCIALACCOUNT_PROVIDERS = {
     'facebook': {
-        'METHOD': 'oauth2', #'js_sdk'
-        'SCOPE': ['email', 'public_profile', ], #'user_friends'
+        'METHOD': 'oauth2',  # 'js_sdk'
+        'SCOPE': ['email', 'public_profile', ],  # 'user_friends'
         'AUTH_PARAMS': {'auth_type': 'reauthenticate'},
         'INIT_PARAMS': {'cookie': True},
         'FIELDS': [
@@ -221,7 +210,7 @@ SOCIALACCOUNT_PROVIDERS = {
         'VERIFIED_EMAIL': False,
         'VERSION': 'v2.12',
     },
-     'google': {
+    'google': {
         'SCOPE': [
             'profile',
             'email',
@@ -236,8 +225,10 @@ SOCIALACCOUNT_PROVIDERS = {
 ###################################
 ##  allauth  カスタムFormの宣言  ####
 ###################################
-ACCOUNT_FORMS = {'login': 'config.forms.MyCustomLoginForm',
-                'signup': 'config.forms.MyCustomSignupForm',}
+ACCOUNT_FORMS = {
+    'login': 'config.forms.MyCustomLoginForm',
+    'signup': 'config.forms.MyCustomSignupForm',
+    }
 
 
 ###################################
@@ -261,7 +252,7 @@ CACHES = {
 }
 
 
-#　キャッシュを使わない場合はNoneと記述。キャッシュを使う場合は基本的には'default'を使う
+# キャッシュを使わない場合はNoneと記述。キャッシュを使う場合は基本的には'default'を使う
 USER_AGENTS_CACHE = 'default'
 
 
@@ -277,25 +268,20 @@ LEAFLET_CONFIG = {
 }
 
 
-
-
 ##########################################
 ###        Django-Rest-Framework       ###
 ##########################################
 
-
 REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': (
-           'rest_framework.authentication.TokenAuthentication',
-           'rest_framework.authentication.BasicAuthentication',
-       ),
-       'DEFAULT_PERMISSION_CLASSES': (
-
-            # https://www.django-rest-framework.org/api-guide/permissions/#setting-the-permission-policy
-            #'rest_framework.permissions.IsAdminUser',
-            #'rest_framework.permissions.IsAuthenticated',
-            #'rest_framework.permissions.AllowAny',
-
+        'rest_framework.authentication.TokenAuthentication',
+        'rest_framework.authentication.BasicAuthentication',
+        ),
+    'DEFAULT_PERMISSION_CLASSES': (
+        # https://www.django-rest-framework.org/api-guide/permissions/#setting-the-permission-policy
+        #'rest_framework.permissions.IsAdminUser',
+        #'rest_framework.permissions.IsAuthenticated',
+        #'rest_framework.permissions.AllowAny',
        ),
     }
 
@@ -312,13 +298,10 @@ OLD_PASSWORD_FIELD_ENABLED = True
 LOGOUT_ON_PASSWORD_CHANGE = False
 
 
-#signupのviewをProfileオブジェクトを返す仕組みに変更する。
 
-
-
-####################################################################
+########################################################################
 ## CORS dockerによるcross originによる通信を許可 (django-cors-headers)   ##
-####################################################################
+########################################################################
 # https://github.com/adamchainz/django-cors-headers
 
 
@@ -356,9 +339,7 @@ DEFAULT_FROM_EMAIL = 'no-reply <no-reply@sharexela.ga>'
 # https://stackoverrun.com/ja/q/12297638
 # https://docs.djangoproject.com/en/2.2/ref/settings/#std:setting-FILE_UPLOAD_MAX_MEMORY_SIZE
 
-#djangoのファイルアップロード(画像)のデータサイズ許容量を上昇させる。
+# djangoのファイルアップロード(画像)のデータサイズ許容量を上昇させる。
 
-#FILE_UPLOAD_MAX_MEMORY_SIZE = 5242880
+# FILE_UPLOAD_MAX_MEMORY_SIZE = 5242880
 FILE_UPLOAD_MAX_MEMORY_SIZE = 9437184
-
-

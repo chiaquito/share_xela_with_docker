@@ -31,16 +31,9 @@ CATEGORY_CHOICE = (
 
 """
 
-
-
-#("dar,vender","dar,vender"),("querer", "querer"),("anuncio", "anuncio"),
-
 class Category(models.Model):
-    number = models.CharField(max_length=30, choices=CATEGORY_CHOICE, unique=True) #, unique=True
-
+    number = models.CharField(max_length=30, choices=CATEGORY_CHOICE, unique=True)
 
     def __str__(self):
-        #return self.number
+        # return self.number
         return "{} : {}".format(self.number, self.get_number_display())
-
-

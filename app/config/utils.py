@@ -7,7 +7,6 @@ from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from django.contrib.gis.geos import GEOSGeometry
 
 
-
 ################################################
 ##   ページネーションに関する関数を設定             ##
 ################################################
@@ -28,7 +27,7 @@ def paginate_queryset(request, queryset, count=12):
 
     使用先：
         各カテゴリーの結果表示、ユーザー別記事表示、Favorit記事表示、Avisoの各通知リスト
-    
+
     ページネーションコンポーネント：
         {% include '' %}
 
@@ -44,8 +43,6 @@ def paginate_queryset(request, queryset, count=12):
     return page_obj
 
 
-
-
 ########################################################
 ###   navbarに通知を表示させるためのオブジェクトを取得する  ####
 ########################################################
@@ -54,7 +51,7 @@ def paginate_queryset(request, queryset, count=12):
 def add_aviso_objects(request, context):
     """
     navbarに表示させるavisoオブジェクトをcontextに追加する
-    
+
     """
     if request.user.is_anonymous == True:
         return context
@@ -64,9 +61,6 @@ def add_aviso_objects(request, context):
     context["aviso_objects"] = aviso_objects
     context["aviso_count"] = aviso_objects.count()
     return context
-
-
-
 
 
 #########################################################
@@ -98,7 +92,7 @@ def wkt2point(wkt):
         text = "POINT(" + lat + " " + lng + ")"
         point = GEOSGeometry(text)
     elif launch_env == "NO_DOCKER":
-        #point  = GEOSGeometry(wkt)
+        # point  = GEOSGeometry(wkt)
         lng = wkt.split(" ")[1].replace("(", "")
         lat = wkt.split(" ")[2].replace(")", "")
         text = "POINT(" + lat + " " + lng + ")"
@@ -111,9 +105,9 @@ def wkt2point(wkt):
 ###          point値のバリデーション関数                  ##
 ########################################################
 
-#記事作成時、記事編集時、プロフィール編集時にpoint値を地図から取得する機能がある。
-#地図からpoint値を取得する時guatemala領域外の場合にはデータベースに当該point値を登録するのは望ましくない。
-#したがって領域外かどうかを判定する関数を以下とする。
+# 記事作成時、記事編集時、プロフィール編集時にpoint値を地図から取得する機能がある。
+# 地図からpoint値を取得する時guatemala領域外の場合にはデータベースに当該point値を登録するのは望ましくない。
+# したがって領域外かどうかを判定する関数を以下とする。
 
 def is_in_Guatemala(wkt):
     """機能
@@ -122,18 +116,15 @@ def is_in_Guatemala(wkt):
     """
     point = wkt2point(wkt)
     # pointが各departamentoに含まれているかチェックする/含まれればresultをTrueに変更する
-    print("そもそもココ通る？？")
+    # print("そもそもココ通る？？")
     dep_objects = Departamento.objects.all()
     for dep in dep_objects:
-        print("within調査")
-        print(dep.geom.contains(point))
+        # print("within調査")
+        # print(dep.geom.contains(point))
         if dep.geom.contains(point):
             return True
 
     return False
-
-
-
 
 
 ################################################
@@ -163,7 +154,6 @@ def getTypeOS():
         print("LINUXの環境 -> 製品環境")
         OS = OS_TYPE[1]
         return OS
-    
 
 
 def setDjangoSettingsModule(OS):
@@ -175,17 +165,14 @@ def setDjangoSettingsModule(OS):
     """
 
     if OS == OS_TYPE[0]:
-        return os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'config.settings.dev_settings')
+        return os.environ.setdefault(
+            'DJANGO_SETTINGS_MODULE', 'config.settings.dev_settings')
 
     if OS == OS_TYPE[1]:
-        return os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'config.settings.prod_settings')
-
+        return os.environ.setdefault(
+            'DJANGO_SETTINGS_MODULE', 'config.settings.prod_settings')
 
 
 def setDSM():
     OS = getTypeOS()
     return setDjangoSettingsModule(OS)
-
-
-
-    

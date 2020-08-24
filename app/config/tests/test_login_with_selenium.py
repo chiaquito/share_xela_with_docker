@@ -1,3 +1,9 @@
+
+"""
+画面修正のためseleniumによるテストは余裕があるまで
+再構築しないでおく
+
+
 from django.test import LiveServerTestCase, Client
 from django.urls import reverse_lazy
 #from selenium.webdriver.chrome.webdriver import WebDriver
@@ -7,7 +13,7 @@ from webdriver_manager.chrome import ChromeDriverManager
 from django.contrib.auth.models import User
 from time import sleep
 from allauth.account.models import EmailAddress
-"""
+
 
 
 #　テスト実行方法

@@ -13,7 +13,7 @@ Including another URLconf
     1. Import the include() function: from django.urls import include, path
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
-#from django.contrib import admin
+# from django.contrib import admin
 from django.contrib.gis import admin
 from django.urls import path, include
 from django.conf import settings
@@ -26,21 +26,23 @@ import direct_messages.urls
 import feedback.urls
 import item_contacts.urls
 import items.urls
-import maps.urls
 import mypages.urls
 import prefecturas.urls
 import profiles.urls
 import solicitudes.urls
 
-from .views import HowtoView, UsernameChangeView, EmailAddressChangeView, PrivacyView, CheckProfileView
+from .views import (
+    HowtoView, UsernameChangeView,
+    EmailAddressChangeView, PrivacyView,
+    CheckProfileView
+)
 from .views import HomeKaizenView
 from .views import ListMyDataView
 
 
 
 urlpatterns = [
-    #path('', HomeView.as_view(), name='home'), HomeView,
-    path('',HomeKaizenView.as_view(), name='home'),
+    path('', HomeKaizenView.as_view(), name='home'),
     path('check_profile/', CheckProfileView.as_view(), name='check_profile'),
     path('howto/', HowtoView.as_view(), name='howto'),
     path('username_change/', UsernameChangeView.as_view(), name='username_change'),
@@ -48,14 +50,13 @@ urlpatterns = [
     path('privacy', PrivacyView.as_view(), name='privacy'),
     path('rest-auth/', include('rest_auth.urls')),
     path('rest-auth/registration/', include('rest_auth.registration.urls')),
-    path('accounts/', include('allauth.urls')),
+    path('accounts/', include(allauth.urls)),
     path('admin/', admin.site.urls),
-    path('api/', include('api.urls')),
+    path('api/', include(api.urls)),
     path('avisos/', include(avisos.urls)),
     path('contacts/', include(contacts.urls)),
     path('direct_messages/', include(direct_messages.urls)),
     path('feedback/', include(feedback.urls)),
-    #path('maps/', include(maps.urls)),
     path('item_contacts/', include(item_contacts.urls)),
     path('items/', include(items.urls)),
     path('mypages/', include(mypages.urls)),
