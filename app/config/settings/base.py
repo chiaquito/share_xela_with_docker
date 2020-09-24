@@ -340,7 +340,7 @@ CORS_ORIGIN_WHITELIST = [
 
 #EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
 #EMAIL_BACKEND = 'sendgrid_backend.SendgridBackend'
-#SENDGRID_API_KEY = "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"
+#SENDGRID_API_KEY = ***************************************************
 #SENDGRID_API_KEY = env("SENDGRID_API_KEY")
 SENDGRID_API_KEY = os.environ.get("SENDGRID_API_KEY")
 
