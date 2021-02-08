@@ -48,7 +48,7 @@ google-cloud-storage==1.27.0
 google-resumable-media==0.5.0
 googleapis-common-protos==1.51.0
 grpcio==1.28.1
-httplib2==0.17.1
+httplib2==0.19.0
 idna==2.8
 Markdown==3.1.1
 msgpack==1.0.0
